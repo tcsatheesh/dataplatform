@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "adminUsername": {
+            "value": ""
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "vmType": {
+            "value": ""
+        },
+        "storageAccountType" : {
+            "value": ""
+        },
+        "osDiskSize": {
+            "value": ""
+        },
+        "lun0DiskSize": {
+            "value": ""
+        },
+        "networkRGName": {
+            "value": ""
+        },
+        "vnetName": {
+            "value": ""
+        },
+        "subnetName": {
+            "value": ""
+        },
+        "customScriptUri": {
+            "value": ""
+        },
+        "customScriptStorageAccountResourceGroupName": {
+            "value": ""
+        },
+        "customScriptStorageAccountName": {
+            "value": ""
+        }
+    }
+}

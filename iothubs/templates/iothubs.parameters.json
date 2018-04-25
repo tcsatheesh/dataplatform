@@ -1,0 +1,19 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "iothub", 
+                    "resourceType": "iothubs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}iothub01",
+                    "location": "North Europe",
+                    "templateFileName": "iothub.json",
+                    "parameterFileName": "iothub.parameters.json"
+                }
+            ]
+        }
+    }
+}

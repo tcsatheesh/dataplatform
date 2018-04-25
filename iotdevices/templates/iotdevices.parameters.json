@@ -1,0 +1,39 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "iotdevice",
+                    "resourceType": "iotdevices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}iotdev01",
+                    "location": "North Europe",
+                    "templateFileName": "iotdevice.json",
+                    "parameterFileName": "iotdevice.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "iotHubName",
+                            "type": "reference",
+                            "ref" : {
+                                "resourceType" : "iothubs",
+                                "typeFilter": "iothub",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "iotHubConnectionString",
+                            "type": "iotHubConnectionString",
+                            "ref" : {
+                                "resourceType" : "iothubs",
+                                "typeFilter": "iothub",
+                                "property": "name"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

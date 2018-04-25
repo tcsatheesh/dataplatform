@@ -1,0 +1,67 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "tsinsight", 
+                    "resourceType": "tsinsights",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}tsi01",
+                    "location": "North Europe",
+                    "templateFileName": "tsinsight.json",
+                    "parameterFileName": "tsinsight.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "principalObjectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "managers",
+                                "property" : "id"
+                            }                            
+                        },
+                        {
+                            "name": "iotHubName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "iothubs",
+                                "typeFilter": "iothub",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "iotHubResourceId",
+                            "type": "iotHubResourceId",
+                            "ref": {
+                                "resourceType": "iothubs",
+                                "typeFilter": "iothub",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "iotHubSharedAccessKey",
+                            "type": "iotHubSharedAccessKey",
+                            "ref": {
+                                "resourceType": "iothubs",
+                                "typeFilter": "iothub",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "consumerGroupName",
+                            "type": "value",
+                            "value": "tsinsights"                        
+                        },
+                        {
+                            "name": "timeStampFieldName",
+                            "type": "value",
+                            "value": "timestamp"                        
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

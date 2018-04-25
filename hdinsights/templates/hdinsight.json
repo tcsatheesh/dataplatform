@@ -1,0 +1,434 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the HDInsight cluster to create."
+            }
+        },
+        "clusterVersion": {
+            "type": "string",
+            "defaultValue": "3.6",
+            "metadata": {
+                "description": "The version of the HDInsight cluster to create."
+            }
+        },
+        "clusterOSType": {
+            "type": "string",
+            "defaultValue": "Linux",
+            "metadata": {
+                "description": "The ostype of the HDInsight cluster to create."
+            }
+        },
+        "clusterAdminLogin": {
+            "type": "string",
+            "defaultValue": "clsadmin",
+            "metadata": {
+                "description": "These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
+            }
+        },
+        "clusterAdminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+            }
+        },
+        "clusterSSHUserName": {
+            "type": "string",
+            "defaultValue": "sshuser",
+            "metadata": {
+                "description": "These credentials can be used to remotely access the cluster."
+            }
+        },
+        "clusterSSHUserPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "East US",
+            "allowedValues": [
+                "East US",
+                "East US 2",
+                "North Central US",
+                "South Central US",
+                "West US",
+                "North Europe",
+                "West Europe",
+                "East Asia",
+                "Southeast Asia",
+                "Japan East",
+                "Japan West",
+                "Australia East",
+                "Australia Southeast"
+            ],
+            "metadata": {
+                "description": "The location where all azure resources will be deployed."
+            }
+        },
+        "applicationId": {
+            "type": "string",
+            "metadata": {
+                "description": "The application id that can access the data lake store."
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "The tenant the application id belongs to"
+            }
+        },
+        "identityCertificate": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The certificate used to authenticate the application id"
+            }
+        },
+        "identityCertificatePassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password required to access the certificate"
+            }
+        },
+        "clusterType": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "metadata": {
+                "description": "The type of cluster Standard or Premium"
+            }
+        },
+        "clusterKind": {
+            "type": "string",
+            "defaultValue": "SPARK",
+            "allowedValues": [
+                "HADOOP",
+                "HBASE",
+                "STORM",
+                "SPARK",
+                "KAFKA"
+            ],
+            "metadata": {
+                "description": "The type of the HDInsight cluster to create."
+            }
+        },
+        "sparkVersion": {
+            "type": "string",
+            "defaultValue": "2.2",
+            "metadata": {
+                "description": "The version of Spark in the HDInsight cluster."
+            }
+        },
+        "clusterHeadNodeCount": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "The number of head nodes in the HDInsight cluster."
+            }
+        },
+        "clusterHeadNodeVMSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "metadata": {
+                "description": "The size of head nodes VMs in the HDInsight cluster."
+            }
+        },
+        "clusterWorkerNodeCount": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "The number of worker nodes in the HDInsight cluster."
+            }
+        },
+        "clusterWorkerNodeVMSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "metadata": {
+                "description": "The size of worker nodes VMs in the HDInsight cluster."
+            }
+        },
+        "clusterEdgeNodeCount": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "The number of worker nodes in the HDInsight cluster."
+            }
+        },
+        "clusterEdgeNodeVMSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "metadata": {
+                "description": "The size of worker nodes VMs in the HDInsight cluster."
+            }
+        },
+        "clusterZookeeperNodeCount": {
+            "type": "int",
+            "defaultValue": 3,
+            "metadata": {
+                "description": "The number of zookeeper nodes in the HDInsight cluster."
+            }
+        },
+        "clusterZookeeperNodeVMSize": {
+            "type": "string",
+            "defaultValue": "Standard_A2",
+            "metadata": {
+                "description": "The size of zookeeper nodes VMs in the HDInsight cluster."
+            }
+        },
+        "clusterApiVersion": {
+            "type": "string",
+            "defaultValue": "2015-03-01-preview",
+            "metadata": {
+                "description": "The number of nodes in the HDInsight cluster."
+            }
+        },
+        "storageApiVersion": {
+            "type": "string",
+            "defaultValue": "2016-12-01",
+            "metadata": {
+                "description": "The number of nodes in the HDInsight cluster."
+            }
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+            },
+            "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-hdinsight-linux-with-edge-node/"
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated."
+            },
+            "defaultValue": ""
+        },
+        "installScriptActionFolder": {
+            "type": "string",
+            "metadata": {
+                "description": "A script action you can run on the empty node to install or configure additiona software."
+            },
+            "defaultValue": "scripts"
+        },
+        "installScriptAction": {
+            "type": "string",
+            "metadata": {
+                "description": "A script action you can run on the empty node to install or configure additiona software."
+            },
+            "defaultValue": "EmptyNodeSetup.sh"
+        },
+        "applicationName": {
+            "type": "string",
+            "defaultValue": "edgenode",
+            "metadata": {
+                "description": "The name of the edge node."
+            }
+        },
+        "vNetResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group containing the virtual network"
+            }
+        },
+        "vNetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the virtual network"
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the subnet in the virtual network"
+            }
+        },
+        "sqlServerName": {
+            "type": "string"
+        },
+        "databaseName": {
+            "type": "string"
+        },
+        "externalMetaStoreUserName": {
+            "type": "string"
+        },
+        "externalMetaStorePassword": {
+            "type": "string"
+        },
+        "dataLakeStoreName" : {
+            "type": "string"
+        },
+        "dataLakeFolderPath" : {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "vNet": {
+            "id": "[resourceId(parameters('vNetResourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('vNetName'))]",
+            "subnet": "[concat(resourceId(parameters('vNetResourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('vNetName')), '/subnets/', parameters('subnetName'))]"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('resourcename')]",
+            "type": "Microsoft.HDInsight/clusters",
+            "location": "[parameters('location')]",
+            "apiVersion": "[parameters('clusterApiVersion')]",
+            "properties": {
+                "clusterVersion": "[parameters('clusterVersion')]",
+                "osType": "[parameters('clusterOSType')]",
+                "clusterDefinition": {
+                    "kind": "[parameters('clusterKind')]",
+                    "componentVersion": {
+                        "Spark": "[parameters('sparkVersion')]"
+                    },
+                    "type": "[parameters('clusterType')]",
+                    "configurations": {
+                        "gateway": {
+                            "restAuthCredential.isEnabled": true,
+                            "restAuthCredential.username": "[parameters('clusterAdminLogin')]",
+                            "restAuthCredential.password": "[parameters('clusterAdminPassword')]"
+                        },
+                        "core-site": {
+                            "fs.defaultFS": "adl://home",
+                            "dfs.adls.home.hostname": "[concat(parameters('dataLakeStoreName'),'.azuredatalakestore.net')]",
+                            "dfs.adls.home.mountpoint": "[parameters('dataLakeFolderPath')]"
+                        },
+                        "clusterIdentity": {
+                            "clusterIdentity.applicationId": "[parameters('applicationId')]",
+                            "clusterIdentity.certificate": "[parameters('identityCertificate')]",
+                            "clusterIdentity.aadTenantId": "[concat('https://login.windows.net/',parameters('tenantId'))]",
+                            "clusterIdentity.resourceUri": "https://management.core.windows.net/",
+                            "clusterIdentity.certificatePassword": "[parameters('identityCertificatePassword')]"
+                        },
+                        "hive-site": {
+                            "javax.jdo.option.ConnectionDriverName": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+                            "javax.jdo.option.ConnectionURL": "[concat('jdbc:sqlserver://', parameters('sqlServerName'), '.database.windows.net;database=', parameters('databaseName'), ';encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300')]",
+                            "javax.jdo.option.ConnectionUserName": "[parameters('externalMetaStoreUserName')]",
+                            "javax.jdo.option.ConnectionPassword": "[parameters('externalMetaStorePassword')]"
+                        },
+                        "hive-env": {
+                            "hive_database": "Existing MSSQL Server database with SQL authentication",
+                            "hive_database_name": "[parameters('dataBaseName')]",
+                            "hive_database_type": "mssql",
+                            "hive_existing_mssql_server_database": "[parameters('dataBaseName')]",
+                            "hive_existing_mssql_server_host": "[concat(parameters('sqlServerName'), '.database.windows.net')]",
+                            "hive_hostname": "[concat(parameters('sqlServerName'), '.database.windows.net')]"
+                        },
+                        "oozie-site": {
+                            "oozie.service.JPAService.jdbc.driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+                            "oozie.service.JPAService.jdbc.url": "[concat('jdbc:sqlserver://', parameters('sqlServerName'), '.database.windows.net;database=', parameters('databaseName'), ';encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300')]",
+                            "oozie.service.JPAService.jdbc.username": "[parameters('externalMetaStoreUserName')]",
+                            "oozie.service.JPAService.jdbc.password": "[parameters('externalMetaStorePassword')]",
+                            "oozie.db.schema.name": "oozie"
+                        },
+                        "oozie-env": {
+                            "oozie_database": "Existing MSSQL Server database with SQL authentication",
+                            "oozie_database_name": "[parameters('databaseName')]",
+                            "oozie_database_type": "mssql",
+                            "oozie_existing_mssql_server_database": "[parameters('databaseName')]",
+                            "oozie_existing_mssql_server_host": "[concat(parameters('sqlServerName'), '.database.windows.net')]",
+                            "oozie_hostname": "[concat(parameters('sqlServerName'), '.database.windows.net')]"
+                        }
+                    }
+                },
+                "computeProfile": {
+                    "roles": [
+                        {
+                            "name": "headnode",
+                            "targetInstanceCount": "[parameters('clusterHeadNodeCount')]",
+                            "hardwareProfile": {
+                                "vmSize": "[parameters('clusterHeadNodeVMSize')]"
+                            },
+                            "osProfile": {
+                                "linuxOperatingSystemProfile": {
+                                    "username": "[parameters('clusterSSHUserName')]",
+                                    "password": "[parameters('clusterSSHUserPassword')]"
+                                }
+                            },
+                            "virtualNetworkProfile": {
+                                "id": "[variables('vNet').id]",
+                                "subnet": "[variables('vNet').subnet]"
+                            }
+                        },
+                        {
+                            "name": "workernode",
+                            "targetInstanceCount": "[parameters('clusterWorkerNodeCount')]",
+                            "hardwareProfile": {
+                                "vmSize": "[parameters('clusterWorkerNodeVMSize')]"
+                            },
+                            "osProfile": {
+                                "linuxOperatingSystemProfile": {
+                                    "username": "[parameters('clusterSSHUserName')]",
+                                    "password": "[parameters('clusterSSHUserPassword')]"
+                                }
+                            },
+                            "virtualNetworkProfile": {
+                                "id": "[variables('vNet').id]",
+                                "subnet": "[variables('vNet').subnet]"
+                            }
+                        },
+                        {
+                            "name": "zookeepernode",
+                            "targetInstanceCount": "[parameters('clusterZookeeperNodeCount')]",
+                            "hardwareProfile": {
+                                "vmSize": "[parameters('clusterZookeeperNodeVMSize')]"
+                            },
+                            "osProfile": {
+                                "linuxOperatingSystemProfile": {
+                                    "username": "[parameters('clusterSSHUserName')]",
+                                    "password": "[parameters('clusterSSHUserPassword')]"
+                                }
+                            },
+                            "virtualNetworkProfile": {
+                                "id": "[variables('vNet').id]",
+                                "subnet": "[variables('vNet').subnet]"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('resourcename'),'/', parameters('applicationName'))]",
+            "type": "Microsoft.HDInsight/clusters/applications",
+            "apiVersion": "2015-03-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.HDInsight/clusters/',parameters('resourcename'))]"
+            ],
+            "properties": {
+                "marketPlaceIdentifier": "EmptyNode",
+                "computeProfile": {
+                    "roles": [
+                        {
+                            "name": "edgenode",
+                            "targetInstanceCount": "[parameters('clusterEdgeNodeCount')]",
+                            "hardwareProfile": {
+                                "vmSize": "[parameters('clusterEdgeNodeVMSize')]"
+                            }
+                        }
+                    ]
+                },
+                "installScriptActions": [
+                    {
+                        "name": "[concat('emptynode','-' ,uniquestring(parameters('applicationName')))]",
+                        "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('installScriptActionFolder'), '/', parameters('installScriptAction'), parameters('_artifactsLocationSasToken'))]",
+                        "roles": [
+                            "edgenode"
+                        ]
+                    }
+                ],
+                "uninstallScriptActions": [],
+                "httpsEndpoints": [],
+                "applicationType": "CustomApplication"
+            }
+        }
+    ],
+    "outputs": {}
+}

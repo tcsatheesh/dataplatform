@@ -1,0 +1,106 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "department",
+                    "name": ""
+                },
+                {
+                    "type": "projectName",
+                    "name": ""
+                },
+                {
+                    "type": "environment",
+                    "name": ""
+                },
+                {
+                    "type": "tenant",
+                    "name": "",
+                    "id": ""
+                },
+                {
+                    "type": "subscription",
+                    "name": "",
+                    "id": ""
+                },
+                {
+                    "type": "createADGroups",
+                    "status": false
+                },
+                {
+                    "type": "user-administrator",
+                    "resources": [
+                        "principals",
+                        "adgroups",
+                        "adgroupmembers"
+                    ]
+                },
+                {
+                    "type": "subscription-owner",
+                    "resources": [
+                        "resourcegroups",
+                        "storageaccounts"
+                    ]
+                },
+                {
+                    "type": "keyvault-administrator",
+                    "resources": [
+                        "keyvaults",
+                        "keyvaultsecrets",
+                        "clientsecrets"
+                    ]
+                },
+                {
+                    "type": "manager",
+                    "resources": [
+                        "adlstores",
+                        "adlsowners",
+                        "adlsfolders"
+                    ]
+                },
+                {
+                    "type": "vsts",
+                    "resources": [
+                        "adfs",
+                        "adlas",
+                        "sqldbs",
+                        "sqldws",
+                        "analysis"
+                    ]
+                },
+                {
+                    "type": "developer",
+                    "resources": [
+                        "principals",
+                        "adgroups",
+                        "adgroupmembers",
+                        "resourcegroups",
+                        "storageaccounts",
+                        "keyvaults",
+                        "clientsecrets",
+                        "keyvaultsecrets",
+                        "adlstores",
+                        "adlsowners",
+                        "adlsfolders",
+                        "adlas",
+                        "adfs",
+                        "sqldbs",
+                        "sqldws",
+                        "cosmosdbs",
+                        "analysis",
+                        "databricks",
+                        "mlstudios",
+                        "mlexps",
+                        "iothubs",
+                        "iotdevices",
+                        "tsinsights",
+                        "vnets"
+                    ]
+                }
+            ]
+        }
+    }
+}

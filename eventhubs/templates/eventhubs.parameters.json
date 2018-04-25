@@ -1,0 +1,41 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "eventhub", 
+                    "resourceType": "eventhubs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}ehns01",
+                    "location": "North Europe",
+                    "templateFileName": "eventhub.json",
+                    "parameterFileName": "eventhub.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "eventHubName",
+                            "type": "format",
+                            "value": "{0}{1}{2}eh01"                            
+                        },
+                        {
+                            "name": "consumerGroupName",
+                            "type": "format",
+                            "value": "{0}{1}{2}ehcg01"                            
+                        },
+                        {
+                            "name": "sendKeyName",
+                            "type": "value",
+                            "value": "SendKey"                            
+                        },
+                        {
+                            "name": "listenKeyName",
+                            "type": "value",
+                            "value": "ListenKey"                            
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

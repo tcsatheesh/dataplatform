@@ -1,0 +1,43 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description" : "The name of the batch account used by the data factory. This must be complaint with the organisation naming standards."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description" : "The location for the batch account. This must be complaint with the organisation approved locations."
+            }
+        },
+        "apiVersion": {
+            "type": "string",
+            "defaultValue": "2015-12-01",
+            "metadata": {
+                "description" : "The version of the API to use for deployment"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Batch/batchAccounts",
+            "apiVersion": "[parameters('apiVersion')]",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]"
+        }
+    ],
+    "outputs": {
+        "batchAccountEndPoint": {
+            "value": "[concat('https://', reference(concat('Microsoft.Batch/batchAccounts/', parameters('resourcename'))).accountEndpoint)]",
+            "type": "string"
+        },
+        "batchAccountKey": {
+            "value": "[listKeys(resourceId('Microsoft.Batch/batchAccounts', parameters('resourcename')), providers('Microsoft.Batch', 'batchAccounts').apiVersions[0]).primary]",
+            "type": "string"
+        }
+    }
+}

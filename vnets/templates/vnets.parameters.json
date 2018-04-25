@@ -1,0 +1,46 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "dplt",
+                    "resourceType": "vnets",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}vnet01",
+                    "location": "North Europe",
+                    "templateFileName": "vnet.json",
+                    "parameterFileName": "vnet.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "addressPrefix",
+                            "type": "value",
+                            "value": "10.0.0.0/22"
+                        },
+                        {
+                            "name": "subnetName1",
+                            "type": "value",
+                            "value":"hdinsight"
+                        },
+                        {
+                            "name": "subnetPrefix1",
+                            "type": "value",
+                            "value":"10.0.1.0/24"
+                        },
+                        {
+                            "name": "subnetName2",
+                            "type": "value",
+                            "value":"dsvm"
+                        },
+                        {
+                            "name": "subnetPrefix2",
+                            "type": "value",
+                            "value":"10.0.2.0/24"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

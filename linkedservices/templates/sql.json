@@ -1,0 +1,17 @@
+{
+    "$schema": "http://datafactories.schema.management.azure.com/schemas/2015-09-01/Microsoft.DataFactory.LinkedService.json",
+    "name": "SqlDb",
+    "properties": {
+        "type": "AzureSqlDatabase",
+        "typeProperties": {
+            "connectionString": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "",
+                "store":{
+                    "referenceName": "",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        }
+    }
+}

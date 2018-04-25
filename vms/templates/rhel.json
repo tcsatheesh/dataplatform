@@ -1,0 +1,189 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "adminUsername": {
+        "type": "string",
+        "defaultValue": "vmadmin"
+      },
+      "adminPassword": {
+        "defaultValue": null,
+        "type": "securestring"
+      },
+      "resourcename": {
+        "type": "string",
+        "metadata": {
+          "description": "Name for vm"
+        }
+      },
+      "osDiskSize": {
+        "type": "int",
+        "metadata": {
+          "description" : "Size of the os disk"
+        }
+      },
+      "lun0DiskSize": {
+        "type": "int",
+        "metadata": {
+          "description" : "Size of the data disk"
+        }
+      },
+      "networkRGName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name for VM"
+        }
+      },
+      "vnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of vnet"
+        }
+      },
+      "subnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of subnet"
+        }
+      },
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Location of VM"
+        }
+      },
+      "vmType": {
+        "type": "string"        
+      },
+      "storageAccountType" : {
+        "type": "string"
+      },
+      "customScriptUri": {
+        "type": "string",
+        "defaultValue": "https://<customScriptStorageAccountName>.blob.core.windows.net/customextension/emptynodesetup.sh"
+      },
+      "commandToExecute": {
+        "type": "string",
+        "defaultValue": "sh emptynodesetup.sh"
+      },
+      "customScriptStorageAccountResourceGroupName": {
+        "type": "string"
+      },
+      "customScriptStorageAccountName": {
+        "type": "string"
+      }
+    },
+    "variables": {
+      "VnetID": "[resourceId(parameters('networkRGName'),'Microsoft.Network/virtualNetworks',parameters('vnetName'))]"
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[parameters('resourcename')]",
+        "apiVersion": "2016-04-30-preview",
+        "location": "[parameters('location')]",
+          "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmType')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "RedHat",
+              "offer": "RHEL",
+              "sku": "7-RAW",
+              "version": "latest"
+            },
+            "osDisk": {
+              "name": "[concat(parameters('resourcename'),'-os')]",
+              "createOption": "FromImage",
+              "caching": "ReadWrite",
+              "diskSizeGB": "[parameters('osDiskSize')]",
+              "managedDisk": {
+                "storageAccountType": "[parameters('storageAccountType')]"
+              }
+            },
+            "dataDisks": [
+              {
+                "lun": 0,
+                "name": "[concat(parameters('resourcename'),'-lun0')]",
+                "createOption": "Empty",
+                "caching": "None",
+                "diskSizeGB": "[parameters('lun0DiskSize')]",
+                "managedDisk": {
+                  "storageAccountType": "[parameters('storageAccountType')]"
+                }
+              } 
+            ]
+          },
+          "osProfile": {
+            "computerName": "[parameters('resourcename')]",
+            "adminUsername": "[parameters('adminUserName')]",
+            "secrets": [],
+            "adminPassword": "[parameters('adminPassword')]"
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('resourcename'),'-nic'))]"
+              }
+            ]
+          }
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('resourcename'),'-nic'))]"
+        ],
+        "resources": []
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[concat(parameters('resourcename'),'-nic')]",
+        "apiVersion": "2016-03-30",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[concat(variables('VnetID'),'/subnets/',parameters('subnetName'))]"
+                }
+              }
+            }
+          ],
+          "enableIPForwarding": false
+        },
+        "dependsOn": [
+        ]
+      },
+      {
+        "location": "[resourceGroup().location]",
+        "name": "[concat(parameters('resourcename'),'/config-vm')]",
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "apiVersion": "2015-06-15",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('resourcename')))]"
+        ],
+        "tags": {
+          "displayName": "config-vm"
+        },
+        "properties": {
+          "publisher": "Microsoft.OSTCExtensions",
+           "type": "CustomScriptForLinux",
+           "typeHandlerVersion": "1.5",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "fileUris": [
+              "[parameters('customScriptUri')]"
+            ]
+           },
+          "protectedSettings": {
+            "commandToExecute": "[parameters('commandToExecute')]",
+            "storageAccountKey": "[listKeys(resourceId(parameters('customScriptStorageAccountResourceGroupName'),'Microsoft.Storage/storageAccounts', parameters('customScriptStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]",
+            "storageAccountName": "[parameters('customScriptStorageAccountName')]"
+          }
+        }
+      }
+    ]
+   }
+  

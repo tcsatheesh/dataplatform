@@ -1,0 +1,67 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "principal",
+                    "subtype": "deploymentPrincipal",
+                    "application": {
+                        "name": "{0}-{1}-{2}-dep-prn",
+                        "uri": "https://{0}-{1}-{2}-dep-prn",
+                        "clientId": "",
+                        "passwordSecretName" : "",
+                        "certificateSecretName" : "",
+                        "certificatePasswordSecretName": ""
+                    },
+                    "servicePrincipal": {
+                        "name": "{0}-{1}-{2}-dep-prn",
+                        "id": ""
+                    },
+                    "metadata": {
+                        "description": "The Azure Active Directory Application to be used for applications."
+                    }
+                },
+                {
+                    "type" : "principal",
+                    "subtype": "applicationPrincipal",
+                    "application": {
+                        "name": "{0}-{1}-{2}-app-prn",
+                        "uri": "https://{0}-{1}-{2}-app-prn",
+                        "clientId": "",
+                        "passwordSecretName" : "",
+                        "certificateSecretName" : "",
+                        "certificatePasswordSecretName": ""
+                    },
+                    "servicePrincipal": {
+                        "name": "{0}-{1}-{2}-app-prn",
+                        "id": ""
+                    },
+                    "metadata": {
+                        "description": "The Azure Active Directory Application to be used for applications."
+                    }
+                },
+                {
+                    "type" : "principal",
+                    "subtype": "diskEncryptionPrincipal",
+                    "application": {
+                        "name": "{0}-{1}-{2}-dsk-prn",
+                        "uri": "https://{0}-{1}-{2}-dsk-prn",
+                        "clientId": "",
+                        "passwordSecretName" : "",
+                        "certificateSecretName" : "",
+                        "certificatePasswordSecretName": ""
+                    },
+                    "servicePrincipal": {
+                        "name": "{0}-{1}-{2}-dsk-prn",
+                        "id": ""
+                    },
+                    "metadata": {
+                        "description": "The Azure Active Directory Application to be used for applications."
+                    }
+                }
+            ]
+        }
+    }
+}

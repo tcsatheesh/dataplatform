@@ -1,0 +1,87 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "sku": {
+            "type": "string",
+            "defaultValue": "D1",
+            "allowedValues": [
+                "D1",
+                "B1",
+                "B2",
+                "S0",
+                "S1",
+                "S2",
+                "S4",
+                "S8",
+                "S9"
+            ]
+        },
+        "admin": {
+            "type": "string"
+        },
+        "backupBlobContainerUri": {
+            "type": "string"
+        },
+        "managedMode": {
+            "type": "int",
+            "defaultValue": 1
+        },
+        "startIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The start ip address for the firewall rules."
+            }
+        },
+        "endIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The end ip address for the firewall rules."
+            }
+        },
+        "firewallRuleName": {
+            "type": "string",
+            "metadata": {
+                "description": "firewall rule name"
+            }
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-08-01",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.AnalysisServices/servers",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "properties": {
+                "asAdministrators": {
+                    "members": [
+                        "[parameters('admin')]"
+                    ]
+                },
+                "backupBlobContainerUri": "[parameters('backupBlobContainerUri')]",
+                "managedMode": "[parameters('managedMode')]",
+                "ipV4FirewallSettings": {
+                    "firewallRules": [
+                        {
+                            "firewallRuleName": "[parameters('firewallRuleName')]",
+                            "rangeStart": "[parameters('startIpAddress')]",
+                            "rangeEnd": "[parameters('endIpAddress')]"
+                        }
+                    ],
+                    "enablePowerBIService": true
+                }
+            }
+        }
+    ]
+}

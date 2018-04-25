@@ -1,0 +1,46 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                { 
+                    "type": "sharedStorage",
+                    "resourceType": "storageaccounts",
+                    "resourceGroupTypeRef": "sharedStorage",
+                    "name": "{0}nestgacc",
+                    "location": "North Europe",
+                    "templateFileName": "v2genstorage.json",
+                    "parameterFileName": "v2genstorage.parameters.json"
+                },
+                { 
+                    "type": "storage",
+                    "resourceType": "storageaccounts",
+                    "resourceGroupTypeRef": "storage",
+                    "name": "{0}{1}{2}nestgacc",
+                    "location": "North Europe",
+                    "templateFileName": "v2genstorage.json",
+                    "parameterFileName": "v2genstorage.parameters.json"
+                },
+                { 
+                    "type": "v1storage",
+                    "resourceType": "storageaccounts",
+                    "resourceGroupTypeRef": "storage",
+                    "name": "{0}{1}{2}nestgaccv1",
+                    "location": "North Europe",
+                    "templateFileName": "v1genstorage.json",
+                    "parameterFileName": "v1genstorage.parameters.json"
+                },
+                { 
+                    "type": "mlstorage",
+                    "resourceType": "storageaccounts",
+                    "resourceGroupTypeRef": "storage",
+                    "name": "{0}{1}{2}westgaccmlexp",
+                    "location": "West Europe",
+                    "templateFileName": "v2genstorage.json",
+                    "parameterFileName": "v2genstorage.parameters.json"
+                }
+            ]
+        }
+    }
+}

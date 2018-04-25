@@ -1,0 +1,151 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "hdinsight",
+                    "resourceType": "hdinsights",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}hdi01",
+                    "location": "North Europe",
+                    "templateFileName": "hdinsight.json",
+                    "parameterFileName": "hdinsight.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "clusterAdminLogin",
+                            "type": "value",
+                            "value": "clsadmin"
+                        },
+                        {
+                            "name": "clusterAdminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}hdi01-clsadmin-password"
+                            }
+                        },
+                        {
+                            "name": "clusterSSHUserName",
+                            "type": "value",
+                            "value": "sshuser"
+                        },
+                        {
+                            "name": "clusterSSHUserPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}hdi01-sshuser-password"
+                            }
+                        },
+                        {
+                            "name": "applicationId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "tenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "identityCertificate",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}-{1}-{2}-app-prn-certificate"
+                            }
+                        },
+                        {
+                            "name": "identityCertificatePassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}-{1}-{2}-app-prn-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "vNetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "vNetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "hdinsight"
+                        },
+                        {
+                            "name": "sqlServerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr01"
+                        },
+                        {
+                            "name": "databaseName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "sqldbs",
+                                "typeFilter": "appdb",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "externalMetaStoreUserName",
+                            "type": "value",
+                            "value": "sqladmin"
+                        },
+                        {
+                            "name": "externalMetaStorePassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr01-sqladmin-password"
+                            }
+                        },
+                        {
+                            "name": "dataLakeStoreName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adlstores",
+                                "typeFilter": "adlstore",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "dataLakeFolderPath",
+                            "type": "format",
+                            "value": "/cluster/{0}{1}{2}hdi01"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

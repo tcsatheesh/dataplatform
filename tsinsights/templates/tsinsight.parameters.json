@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "skuName": {
+            "value": "S1"
+        },
+        "skuTier": {
+            "value": "Standard"
+        },
+        "skuSize": {
+            "value": "1"
+        },
+        "skuCapacity": {
+            "value": "1"
+        },
+        "dataRetentionTime": {
+            "value": "P31D"
+        },
+        "principalObjectId": {
+            "value": ""
+        },
+        "iotHubName": {
+            "value": ""
+        },
+        "keyName": {
+            "value": "service"
+        },
+        "consumerGroupName": {
+            "value": ""
+        },
+        "timeStampFieldName": {
+            "value": ""
+        },
+        "iotHubResourceId": {
+            "value": ""
+        },
+        "iotHubSharedAccessKey": {
+            "value": ""
+        }
+    }
+}

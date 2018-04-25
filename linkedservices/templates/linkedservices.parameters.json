@@ -1,0 +1,271 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "keyvaults",
+                            "typeFilter": "appkeyvault",
+                            "property": "name"
+                        }
+                    },
+                    "type": "keyvault",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "keyvault.json",
+                    "parameters": [
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "storageaccounts",
+                            "typeFilter": "storage",
+                            "property": "name"
+                        }
+                    },
+                    "type": "storage",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "storage.json",
+                    "kevaultSecret": {
+                        "expiryTerm": 4,
+                        "updateSecret": "true",
+                        "startdate": "2018-04-22"
+                    },
+                    "parameters": [                        
+                        {
+                            "type": "connectionStringSecretName",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "storageconnectionstring",
+                                "subtypeFilter" : "storage",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        }
+                    ]
+                },                
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "adlstores",
+                            "typeFilter": "adlstore",
+                            "property": "name"
+                        }
+                    },
+                    "type": "adlstore",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "adlstore.json",
+                    "parameters": [
+                        {
+                            "type": "adlstoreResourceGroupName",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "storage",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "adlstore",
+                            "ref": {
+                                "resourceType": "adlstores",
+                                "typeFilter": "adlstore",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "tenant",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "subscriptionId",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "type": "applicationPrincipal",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "type": "servicePrincipal",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "secretName",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "application.passwordSecretName"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "adlas",
+                            "typeFilter": "adla",
+                            "property": "name"
+                        }
+                    },
+                    "type": "adla",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "adla.json",
+                    "parameters": [
+                        {
+                            "type": "adlaResourceGroupName",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "app",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "adlAccountName",
+                            "ref": {
+                                "resourceType": "adlas",
+                                "typeFilter": "adla",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "tenant",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "subscriptionId",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "type": "applicationPrincipal",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "type": "servicePrincipal",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "secretName",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "applicationPrincipal",
+                                "property": "application.passwordSecretName"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "sqldbs",
+                            "typeFilter": "appdb",
+                            "property": "name"
+                        }
+                    },
+                    "type": "sqldb",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "sql.json",
+                    "kevaultSecret": {
+                        "expiryTerm": 4,
+                        "updateSecret": "true",
+                        "startdate": "2018-04-22"
+                    },
+                    "parameters": [
+                        {
+                            "type": "connectionStringSecretName",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "sqldbconnectionstring",
+                                "subtypeFilter": "admin",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

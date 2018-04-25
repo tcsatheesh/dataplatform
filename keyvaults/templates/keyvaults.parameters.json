@@ -1,0 +1,99 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "appkeyvault",
+                    "resourceType": "keyvaults",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}nekvltacc",
+                    "location": "North Europe",
+                    "expiryTerm": 4,
+                    "templateFileName": "keyvault.json",
+                    "parameterFileName": "keyvault.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "tenant",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType" : "projects",
+                                "property": "id",
+                                "typeFilter": "tenant"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "objectId",
+                            "index": 0,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "property": "id",
+                                "typeFilter": "keyvaultadmins"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "tenantId",
+                            "index": 0,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "property": "id",
+                                "typeFilter": "tenant"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "objectId",
+                            "index": 1,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "property": "servicePrincipal.id",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "deploymentPrincipal"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "tenantId",
+                            "index": 1,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "property": "id",
+                                "typeFilter": "tenant"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "objectId",
+                            "index": 2,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "property": "servicePrincipal.id",
+                                "typeFilter": "principal",
+                                "subtypeFilter": "diskEncryptionPrincipal"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "tenantId",
+                            "index": 2,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "property": "id",
+                                "typeFilter": "tenant"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

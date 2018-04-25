@@ -1,0 +1,55 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "managers",
+                    "name": "{0}-{1}-{2}-managers",
+                    "id": "",
+                    "email": "{0}-{1}-{2}-managers@{3}"
+                },
+                {
+                    "type": "keyvaultadmins",
+                    "name": "{0}-{1}-{2}-keyvaultadmins",
+                    "id": "",
+                    "email": "{0}-{1}-{2}-keyvaultadmins@{3}"
+                },
+                {
+                    "type": "sqladmins",
+                    "name": "{0}-{1}-{2}-sqladmins",
+                    "id": "",
+                    "email": "{0}-{1}-{2}-sqladmins@{3}"
+                },
+                {
+                    "type": "developers",
+                    "name": "{0}-{1}-{2}-developers",
+                    "id": "",
+                    "email": "{0}-{1}-{2}-developers@{3}"
+                },
+                {
+                    "type": "testers",
+                    "name": "{0}-{1}-{2}-testers",
+                    "id": "",
+                    "email": "{0}-{1}-{2}-testers@{3}"
+                },
+                {
+                    "type": "endusers",
+                    "name": "{0}-{1}-{2}-endusers",
+                    "id": "",
+                    "email": "{0}-{1}-{2}-endusers@{3}"
+                },
+                {
+                    "type": "analysisadmin",
+                    "name": "Developers",
+                    "id": "",
+                    "email": "developers@rubycom.info"
+                }
+            ],
+            "metadata": {
+                "description": "The Azure AD groups used in this project."
+            }
+        }
+    }
+}

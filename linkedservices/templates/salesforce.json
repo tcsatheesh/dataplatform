@@ -1,0 +1,33 @@
+{
+    "name": "Salesforce",
+    "properties": {
+        "type": "Salesforce",
+        "typeProperties": {
+            "environmentUrl": "https://login.salesforce.com",
+            "username": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "SalesforceUsername",
+                "store":{
+                    "referenceName": "KeyVault",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            "password": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "SalesforcePassword",
+                "store":{
+                    "referenceName": "KeyVault",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            "securityToken": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "SalesforceSecurityToken",
+                "store":{
+                    "referenceName": "KeyVault",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        }
+    }
+}

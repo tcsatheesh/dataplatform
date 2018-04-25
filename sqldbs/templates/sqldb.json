@@ -1,0 +1,312 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the new database server to create. This must be complaint with the organisation naming standards."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the database server. This must be complaint with the organisation approved locations."
+            }
+        },
+        "administratorLogin": {
+            "type": "string",
+            "metadata": {
+                "description": "The account name to use for the database server administrator."
+            }
+        },
+        "administratorLoginPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password to use for the database server administrator."
+            }
+        },
+        "aadAdminGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The Azure active directory database server administrator."
+            }
+        },
+        "aadAdminGroupObjectId": {
+            "type": "string",
+            "metadata": {
+                "description": "The aadAdminGroupName azure object id."
+            }
+        },
+        "aadTenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "The AAD tenant id where the AAD admin exists."
+            }
+        },
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the new database to create."
+            }
+        },
+        "collation": {
+            "type": "string",
+            "defaultValue": "SQL_Latin1_General_CP1_CI_AS",
+            "metadata": {
+                "description": "The database collation for governing the proper use of characters."
+            }
+        },
+        "tier": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "metadata": {
+                "description": "The type of database to create. The available options are: Web, Business, Basic, Standard, and Premium."
+            }
+        },
+        "maxSizeBytes": {
+            "type": "int",
+            "defaultValue": 268435456000,
+            "metadata": {
+                "description": "The maximum size, in bytes, for the database"
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "S0",
+            "metadata": {
+                "description": "The name corresponding to the performance level for edition. The available options are: Shared, Basic, S0, S1, S2, S3, P1, P2, and P3."
+            }
+        },
+        "auditStorageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "The storage account for storing audit information."
+            }
+        },
+        "auditStorageAccountResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The storage account resource group for storing audit information."
+            }
+        },
+        "auditStorageAccountSubscriptionId": {
+            "type": "string",
+            "metadata": {
+                "description": "The subscription id for the storage account for storing audit information."
+            }
+        },
+        "eventTypesToAudit": {
+            "type": "string",
+            "defaultValue": "All",
+            "metadata": {
+                "description": "The event types to audit."
+            }
+        },
+        "emailAddress": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "The email address to send alerts on audit information."
+            }
+        },
+        "sqlVersion": {
+            "type": "string",
+            "defaultValue": "12.0",
+            "metadata": {
+                "description": "The version of the sql server."
+            }
+        },
+        "sqlServerApiVersion": {
+            "type": "string",
+            "defaultValue": "2014-04-01-preview",
+            "metadata": {
+                "description": "The api version to provision sql server."
+            }
+        },
+        "sqlDatabaseApiVersion": {
+            "type": "string",
+            "defaultValue": "2017-10-01-preview",
+            "metadata": {
+                "description": "The api version to provision sql database."
+            }
+        },
+        "tdeApiVersion": {
+            "type": "string",
+            "defaultValue": "2014-04-01",
+            "metadata": {
+                "description": "The api version to provision transparent data encryption in the sql database."
+            }
+        },
+        "sqlAuditPolicyApiVersion": {
+            "type": "string",
+            "defaultValue": "2015-05-01-preview",
+            "metadata": {
+                "description": "The api version to provision sql server auditing policies."
+            }
+        },
+        "sqlSecurityAlertPolicyApiVersion": {
+            "type": "string",
+            "defaultValue": "2015-05-01-preview",
+            "metadata": {
+                "description": "The api version to provision sql server secuirty alert policies."
+            }
+        },
+        "sqlFirewallRulesApiVersion": {
+            "type": "string",
+            "defaultValue": "2014-04-01-preview",
+            "metadata": {
+                "description": "The api version to provision sql server firewall rules."
+            }
+        },
+        "startIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The start ip address for the sql firewall rules."
+            }
+        },
+        "endIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The end ip address for the sql firewall rules."
+            }
+        },
+        "sampleName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "zoneRedundant": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "licenseType": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "storageAccountResourceId": "[concat('/subscriptions/',parameters('auditStorageAccountSubscriptionId'),'/resourceGroups/',parameters('auditStorageAccountResourceGroupName'),'/providers/','Microsoft.Storage/storageAccounts/', parameters('auditStorageAccountName'))]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('serverName')]",
+            "type": "Microsoft.Sql/servers",
+            "location": "[parameters('location')]",
+            "apiVersion": "[parameters('sqlServerApiVersion')]",
+            "properties": {
+                "administratorLogin": "[parameters('administratorLogin')]",
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "version": "[parameters('sqlVersion')]"
+            },
+            "resources": [
+                {
+                    "type": "firewallrules",
+                    "apiVersion": "[parameters('sqlFirewallRulesApiVersion')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+                    ],
+                    "location": "[parameters('location')]",
+                    "name": "AllowAllWindowsAzureIps",
+                    "properties": {
+                        "endIpAddress": "[parameters('endIpAddress')]",
+                        "startIpAddress": "[parameters('startIpAddress')]"
+                    }
+                },
+                {
+                    "type": "administrators",
+                    "name": "activeDirectory",
+                    "apiVersion": "2014-04-01-preview",
+                    "location": "[parameters('location')]",
+                    "properties": {
+                        "administratorType": "ActiveDirectory",                        
+                        "login" : "[parameters('aadAdminGroupName')]",
+                        "sid": "[parameters('aadAdminGroupObjectId')]",
+                        "tenantId": "[parameters('aadTenantId')]"
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]"
+                    ]
+                },
+                {
+                    "type": "auditingSettings",
+                    "apiVersion": "[parameters('sqlAuditPolicyApiVersion')]",
+                    "name": "Default",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
+                    ],
+                    "properties": {
+                        "State": "Enabled",
+                        "storageEndpoint": "[concat('https://', parameters('auditStorageAccountName'),'.blob.core.windows.net')]",
+                        "storageAccountAccessKey": "[listKeys(variables('storageAccountResourceId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]",
+                        "auditActionsAndGroups": [ "BATCH_COMPLETED_GROUP", "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP", "FAILED_DATABASE_AUTHENTICATION_GROUP" ],                                              
+                        "storageAccountSubscriptionId": "[parameters('auditStorageAccountSubscriptionId')]"
+                    }
+                },
+                {
+                    "type": "securityAlertPolicies",
+                    "apiVersion": "[parameters('sqlSecurityAlertPolicyApiVersion')]",
+                    "name": "Default",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/auditingSettings/Default')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
+                   ],
+                    "properties": {
+                        "state": "Enabled",
+                        "disabledAlerts": "",
+                        "emailAddresses": "[parameters('emailAddress')]",
+                        "emailAccountAdmins": "Enabled",
+                        "storageEndpoint": "[concat('https://',parameters('auditStorageAccountName'),'.blob.core.windows.net/')]",
+                        "storageAccountAccessKey": "[listKeys(variables('storageAccountResourceId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+                    }
+                },
+                {
+                    "name": "[parameters('resourcename')]",
+                    "type": "databases",
+                    "location": "[parameters('location')]",
+                    "apiVersion": "[parameters('sqlDatabaseApiVersion')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/auditingSettings/Default')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/securityAlertPolicies/Default')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
+                    ],
+                    "properties": {
+                        "collation": "[parameters('collation')]",
+                        "maxSizeBytes": "[parameters('maxSizeBytes')]",
+                        "sampleName": "[parameters('sampleName')]",
+                        "zoneRedundant": "[parameters('zoneRedundant')]",
+                        "licenseType": "[parameters('licenseType')]"
+                    },
+                    "sku": {
+                        "name": "[parameters('skuName')]",
+                        "tier": "[parameters('tier')]"
+                    },
+                    "resources":[
+                        {
+                            "name": "current",
+                            "type": "transparentDataEncryption",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]",
+                                "[resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('resourcename'))]"
+                            ],
+                            "location": null,
+                            "apiVersion": "[parameters('tdeApiVersion')]",
+                            "properties": {
+                                "status": "Enabled"
+                            }
+                        }
+                    ]
+                }                
+            ]
+        }
+    ]
+}
+
