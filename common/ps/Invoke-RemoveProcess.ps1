@@ -4,7 +4,10 @@ param(
     [scriptblock]$procToRun
 )
 
+
 $commonPSFolder = (Get-Item -Path $PSScriptRoot).FullName
+. "$commonPSFolder\Get-CommonFunctions.ps1"
+
 & "$commonPSFolder\Set-Subscription.ps1" `
     -projectsParameterFile $projectsParameterFile
 

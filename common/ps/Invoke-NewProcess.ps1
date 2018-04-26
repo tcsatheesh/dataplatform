@@ -5,18 +5,6 @@ param(
     [scriptblock]$procToRun
 )
 
-function Get-FormatedText {
-    param(
-        [string]$strFormat
-    )
-
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $name = & "$commonPSFolder\Get-FormatedText.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -strFormat $strFormat
-    return $name
-}
-
 function Get-ResourceGroupName {
     param(
         [string]$resourceGroupTypeRef
@@ -33,6 +21,8 @@ function Get-ResourceGroupName {
 }
 
 $commonPSFolder = (Get-Item -Path $PSScriptRoot).FullName
+. "$commonPSFolder\Get-CommonFunctions.ps1"
+
 $parameters = & "$commonPSFolder\Get-TemplateParameters.ps1" `
     -resourceType $resourceType -parameterFileName $parameterFileName 
 

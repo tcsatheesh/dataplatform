@@ -37,40 +37,6 @@ function Copy-TemplateFile {
     Copy-Item -Path $sourcePath -Destination $destinationPath -Force
 }
 
-function Get-ValueFromResource {
-    param(
-        [string]$resourceType,
-        [string]$property,
-        [string]$typeFilter,
-        [string]$subtypeFilter
-    )
-    
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $itemPath = "$projectFolder\$resourceType.parameters.json"
-    $parameters = Get-Content -Path $itemPath -Raw | ConvertFrom-Json
-    
-    if ([String]::IsNullOrEmpty($subtypeFilter)) {
-        $item = $parameters.parameters.resources.value | Where-Object {$_.type -eq $typeFilter}
-    }
-    else {
-        $item = $parameters.parameters.resources.value | `
-            Where-Object {$_.type -eq $typeFilter -and $_.subtype -eq $subtypeFilter}
-    }
-    
-    if ($item -eq $null ) {
-        throw "1. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
-    }
-    $props = $property.Split(".")
-    foreach ($prop in $props) {
-        $item = $item.$prop
-    }
-    $val = $item
-    if ($item -eq $null ) {
-        throw "2. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
-    }
-    return $val 
-}
-
 function Get-KeyVaultId {
     param (
         [object]$resourceType,

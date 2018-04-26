@@ -78,8 +78,18 @@ function Remove-Resource {
 function Remove-AllResources {
     $resources = $parameters.parameters.resources.value
     foreach ($resource in $resources) {
-        Write-Verbose "Resource name: $($resource.name)"
-        Remove-Resource -resource $resource
+        $enabled = $resource.enabled
+        if ($enabled -ne $null) {
+            $enabled = [System.Convert]::ToBoolean($resource.enabled)   
+        }else{
+            $enabled = $true
+        }
+        if ( $enabled ) {
+            Write-Verbose "Removing resource: $($resource.name)"
+            Remove-Resource -resource $resource
+        }else {
+            Write-Verbose "Skipping removing resource: $($resource.name)"
+        }
     }
 }
 

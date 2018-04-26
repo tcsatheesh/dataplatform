@@ -42,6 +42,15 @@
         },
         "emailAddress": {
             "value": ""
+        },
+        "startIpAddress": {
+            "value": ""
+        },
+        "endIpAddress": {
+            "value": ""
+        },
+        "firewallRuleName": {
+            "value": ""
         }
     }
 }

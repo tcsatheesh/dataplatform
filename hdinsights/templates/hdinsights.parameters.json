@@ -104,14 +104,14 @@
                         {
                             "name": "sqlServerName",
                             "type": "format",
-                            "value": "{0}{1}{2}sqlsvr01"
+                            "value": "{0}{1}{2}sqlsvr02"
                         },
                         {
                             "name": "databaseName",
                             "type": "reference",
                             "ref": {
                                 "resourceType": "sqldbs",
-                                "typeFilter": "appdb",
+                                "typeFilter": "metastore",
                                 "property": "name"
                             }
                         },
@@ -126,7 +126,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "{0}{1}{2}sqlsvr01-sqladmin-password"
+                                "secretName": "{0}{1}{2}sqlsvr02-sqladmin-password"
                             }
                         },
                         {

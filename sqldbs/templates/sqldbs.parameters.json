@@ -5,13 +5,14 @@
         "resources": {
             "value": [
                 {
-                    "type" : "appdb",                    
+                    "type" : "appdb",        
+                    "enabled": false,            
                     "resourceType": "sqldbs",
                     "resourceGroupTypeRef": "data",
                     "name" : "{0}{1}{2}sqldb01",
                     "location": "North Europe",
                     "templateFileName": "sqldb.json",
-                    "parameterFileName": "appdb.parameters.json",                
+                    "parameterFileName": "sqldb.parameters.json",                
                     "parameters": [
                         {
                             "name": "serverName",
@@ -85,7 +86,121 @@
                                 "typeFilter": "sharedStorage",
                                 "property" : "name"
                             }
+                        },
+                        {
+                            "name": "startIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "endIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "firewallRuleName",
+                            "type": "value",
+                            "value": "for_deployment_only"
                         }                                                
+                    ]
+                },
+                {
+                    "type" : "metastore",                    
+                    "resourceType": "sqldbs",
+                    "resourceGroupTypeRef": "data",
+                    "name" : "{0}{1}{2}sqldb02",
+                    "location": "North Europe",
+                    "templateFileName": "sqldb.json",
+                    "parameterFileName": "sqldb.parameters.json",                
+                    "parameters": [
+                        {
+                            "name": "serverName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr02"
+                        },
+                        {
+                            "name": "administratorLogin",
+                            "type": "value",
+                            "value": "sqladmin"
+                        },
+                        {
+                            "name": "administratorLoginPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}sqlsvr02-sqladmin-password"
+                            }
+                        },
+                        {
+                            "name": "aadAdminGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "managers",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "aadAdminGroupObjectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "managers",
+                                "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "aadTenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "auditStorageAccountSubscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "auditStorageAccountResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "sharedStorage",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "auditStorageAccountName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "sharedStorage",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "startIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "endIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "firewallRuleName",
+                            "type": "value",
+                            "value": "for_deployment_only"
+                        }
                     ]
                 }
             ]

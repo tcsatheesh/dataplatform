@@ -1,0 +1,145 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "sqluser",
+                    "resourceType": "sqlusers",
+                    "enabled": false,
+                    "name": "sqluser",
+                    "parameters": [
+                        {
+                            "name": "sqlServerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr01"
+                        },
+                        {
+                            "name": "databaseName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "sqldbs",
+                                "typeFilter": "appdb",
+                                "property": "name"
+                            }                        
+                        },
+                        {
+                            "name": "password",
+                            "type": "keyvaultsecret",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr01-sqluser-password"
+                            }                        
+                        },
+                        {
+                            "name": "sqladmin",
+                            "type": "value",
+                            "value": "sqladmin"                        
+                        },
+                        {
+                            "name": "sqladmin-password",
+                            "type": "keyvaultsecret",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr01-sqladmin-password"
+                            }                        
+                        }                        
+                    ]
+                },
+                {
+                    "type": "sqluser",
+                    "resourceType": "sqlusers",
+                    "enabled": false,
+                    "name": "sqluser",
+                    "parameters": [
+                        {
+                            "name": "sqlServerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr02"
+                        },
+                        {
+                            "name": "databaseName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "sqldbs",
+                                "typeFilter": "metastore",
+                                "property": "name"
+                            }                        
+                        },
+                        {
+                            "name": "password",
+                            "type": "keyvaultsecret",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr02-sqluser-password"
+                            }                        
+                        },
+                        {
+                            "name": "sqladmin",
+                            "type": "value",
+                            "value": "sqladmin"                        
+                        },
+                        {
+                            "name": "sqladmin-password",
+                            "type": "keyvaultsecret",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr02-sqladmin-password"
+                            }                        
+                        }
+                    ]
+                },
+                {
+                    "type": "sqluser",
+                    "resourceType": "sqlusers",
+                    "enabled": true,
+                    "name": "sqluser",
+                    "parameters": [
+                        {
+                            "name": "sqlServerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr03"
+                        },
+                        {
+                            "name": "databaseName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "sqldws",
+                                "typeFilter": "appdw",
+                                "property": "name"
+                            }                        
+                        },
+                        {
+                            "name": "password",
+                            "type": "keyvaultsecret",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr03-sqluser-password"
+                            }                        
+                        },
+                        {
+                            "name": "sqladmin",
+                            "type": "value",
+                            "value": "sqladmin"                        
+                        },
+                        {
+                            "name": "sqladmin-password",
+                            "type": "keyvaultsecret",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}sqlsvr03-sqladmin-password"
+                            }                        
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

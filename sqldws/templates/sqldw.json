@@ -158,6 +158,9 @@
             "metadata": {
                 "description": "The end ip address for the sql firewall rules."
             }
+        },
+        "firewallRuleName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -184,6 +187,20 @@
                     "location": "[parameters('location')]",
                     "name": "AllowAllWindowsAzureIps",
                     "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                },
+                {
+                    "type": "firewallrules",
+                    "apiVersion": "[parameters('sqlFirewallRulesApiVersion')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]"
+                    ],
+                    "location": "[parameters('location')]",
+                    "name": "[parameters('firewallRuleName')]",
+                    "properties": {
                         "endIpAddress": "[parameters('endIpAddress')]",
                         "startIpAddress": "[parameters('startIpAddress')]"
                     }
@@ -201,7 +218,7 @@
                     },
                     "dependsOn": [
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
-                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]"
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/',parameters('firewallRuleName'))]"
                     ]
                 },
                 {
@@ -210,7 +227,7 @@
                     "name": "Default",
                     "dependsOn": [
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
-                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/',parameters('firewallRuleName'))]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
                     ],
                     "properties": {
@@ -227,7 +244,7 @@
                     "name": "Default",
                     "dependsOn": [
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
-                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/',parameters('firewallRuleName'))]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/auditingSettings/Default')]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
                    ],
@@ -247,7 +264,7 @@
                     "apiVersion": "[parameters('sqlDatabaseApiVersion')]",
                     "dependsOn": [
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
-                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/AllowAllWindowsAzureIps')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/',parameters('firewallRuleName'))]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/auditingSettings/Default')]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/securityAlertPolicies/Default')]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"

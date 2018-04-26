@@ -11,12 +11,12 @@
                     "name" : "{0}{1}{2}sqldw01",
                     "location": "North Europe",
                     "templateFileName": "sqldw.json",
-                    "parameterFileName": "appdw.parameters.json",                
+                    "parameterFileName": "sqldw.parameters.json",                
                     "parameters": [                        
                         {
                             "name": "serverName",
                             "type": "format",
-                            "value": "{0}{1}{2}sqlsvr01"
+                            "value": "{0}{1}{2}sqlsvr03"
                         },
                         {
                             "name": "administratorLogin",
@@ -29,7 +29,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName" : "{0}{1}{2}sqlsvr01-sqladmin-password"
+                                "secretName" : "{0}{1}{2}sqlsvr03-sqladmin-password"
                             }
                         },
                         {
@@ -85,7 +85,22 @@
                                 "typeFilter": "sharedStorage",
                                 "property" : "name"
                             }
-                        }                                                
+                        },
+                        {
+                            "name": "startIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "endIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "firewallRuleName",
+                            "type": "value",
+                            "value": "for_deployment_only"
+                        }                                            
                     ]
                 }
             ]

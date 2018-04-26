@@ -5,7 +5,7 @@ param
 )
 
 function Remove-ChildResources {
-    Write-Verbose "Pre-removing resource $($resource.name)"
+    Write-Verbose "Post-removing resource $($resource.name)"
     $param = $resource.parameters | Where-Object {$_.name -eq "serverName" }
     $serverName = $param.value
     Write-Verbose "Server name is $serverName"
