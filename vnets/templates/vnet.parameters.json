@@ -24,6 +24,12 @@
         "subnetPrefix2": {
             "value": ""
         },
+        "subnetName3": {
+            "value": ""
+        },
+        "subnetPrefix3": {
+            "value": ""
+        },
         "enableDdosProtection": {
             "value": false
         }

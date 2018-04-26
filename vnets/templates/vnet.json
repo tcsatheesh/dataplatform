@@ -22,6 +22,12 @@
         },
         "subnetPrefix2" : {
             "type": "string"
+        },
+        "subnetName3" : {
+            "type": "string"
+        },
+        "subnetPrefix3" : {
+            "type": "string"
         },        
         "enableDdosProtection": {
             "type": "bool"
@@ -50,6 +56,12 @@
                         "name": "[parameters('subnetName2')]",
                         "properties": {
                             "addressPrefix": "[parameters('subnetPrefix2')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('subnetName3')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetPrefix3')]"
                         }
                     }
                 ],

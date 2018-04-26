@@ -37,6 +37,16 @@
                             "name": "subnetPrefix2",
                             "type": "value",
                             "value":"10.0.2.0/24"
+                        },
+                        {
+                            "name": "subnetName3",
+                            "type": "value",
+                            "value":"GatewaySubnet"
+                        },
+                        {
+                            "name": "subnetPrefix3",
+                            "type": "value",
+                            "value":"10.0.0.0/24"
                         }
                     ]
                 }
