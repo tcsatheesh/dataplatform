@@ -10,11 +10,12 @@ function New-PrincipalParameters {
     )
     $principals = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal"}
     foreach ($principal in $principals) {
-        Write-Verbose "Processing principal $($principal.application.name)"
         $principal.application.name = Get-FormatedText -strFormat $principal.application.name
+        Write-Verbose "Processing principal $($principal.application.name)"
         $principal.application.uri = Get-FormatedText -strFormat $principal.application.uri
-        if ($principal.application.clientCertificateName -ne $null) {
-            $principal.application.clientCertificateName = Get-FormatedText -strFormat $principal.application.clientCertificateName
+        if (-not [string]::IsNullOrEmpty($principal.application.replyUrl)) {
+            $principal.application.replyUrl = Get-FormatedText -strFormat $principal.application.replyUrl
+            $principal.application.homepage = Get-FormatedText -strFormat $principal.application.homepage    
         }
         $principal.servicePrincipal.name = Get-FormatedText -strFormat $principal.servicePrincipal.name
 

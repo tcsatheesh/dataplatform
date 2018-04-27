@@ -8,27 +8,36 @@ function Set-Application {
     param
     (
         [string]$applicationName,
-        [string]$applicationUri
+        [string]$applicationUri,
+        [string]$replyUrl,
+        [string]$homepage
     ) 
 
     $application = Get-AzureRmADApplication -DisplayNameStartWith $applicationName -ErrorAction SilentlyContinue
-    if ($application -eq $null) {
-        Write-Verbose "Creating new Azure AD Application"
-        $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri
+    if ($application -eq $null) {        
+        if ([string]::IsNullOrEmpty($replyUrl) ) {
+            Write-Verbose "Creating new Azure AD Application $applicationName"
+            $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri
+        }
+        else {
+            Write-Verbose "Creating new Azure AD Application $applicationName with replyurl $replyUrl and homepage $homepage"            
+            $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri `
+                -ReplyUrls $replyUrl -HomePage $homepage
+        }
         Write-Verbose "Created new Azure AD Application"
     }
     else {
-        Write-Verbose "Azure AD Application exists"
+        Write-Verbose "Azure AD Application $applicationName exists"
     }
     $applicationId = $application.ApplicationId
     $servicePrincipal = Get-AzureRmADServicePrincipal -SearchString $applicationName  -ErrorAction SilentlyContinue
     if ($servicePrincipal -eq $null) {
         Write-Verbose "Creating new Azure AD Service Principal"
         $servicePrincipal = New-AzureRmADServicePrincipal -ApplicationId $applicationId
-        Write-Verbose "Created new Azure AD Service Principal"
+        Write-Verbose "Created new Azure AD Service Principal $applicationName"
     }
     else {
-        Write-Verbose "Azure AD Service Principal exists"
+        Write-Verbose "Azure AD Service Principal $applicationName exists"
     }
     $servicePrincipalId = $servicePrincipal.Id
 
@@ -40,9 +49,8 @@ function Set-Application {
         throw "Found too many ${objType}s with name $searchString in the Azure Active Directory. Provide the full name to narrow the search."
     }
 
-    Write-Verbose "Give this application Contributor rights to the resource groups."
-    Write-Verbose "Application Id: $applicationId"
-    Write-Verbose "ServicePrincipal Id: $servicePrincipalId"
+    Write-Verbose "Application $applicationName Id:  $applicationId"
+    Write-Verbose "ServicePrincipal $applicationName Id: $servicePrincipalId"
     $props = @{ 
         applicationId      = $applicationId
         servicePrincipalId = $servicePrincipalId
@@ -56,7 +64,9 @@ function Set-Principal {
     )
 
     $principalIds = Set-Application -applicationName $principal.application.name `
-        -applicationUri $principal.application.uri
+        -applicationUri $principal.application.uri `
+        -replyUrl $principal.application.replyUrl `
+        -homepage $principal.application.homepage
 
     $principal.application.clientId = $principalIds.applicationId
     $principal.servicePrincipal.name = $principal.application.name
