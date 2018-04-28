@@ -9,7 +9,7 @@
                     "resourceType": "databricks",
                     "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}db01",
-                    "location": "North Europe",
+                    "location": "northeurope",
                     "templateFileName": "databrick.json",
                     "parameterFileName": "databrick.parameters.json",
                     "parameters" : [
