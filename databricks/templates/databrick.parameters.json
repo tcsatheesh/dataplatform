@@ -3,25 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resourcename": {
-            "value": ""
-        },
-        "managedResourceGroupName" : {
-            "value": ""
-        },
-        "storageAccountName" : {
-            "value": ""
-        },
-        "storageAccountType" : {
-            "value": "Standard_LRS" 
-        },
-        "vnetAddressPrefix" : {
-            "value": ""
+          "value": ""
         },
         "location": {
+            "value" : ""
+        },
+        "pricingTier": {
             "value": ""
         },
-        "tier": {
-            "value": "premium"
+        "vnetAddressPrefix": {
+            "value": ""
         }
     }
 }

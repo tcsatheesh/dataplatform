@@ -8,29 +8,20 @@
                     "type" : "databrick", 
                     "resourceType": "databricks",
                     "resourceGroupTypeRef": "app",
-                    "name" : "{0}{1}{2}db01",
+                    "name" : "{0}{1}{2}dbs01",
                     "location": "northeurope",
                     "templateFileName": "databrick.json",
                     "parameterFileName": "databrick.parameters.json",
                     "parameters" : [
                         {
-                            "name": "managedResourceGroupName",
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "resourcegroups",
-                                "typeFilter": "databricks",
-                                "property" : "name"
-                            }                            
-                        },
-                        {
-                            "name": "storageAccountName",
-                            "type": "format",
-                            "value": "{0}{1}{2}dbstgacc"
-                        },
-                        {
                             "name": "vnetAddressPrefix",
                             "type": "value",
                             "value": "10.100"             
+                        },
+                        {
+                            "name": "pricingTier",
+                            "type": "value",
+                            "value": "premium"
                         }
                     ]
                 }

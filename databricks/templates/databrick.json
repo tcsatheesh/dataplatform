@@ -2,56 +2,59 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "location": {
-            "type": "string"
-        },
-        "resourcename": {
-            "type": "string"
-        },
-        "managedResourceGroupName": {
-            "type": "string"
-        },
-        "storageAccountName" : {
-            "type": "string"
-        },
-        "storageAccountType": {
-            "type": "string"
-        },
-        "vnetAddressPrefix": {
-            "type": "string"
-        },
-        "tier": {
-            "defaultValue": "premium",
-            "type": "string"
+      "resourcename": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the Azure Databricks workspace to create."
         }
+      },
+      "pricingTier": {
+        "type": "string",
+        "defaultValue": "premium",
+        "allowedValues": ["standard", "premium"],
+        "metadata": {
+          "description": "The pricing tier of workspace."
+        }
+      },
+      "vnetAddressPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The first 2 octets of the virtual network /16 address range (e.g., '10.139' for the address range 10.139.0.0/16)."
+        }
+      },
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "This parameter is not used in this template."
+        }
+      }
+    },
+    "variables": {
+      "managedResourceGroupName": "[concat('databricks-rg-', parameters('resourcename'), '-', uniqueString(parameters('resourcename'), resourceGroup().id))]"
     },
     "resources": [
-        {
-            "apiVersion": "2018-04-01",
-            "location": "[parameters('location')]",
-            "name": "[parameters('resourcename')]",
-            "sku": {
-                "name": "[parameters('tier')]"
-            },
-            "properties": {
-                "ManagedResourceGroupId": "[variables('managedResourceGroupId')]",
-                "parameters": {
-                    "storageAccountName": {
-                        "value": "[parameters('storageAccountName')]"
-                    },
-                    "storageAccountSkuName": {
-                        "value": "[parameters('storageAccountType')]"
-                    },
-                    "vnetAddressPrefix": {
-                        "value": "[parameters('vNetAddressPrefix')]"
-                    }
-                }
-            },
-            "type": "Microsoft.Databricks/workspaces"
+      {
+        "type": "Microsoft.Databricks/workspaces",
+        "name": "[parameters('resourcename')]",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2018-04-01",
+        "sku": {
+          "name": "[parameters('pricingTier')]"
+        },
+        "properties": {
+          "ManagedResourceGroupId": "[concat(subscription().id, '/resourceGroups/', variables('managedResourceGroupName'))]",
+          "parameters": {
+            "vnetAddressPrefix": {
+              "value": "[parameters('vnetAddressPrefix')]"
+            }
+          }
         }
+      }
     ],
-    "variables": {
-        "managedResourceGroupId": "[concat(subscription().id, '/resourceGroups/', parameters('managedResourceGroupName'))]",
-        "managedResourceGroupName": "[parameters('managedResourceGroupName')]"
+    "outputs": {
+      "workspace": {
+        "type": "object",
+        "value": "[reference(resourceId('Microsoft.Databricks/workspaces', parameters('resourcename')))]"
+      }
     }
-}
+  }
