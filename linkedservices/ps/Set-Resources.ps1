@@ -50,6 +50,9 @@ function Set-Resources {
     }
 }
 
+$commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
+. "$commonPSFolder\Get-CommonFunctions.ps1"
+
 $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
 $linkedServiceParametersFile = "$projectFolder\linkedservices\linkedservices.parameters.json"
 $parameters = Get-Content $linkedServiceParametersFile -Raw | ConvertFrom-Json

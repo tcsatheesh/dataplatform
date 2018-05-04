@@ -185,7 +185,7 @@ function New-Resources {
 }
 
 
-$commonPSFolder = (Get-Item -Path $PSScriptRoot).FullName
+$commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 . "$commonPSFolder\Get-CommonFunctions.ps1"
 
 $linkedServiceParametersFile = "$PSScriptRoot\..\templates\linkedservices.parameters.json"
