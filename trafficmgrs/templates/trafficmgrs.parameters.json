@@ -1,0 +1,31 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "trafficmgr",
+                    "resourceType": "trafficmgrs",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}tfmgr01",
+                    "location": "global",
+                    "templateFileName": "trafficmgr.json",
+                    "parameterFileName": "trafficmgr.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "relativeName",
+                            "type": "format",
+                            "value": "{0}{1}{2}tfmgr01"
+                        },
+                        {
+                            "name": "trafficRoutingMethod",
+                            "type": "value",
+                            "value": "Performance"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

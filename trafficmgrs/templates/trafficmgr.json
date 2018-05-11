@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "relativeName": {
+            "type": "string"
+        },
+        "trafficRoutingMethod": {
+            "type": "string",
+            "defaultValue": "Performance",
+            "allowedValues": [
+                "Performance",
+                "Weighted",
+                "Priority",
+                "Geographic"
+            ]
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "type": "Microsoft.Network/trafficmanagerprofiles",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "trafficRoutingMethod": "[parameters('trafficRoutingMethod')]",
+                "dnsConfig": {
+                    "relativeName": "[parameters('relativeName')]",
+                    "ttl": "300"
+                },
+                "monitorConfig": {
+                    "protocol": "http",
+                    "port": "80",
+                    "path": "/"
+                }
+            }
+        }
+    ]
+}

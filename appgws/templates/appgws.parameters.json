@@ -1,0 +1,85 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "appgw",
+                    "resourceType": "appgws",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}appgw01",
+                    "location": "North Europe",
+                    "templateFileName": "appgw.json",
+                    "parameterFileName": "appgw.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "vNetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "property": "name",
+                                "typeFilter": "vnet"
+                            }
+                        },
+                        {
+                            "name": "vNetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "property": "name",
+                                "typeFilter": "dplt"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "appgw"
+                        },
+                        {
+                            "name": "publicIpAddressName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "domainNameLabel",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "sslCertName",
+                            "type": "value",
+                            "value": "app.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate"
+                            }
+                        },
+                        {
+                            "name": "sslCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate-password"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

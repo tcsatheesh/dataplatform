@@ -30,8 +30,11 @@ function New-Resource {
         $account = $resource.parameters | Where-Object {$_.name -eq "account"}
         $val = $resource.name -f $sqlServerName, $account.value
     }
+    elseif ($resource.type -eq "certificate") { 
+        $val = $resource.name
+    }
     else {
-            Default {throw "resource type not defined"}
+            throw "resource type $($resource.type) not defined"
     }
     $resource.name = $val
 }

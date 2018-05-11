@@ -19,6 +19,22 @@
                             "value": "{0}{1}{2}pip01"                            
                         }
                     ]
+                },
+                {
+                    "type" : "appgw", 
+                    "resourceType": "pubips",
+                    "resourceGroupTypeRef": "vnets",
+                    "name" : "{0}{1}{2}appgwpip01",
+                    "location": "North Europe",
+                    "templateFileName": "pubip.json",
+                    "parameterFileName": "pubip.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "domainNameLabel",
+                            "type": "format",
+                            "value": "{0}{1}{2}appgw01"                            
+                        }
+                    ]
                 }
             ]
         }

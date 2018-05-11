@@ -65,6 +65,38 @@ function Set-Secret {
     elseif ($resource.type -eq "sqldbconnectionstring") {
         $secureSecretValue = Get-SqlConnectionString -resource $resource
     }
+    elseif ($resource.type -eq "certificate") {
+        $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
+        $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePasswordSecretName -ErrorAction SilentlyContinue
+        if ( $secret -eq $null) {
+            $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
+            $secret = & "$commonPSFolder\New-Password.ps1"
+            $secureSecretValue = $secret.securePassword
+            $secretExpiryTerm = $resource.expiryTerm
+            $secretExpiry = (Get-Date -Date $resource.startdate).AddYears($secretExpiryTerm)        
+            $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePasswordSecretName -SecretValue $secureSecretValue -Expires $secretExpiry
+            Write-Verbose "Secret $($resource.certificatePasswordSecretName) added to the key vault $keyVaultName"
+            $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePasswordSecretName -ErrorAction SilentlyContinue
+        }
+        else {
+            Write-Verbose "Secret $($resource.certificatePasswordSecretName) exists in the key vault $keyVaultName"
+        }
+        $certificatePassword = $secret.SecretValue
+        $certStoreLocation = "cert:\currentuser\My"
+        $cert = Get-ChildItem -Path $certStoreLocation -DnsName $resource.certificateName
+        if ($cert -eq $null) {
+            throw "certificate $($resource.name) is missing in the $cerStoreLocation"
+        }else {
+            Write-Verbose "certificate $($resource.name) is in the $cerStoreLocation"
+        }
+        $certFilePath = New-TemporaryFile
+        $exp = Export-PfxCertificate -Cert $cert -FilePath $certFilePath -Password $certificatePassword -Force
+        $certificatePFX = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certFilePath, $certificatePassword)
+        $credential = [System.Convert]::ToBase64String($certificatePFX.GetRawCertData())
+        $certificateValue = ConvertTo-SecureString -AsPlainText $credential -Force
+        $secureSecretValue = $certificateValue
+        $resource.certificateThumbprint = $cert.Thumbprint
+    }
     elseif ($resource.type -eq "value") {
         $secureSecretValue = ConvertTo-SecureString -AsPlainText $resource.secretValue -Force
     }

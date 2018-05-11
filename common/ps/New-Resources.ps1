@@ -189,6 +189,9 @@ function Set-AdditionalParameters {
                 $val = Get-IotHubProperty -iothubRef $resourceparam.ref `
                     -type $resourceparam.type
             }
+            elseif ($resourceparam.type -eq "subnet") {
+                Write-Verbose "This is handled else where."
+            }
             else {
                 throw "you are missing the resource type $($resourceparam.type)"
             }

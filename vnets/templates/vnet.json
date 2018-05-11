@@ -11,24 +11,9 @@
         "addressPrefix": {
             "type": "string"
         },
-        "subnetName1" : {
-            "type": "string"
+        "subnets" : {
+            "type": "array"
         },
-        "subnetPrefix1" : {
-            "type": "string"
-        },
-        "subnetName2" : {
-            "type": "string"
-        },
-        "subnetPrefix2" : {
-            "type": "string"
-        },
-        "subnetName3" : {
-            "type": "string"
-        },
-        "subnetPrefix3" : {
-            "type": "string"
-        },        
         "enableDdosProtection": {
             "type": "bool"
         }
@@ -45,26 +30,7 @@
                         "[parameters('addressPrefix')]"
                     ]
                 },
-                "subnets": [
-                    {
-                        "name": "[parameters('subnetName1')]",
-                        "properties": {
-                            "addressPrefix": "[parameters('subnetPrefix1')]"
-                        }
-                    },
-                    {
-                        "name": "[parameters('subnetName2')]",
-                        "properties": {
-                            "addressPrefix": "[parameters('subnetPrefix2')]"
-                        }
-                    },
-                    {
-                        "name": "[parameters('subnetName3')]",
-                        "properties": {
-                            "addressPrefix": "[parameters('subnetPrefix3')]"
-                        }
-                    }
-                ],
+                "subnets": "[parameters('subnets')]",
                 "enableDdosProtection": "[parameters('enableDdosProtection')]"
             }
         }

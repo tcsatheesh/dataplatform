@@ -19,34 +19,34 @@
                             "value": "10.0.0.0/22"
                         },
                         {
-                            "name": "subnetName1",
+                            "name": "subnets",
                             "type": "value",
-                            "value":"hdinsight"
-                        },
-                        {
-                            "name": "subnetPrefix1",
-                            "type": "value",
-                            "value":"10.0.1.0/24"
-                        },
-                        {
-                            "name": "subnetName2",
-                            "type": "value",
-                            "value":"dsvm"
-                        },
-                        {
-                            "name": "subnetPrefix2",
-                            "type": "value",
-                            "value":"10.0.2.0/24"
-                        },
-                        {
-                            "name": "subnetName3",
-                            "type": "value",
-                            "value":"GatewaySubnet"
-                        },
-                        {
-                            "name": "subnetPrefix3",
-                            "type": "value",
-                            "value":"10.0.0.0/24"
+                            "value": [
+                                {
+                                    "name": "hdinsight",
+                                    "properties": {
+                                        "addressPrefix": "10.0.1.0/24"
+                                    }
+                                },
+                                {
+                                    "name": "dsvm",
+                                    "properties": {
+                                        "addressPrefix": "10.0.2.0/24"
+                                    }
+                                },
+                                {
+                                    "name": "appgw",
+                                    "properties": {
+                                        "addressPrefix": "10.0.3.0/24"
+                                    }
+                                },
+                                {
+                                    "name": "GatewaySubnet",
+                                    "properties": {
+                                        "addressPrefix": "10.0.0.0/24"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }
