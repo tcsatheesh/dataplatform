@@ -108,6 +108,20 @@
                             "applicationPrincipal"
                         ]
                     }
+                },
+                {
+                    "type": "web",
+                    "name": "{0}-{1}-{2}-web-rg",
+                    "location": "North Europe",
+                    "contributors": {
+                        "adgroupsTypeRef": [
+                            "managers"
+                        ],
+                        "principalsTypeRef": [
+                            "deploymentPrincipal",
+                            "applicationPrincipal"
+                        ]
+                    }
                 }
             ],
             "metadata": {

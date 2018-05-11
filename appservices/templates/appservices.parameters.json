@@ -7,7 +7,7 @@
                 {
                     "type": "appservice",
                     "resourceType": "appservices",
-                    "resourceGroupTypeRef": "app",
+                    "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}app01",
                     "location": "North Europe",
                     "templateFileName": "appservice.json",
@@ -55,7 +55,45 @@
                                 "typeFilter": "subscription",
                                 "property": "id"
                             }
-                        }
+                        },
+                        {
+                            "name": "sslCertName",
+                            "type": "value",
+                            "value": "app.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertHostName",
+                            "type": "value",
+                            "value": "app.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate"
+                            }
+                        },
+                        {
+                            "name": "sslCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "sslCertThumbprint",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "certificate",
+                                "subtypeFilter": "webappcertificate",
+                                "property": "certificateThumbprint"
+                            }
+                        }                        
                     ]
                 }
             ]

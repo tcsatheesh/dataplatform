@@ -56,6 +56,20 @@
                 },
                 "secretName": ""
             }
+        },
+        "authCertData" :{
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "apphostname" : {
+            "value": ""
+        },
+        "apphostnamepath" : {
+            "value": ""
         }
     }
 }

@@ -29,9 +29,37 @@
         },
         "subscriptionId": {
             "type": "string"
+        },
+        "sslCertName": {
+            "type": "string"
+        },
+        "sslCertData": {
+            "type": "securestring"
+        },
+        "sslCertPassword": {
+            "type": "securestring"
+        },
+        "sslCertHostName": {
+            "type": "string"
+        },
+        "sslCertThumbprint": {
+            "type": "string"
         }
     },
     "resources": [
+        {
+            "type": "Microsoft.Web/certificates",
+            "name": "[parameters('sslCertName')]",
+            "apiVersion": "2016-03-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "hostNames": [
+                    "[parameters('sslCertHostName')]"
+                ],
+                "pfxBlob": "[parameters ('sslCertData')]",
+                "password": "[parameters ('sslCertPassword')]"
+            }
+        },
         {
             "name": "[parameters('resourcename')]",
             "type": "Microsoft.Web/sites",
@@ -50,7 +78,15 @@
                 },
                 "name": "[parameters('resourcename')]",
                 "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-                "hostingEnvironment": "[parameters('hostingEnvironment')]"
+                "hostingEnvironment": "[parameters('hostingEnvironment')]",
+                "hostNameSslStates": [
+                    {
+                        "name": "[parameters('sslCertHostName')]",
+                        "sslState": 1,
+                        "thumbprint": "[parameters('sslCertThumbprint')]",
+                        "toUpdate": 1
+                    }
+                ]
             },
             "apiVersion": "2016-03-01",
             "location": "[parameters('location')]",

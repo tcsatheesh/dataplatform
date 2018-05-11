@@ -59,6 +59,15 @@
         },
         "sslCertPassword": {
             "type": "securestring"
+        },
+        "authCertData" :{
+            "type": "string"
+        },
+        "apphostname" : {
+            "type": "string"
+        },
+        "apphostnamepath" : {
+            "type": "string"
         }
     },
     "variables": {
@@ -114,7 +123,11 @@
                     {
                         "name": "appGatewayBackendPool",
                         "properties": {
-                            "BackendAddresses": []
+                            "backendAddresses": [
+                                {
+                                    "fqdn": "[parameters('apphostname')]"
+                                }
+                            ]
                         }
                     }
                 ],
@@ -122,9 +135,18 @@
                     {
                         "name": "appGatewayBackendHttpSettings",
                         "properties": {
-                            "Port": 80,
-                            "Protocol": "Http",
-                            "CookieBasedAffinity": "Disabled"
+                            "Port": 443,
+                            "Protocol": "Https",
+                            "CookieBasedAffinity": "Disabled",
+                            "requestTimeout": 30,
+                            "probe": {
+                                "id": "[concat(variables('applicationGatewayID'), '/probes/customAppProbe')]"
+                            },
+                            "authenticationCertificates": [
+                                {
+                                    "id": "[concat(variables('applicationGatewayID'), '/authenticationCertificates/', parameters('sslCertName'))]"
+                                }
+                            ]
                         }
                     }
                 ],
@@ -147,7 +169,7 @@
                 ],
                 "requestRoutingRules": [
                     {
-                        "Name": "rule1",
+                        "Name": "appServiceRule",
                         "properties": {
                             "RuleType": "Basic",
                             "httpListener": {
@@ -162,12 +184,34 @@
                         }
                     }
                 ],
+                "probes": [
+                    {
+                        "name": "customAppProbe",
+                        "properties": {
+                            "protocol": "Https",
+                            "host": "[parameters('apphostname')]",
+                            "path": "[parameters('apphostnamepath')]",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": false
+                        }
+                    }
+                ],
                 "sslCertificates": [
                     {
                         "name": "[parameters('sslCertName')]",
                         "properties": {
                             "data": "[parameters('sslCertData')]",
                             "password": "[parameters('sslCertPassword')]"
+                        }
+                    }
+                ],
+                "authenticationCertificates": [
+                    {
+                        "name": "[parameters('sslCertName')]",
+                        "properties": {
+                            "data": "[parameters('authCertData')]"
                         }
                     }
                 ],

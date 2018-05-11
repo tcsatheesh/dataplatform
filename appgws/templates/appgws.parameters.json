@@ -51,7 +51,7 @@
                             "ref": {
                                 "resourceType": "pubips",
                                 "property": "name",
-                                "typeFilter": "appgw"
+                                "typeFilter": "appgw2"
                             }
                         },
                         {
@@ -76,7 +76,26 @@
                                 "typeFilter": "appkeyvault",
                                 "secretName": "app-rubycom-info-certificate-password"
                             }
-                        }
+                        },
+                        {
+                            "name": "authCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate-public"
+                            }
+                        },
+                        {
+                            "name": "apphostname",
+                            "type": "format",
+                            "value": "{0}{1}{2}app01.azurewebsites.net"
+                        },
+                        {
+                            "name": "apphostnamepath",
+                            "type": "value",
+                            "value": "/"
+                        }                    
                     ]
                 }
             ]
