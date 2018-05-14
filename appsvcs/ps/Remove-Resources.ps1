@@ -11,10 +11,12 @@ function Remove-AzResource {
     )
 
     $param = $resource.parameters | Where-Object {$_.name -eq $name }
-    $resourcename = $param.value
-    Write-Verbose "Resource name is $resourcename"
-    $resourceGroup = Get-ResourceGroup -resourceGroupTypeRef $resource.resourceGroupTypeRef
-    Remove-AzureResource -resourceGroup $resourceGroup -Name $resourcename
+    if ($param -ne $null) {
+        $resourcename = $param.value
+        Write-Verbose "Resource name is $resourcename"
+        $resourceGroup = Get-ResourceGroup -resourceGroupTypeRef $resource.resourceGroupTypeRef
+        Remove-AzureResource -resourceGroup $resourceGroup -Name $resourcename    
+    }
 }
 
 function Remove-ChildResources {
@@ -24,8 +26,8 @@ function Remove-ChildResources {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-
+$resourceType = (Get-Item -Path $PSScriptRoot).Parent.Name
 & "$commonPSFolder\Remove-Resources.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "appservices" `
+    -resourceType $resourceType `
     -postRemoveProcToRun {Remove-ChildResources}

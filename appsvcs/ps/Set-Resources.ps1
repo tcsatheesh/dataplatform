@@ -5,7 +5,8 @@ param
 )
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
+$resourceType = (Get-Item -Path $PSScriptRoot).Parent.Name
 
-& "$commonPSFolder\New-Resources.ps1" `
+& "$commonPSFolder\Set-Resources.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "appservices"
+    -resourceType $resourceType
