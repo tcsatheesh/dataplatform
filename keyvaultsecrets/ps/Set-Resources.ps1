@@ -89,13 +89,31 @@ function Set-Secret {
         }else {
             Write-Verbose "certificate $($resource.name) is in the $cerStoreLocation"
         }
+
+        $certFilePath = New-TemporaryFile
+        $exp = Export-Certificate -Cert $cert -FilePath $certFilePath -Type CERT -Force
+        $rawCert = [System.Convert]::ToBase64String((Get-Content $certFilePath -Encoding Byte))
+        $certificateValue = ConvertTo-SecureString -AsPlainText $rawCert -Force
+        $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePublicSecretName -ErrorAction SilentlyContinue
+        if ( $secret -eq $null) {
+            $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
+            $secretExpiryTerm = $resource.expiryTerm
+            $secretExpiry = (Get-Date -Date $resource.startdate).AddYears($secretExpiryTerm)        
+            $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePublicSecretName -SecretValue $certificateValue -Expires $secretExpiry
+            Write-Verbose "Secret $($resource.certificatePublicSecretName) added to the key vault $keyVaultName"
+            $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePublicSecretName -ErrorAction SilentlyContinue
+        }
+        else {
+            Write-Verbose "Secret $($resource.certificatePublicSecretName) exists in the key vault $keyVaultName"
+        }
+
+
         $certFilePath = New-TemporaryFile
         $exp = Export-PfxCertificate -Cert $cert -FilePath $certFilePath -Password $certificatePassword -Force
-        $certificatePFX = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certFilePath, $certificatePassword)
-        $credential = [System.Convert]::ToBase64String($certificatePFX.GetRawCertData())
-        $certificateValue = ConvertTo-SecureString -AsPlainText $credential -Force
+        $rawCert = [System.Convert]::ToBase64String((Get-Content $certFilePath -Encoding Byte))
+        $certificateValue = ConvertTo-SecureString -AsPlainText $rawCert -Force
         $secureSecretValue = $certificateValue
-        $resource.certificateThumbprint = $cert.Thumbprint
+        $resource.certificateThumbprint = $cert.Thumbprint 
     }
     elseif ($resource.type -eq "value") {
         $secureSecretValue = ConvertTo-SecureString -AsPlainText $resource.secretValue -Force
