@@ -68,6 +68,24 @@
         },
         "appHostNamePath" : {
             "type": "string"
+        },
+        "portalSSLCertName": {
+            "type": "string"
+        },
+        "portalSSLCertData": {
+            "type": "securestring"
+        },
+        "portalSSLCertPassword": {
+            "type": "securestring"
+        },
+        "portalAuthCertData" :{
+            "type": "string"
+        },
+        "portalHostName" : {
+            "type": "string"
+        },
+        "portalHostNamePath" : {
+            "type": "string"
         }
     },
     "variables": {
@@ -129,6 +147,16 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "portalGatewayBackendPool",
+                        "properties": {
+                            "backendAddresses": [
+                                {
+                                    "fqdn": "[parameters('portalHostName')]"
+                                }
+                            ]
+                        }
                     }
                 ],
                 "backendHttpSettingsCollection": [
@@ -148,6 +176,23 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "portalGatewayBackendHttpSettings",
+                        "properties": {
+                            "Port": 443,
+                            "Protocol": "Https",
+                            "CookieBasedAffinity": "Disabled",
+                            "requestTimeout": 30,
+                            "probe": {
+                                "id": "[concat(variables('applicationGatewayID'), '/probes/portalCustomAppProbe')]"
+                            },
+                            "authenticationCertificates": [
+                                {
+                                    "id": "[concat(variables('applicationGatewayID'), '/authenticationCertificates/', parameters('portalSSLCertName'))]"
+                                }
+                            ]
+                        }
                     }
                 ],
                 "httpListeners": [
@@ -161,8 +206,27 @@
                                 "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
                             },
                             "Protocol": "Https",
+                            "HostName": "[parameters('appSSLCertName')]",
+                            "RequireServerNameIndication": "true",
                             "SslCertificate": {
                                 "Id": "[concat(variables('applicationGatewayID'), '/sslCertificates/', parameters('appSSLCertName'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "portalGatewayHttpListener",
+                        "properties": {
+                            "FrontendIPConfiguration": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+                            },
+                            "FrontendPort": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
+                            },
+                            "Protocol": "Https",
+                            "HostName": "[parameters('portalSSLCertName')]",
+                            "RequireServerNameIndication": "true",
+                            "SslCertificate": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/sslCertificates/', parameters('portalSSLCertName'))]"
                             }
                         }
                     }
@@ -182,6 +246,21 @@
                                 "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/appGatewayBackendHttpSettings')]"
                             }
                         }
+                    },
+                    {
+                        "Name": "portalServiceRule",
+                        "properties": {
+                            "RuleType": "Basic",
+                            "httpListener": {
+                                "id": "[concat(variables('applicationGatewayID'), '/httpListeners/portalGatewayHttpListener')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/portalGatewayBackendPool')]"
+                            },
+                            "backendHttpSettings": {
+                                "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/portalGatewayBackendHttpSettings')]"
+                            }
+                        }
                     }
                 ],
                 "probes": [
@@ -196,6 +275,18 @@
                             "unhealthyThreshold": 3,
                             "pickHostNameFromBackendHttpSettings": false
                         }
+                    },
+                    {
+                        "name": "portalCustomAppProbe",
+                        "properties": {
+                            "protocol": "Https",
+                            "host": "[parameters('portalHostName')]",
+                            "path": "[parameters('portalHostNamePath')]",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": false
+                        }
                     }
                 ],
                 "sslCertificates": [
@@ -205,6 +296,13 @@
                             "data": "[parameters('appSSLCertData')]",
                             "password": "[parameters('appSSLCertPassword')]"
                         }
+                    },
+                    {
+                        "name": "[parameters('portalSSLCertName')]",
+                        "properties": {
+                            "data": "[parameters('portalSSLCertData')]",
+                            "password": "[parameters('portalSSLCertPassword')]"
+                        }
                     }
                 ],
                 "authenticationCertificates": [
@@ -212,6 +310,12 @@
                         "name": "[parameters('appSSLCertName')]",
                         "properties": {
                             "data": "[parameters('appAuthCertData')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('portalSSLCertName')]",
+                        "properties": {
+                            "data": "[parameters('portalAuthCertData')]"
                         }
                     }
                 ],

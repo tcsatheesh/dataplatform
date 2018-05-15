@@ -35,22 +35,6 @@
                             "value": "{0}{1}{2}appgw01"                            
                         }
                     ]
-                },
-                {
-                    "type" : "appgw2", 
-                    "resourceType": "pubips",
-                    "resourceGroupTypeRef": "vnet",
-                    "name" : "{0}{1}{2}appgwpip02",
-                    "location": "North Europe",
-                    "templateFileName": "pubip.json",
-                    "parameterFileName": "pubip.parameters.json",
-                    "parameters" : [
-                        {
-                            "name": "domainNameLabel",
-                            "type": "format",
-                            "value": "{0}{1}{2}appgw02"                            
-                        }
-                    ]
                 }
             ]
         }

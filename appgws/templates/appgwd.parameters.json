@@ -70,6 +70,39 @@
         },
         "appHostNamePath" : {
             "value": ""
+        },
+        "portalSSLCertName": {
+            "value": ""
+        },
+        "portalSSLCertData": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "portalSSLCertPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "portalAuthCertData" :{
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "portalHostName" : {
+            "value": ""
+        },
+        "portalHostNamePath" : {
+            "value": ""
         }
     }
 }

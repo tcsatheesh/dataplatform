@@ -6,6 +6,7 @@
             "value": [
                 {
                     "type": "appgw",
+                    "enabled": false,
                     "resourceType": "appgws",
                     "resourceGroupTypeRef": "vnet",
                     "name": "{0}{1}{2}appgw01",
@@ -51,16 +52,16 @@
                             "ref": {
                                 "resourceType": "pubips",
                                 "property": "name",
-                                "typeFilter": "appgw2"
+                                "typeFilter": "appgw"
                             }
                         },
                         {
-                            "name": "sslCertName",
+                            "name": "appSSLCertName",
                             "type": "value",
                             "value": "app.rubycom.info"
                         },
                         {
-                            "name": "sslCertData",
+                            "name": "appSSLCertData",
                             "type": "keyvault",
                             "ref": {
                                 "resourceType": "keyvaults",
@@ -69,7 +70,7 @@
                             }
                         },
                         {
-                            "name": "sslCertPassword",
+                            "name": "appSSLCertPassword",
                             "type": "keyvault",
                             "ref": {
                                 "resourceType": "keyvaults",
@@ -78,7 +79,7 @@
                             }
                         },
                         {
-                            "name": "authCertData",
+                            "name": "appAuthCertData",
                             "type": "keyvault",
                             "ref": {
                                 "resourceType": "keyvaults",
@@ -87,15 +88,152 @@
                             }
                         },
                         {
-                            "name": "apphostname",
+                            "name": "appHostName",
                             "type": "format",
                             "value": "{0}{1}{2}app01.azurewebsites.net"
                         },
                         {
-                            "name": "apphostnamepath",
+                            "name": "appHostNamePath",
                             "type": "value",
                             "value": "/"
                         }                    
+                    ]
+                },
+                {
+                    "type": "appgwd",
+                    "enabled": true,
+                    "resourceType": "appgws",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}appgw01",
+                    "location": "North Europe",
+                    "templateFileName": "appgwd.json",
+                    "parameterFileName": "appgwd.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "vNetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "property": "name",
+                                "typeFilter": "vnet"
+                            }
+                        },
+                        {
+                            "name": "vNetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "property": "name",
+                                "typeFilter": "dplt"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "appgw"
+                        },
+                        {
+                            "name": "publicIpAddressName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "domainNameLabel",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "appSSLCertName",
+                            "type": "value",
+                            "value": "app.rubycom.info"
+                        },
+                        {
+                            "name": "appSSLCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate"
+                            }
+                        },
+                        {
+                            "name": "appSSLCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "appAuthCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate-public"
+                            }
+                        },
+                        {
+                            "name": "appHostName",
+                            "type": "format",
+                            "value": "{0}{1}{2}api01.azurewebsites.net"
+                        },
+                        {
+                            "name": "appHostNamePath",
+                            "type": "value",
+                            "value": "/api/probe"
+                        },
+                        {
+                            "name": "portalSSLCertName",
+                            "type": "value",
+                            "value": "portal.rubycom.info"
+                        },
+                        {
+                            "name": "portalSSLCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "portal-rubycom-info-certificate"
+                            }
+                        },
+                        {
+                            "name": "portalSSLCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "portal-rubycom-info-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "portalAuthCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "portal-rubycom-info-certificate-public"
+                            }
+                        },
+                        {
+                            "name": "portalHostName",
+                            "type": "format",
+                            "value": "{0}{1}{2}ptl01.azurewebsites.net"
+                        },
+                        {
+                            "name": "portalHostNamePath",
+                            "type": "value",
+                            "value": "/"
+                        }                     
                     ]
                 }
             ]

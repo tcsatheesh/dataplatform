@@ -5,14 +5,14 @@
         "resources": {
             "value": [
                 {
-                    "type": "appsvcwin",
-                    "enabled": false,
+                    "type": "appsvcwinnossl",
+                    "enabled": true,
                     "resourceType": "appsvcs",
                     "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}app01",
                     "location": "North Europe",
-                    "templateFileName": "appsvcwin.json",
-                    "parameterFileName": "appsvcwin.parameters.json",
+                    "templateFileName": "appsvcwinnossl.json",
+                    "parameterFileName": "appsvcwinnossl.parameters.json",
                     "parameters": [
                         {
                             "name": "hostingPlanName",
@@ -116,7 +116,7 @@
                 },
                 {
                     "type": "portal",
-                    "enabled": true,
+                    "enabled": false,
                     "resourceType": "appsvcs",
                     "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}ptl01",
@@ -166,12 +166,50 @@
                                 "typeFilter": "subscription",
                                 "property": "id"
                             }
+                        },
+                        {
+                            "name": "sslCertName",
+                            "type": "value",
+                            "value": "portal.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "portal-rubycom-info-certificate"
+                            }
+                        },
+                        {
+                            "name": "sslCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "portal-rubycom-info-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "sslCertHostName",
+                            "type": "value",
+                            "value": "portal.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertThumbprint",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "certificate",
+                                "subtypeFilter": "portalappcertificate",
+                                "property": "certificateThumbprint"
+                            }
                         }
                     ]
                 },
                 {
                     "type": "api",
-                    "enabled": true,
+                    "enabled": false,
                     "resourceType": "appsvcs",
                     "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}api01",
@@ -220,6 +258,44 @@
                                 "resourceType": "projects",
                                 "typeFilter": "subscription",
                                 "property": "id"
+                            }
+                        },
+                        {
+                            "name": "sslCertName",
+                            "type": "value",
+                            "value": "app.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate"
+                            }
+                        },
+                        {
+                            "name": "sslCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "app-rubycom-info-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "sslCertHostName",
+                            "type": "value",
+                            "value": "app.rubycom.info"
+                        },
+                        {
+                            "name": "sslCertThumbprint",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "certificate",
+                                "subtypeFilter": "apiappcertificate",
+                                "property": "certificateThumbprint"
                             }
                         }
                     ]
