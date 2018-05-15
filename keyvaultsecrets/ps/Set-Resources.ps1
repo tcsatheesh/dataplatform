@@ -113,7 +113,7 @@ function Set-Secret {
         $rawCert = [System.Convert]::ToBase64String((Get-Content $certFilePath -Encoding Byte))
         $certificateValue = ConvertTo-SecureString -AsPlainText $rawCert -Force
         $secureSecretValue = $certificateValue
-        $resource.certificateThumbprint = $cert.Thumbprint 
+        $resource.certificateThumbprint = $cert.Thumbprint        
     }
     elseif ($resource.type -eq "value") {
         $secureSecretValue = ConvertTo-SecureString -AsPlainText $resource.secretValue -Force
