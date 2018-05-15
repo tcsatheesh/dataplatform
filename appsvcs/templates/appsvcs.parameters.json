@@ -61,7 +61,7 @@
                 },
                 {
                     "type": "appsvclin",
-                    "enabled": true,
+                    "enabled": false,
                     "resourceType": "appsvcs",
                     "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}app02",
@@ -93,6 +93,116 @@
                             "name": "linuxFxVersion",
                             "type": "value",
                             "value": "ruby|2.3"
+                        },
+                        {
+                            "name": "serverFarmResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "web",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "portal",
+                    "enabled": true,
+                    "resourceType": "appsvcs",
+                    "resourceGroupTypeRef": "web",
+                    "name": "{0}{1}{2}ptl01",
+                    "location": "North Europe",
+                    "templateFileName": "appsvcwin.json",
+                    "parameterFileName": "appsvcwin.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "hostingPlanName",
+                            "type": "format",
+                            "value": "{0}{1}{2}pln01"
+                        },
+                        {
+                            "name": "appinsightsname",
+                            "type": "format",
+                            "value": "{0}{1}{2}ain01"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "Standard"
+                        },
+                        {
+                            "name": "skuCode",
+                            "type": "value",
+                            "value": "S1"
+                        },
+                        {
+                            "name": "workerSize",
+                            "type": "value",
+                            "value": "0"
+                        },
+                        {
+                            "name": "serverFarmResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "web",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "api",
+                    "enabled": true,
+                    "resourceType": "appsvcs",
+                    "resourceGroupTypeRef": "web",
+                    "name": "{0}{1}{2}api01",
+                    "location": "North Europe",
+                    "templateFileName": "appsvcwin.json",
+                    "parameterFileName": "appsvcwin.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "hostingPlanName",
+                            "type": "format",
+                            "value": "{0}{1}{2}pln01"
+                        },
+                        {
+                            "name": "appinsightsname",
+                            "type": "format",
+                            "value": "{0}{1}{2}ain01"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "Standard"
+                        },
+                        {
+                            "name": "skuCode",
+                            "type": "value",
+                            "value": "S1"
+                        },
+                        {
+                            "name": "workerSize",
+                            "type": "value",
+                            "value": "0"
                         },
                         {
                             "name": "serverFarmResourceGroup",
