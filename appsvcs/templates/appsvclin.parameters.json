@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "linuxFxVersion": {
+            "value": ""
+        },
+        "hostingPlanName": {
+            "value": ""
+        },
+        "hostingEnvironment": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "sku": {
+            "value": ""
+        },
+        "workerSize": {
+            "value": ""
+        },
+        "serverFarmResourceGroup": {
+            "value": ""
+        },
+        "skuCode": {
+            "value": ""
+        },
+        "subscriptionId": {
+            "value": ""
+        }
+    }
+}
