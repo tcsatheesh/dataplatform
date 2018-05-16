@@ -13,6 +13,18 @@
         },
         "trafficRoutingMethod": {
             "value": ""
+        },
+        "endPointResourceGroupName": {
+            "value": ""
+        },
+        "endPointName" : {
+            "value": ""
+        },
+        "endPointFqdn" : {
+            "value": ""
+        },
+        "endPointLocation" : {
+            "value": ""
         }
     }
 }

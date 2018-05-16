@@ -20,6 +20,18 @@
                 "Priority",
                 "Geographic"
             ]
+        },
+        "endPointResourceGroupName": {
+            "type": "string"
+        },
+        "endPointName" : {
+            "type": "string"
+        },
+        "endPointFqdn" : {
+            "type": "string"
+        },
+        "endPointLocation" : {
+            "type": "string"
         }
     },
     "resources": [
@@ -35,10 +47,26 @@
                     "ttl": "300"
                 },
                 "monitorConfig": {
-                    "protocol": "http",
-                    "port": "80",
-                    "path": "/"
-                }
+                    "protocol": "HTTPS",
+                    "port": 443,
+                    "path": "/",
+                    "intervalInSeconds": 30,
+                    "toleratedNumberOfFailures": 3,
+                    "timeoutInSeconds": 10
+                },
+                "endpoints": [
+                  {
+                    "name": "[parameters('endPointName')]",
+                    "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+                    "properties": {
+                      "targetResourceId": "[resourceId(parameters('endPointResourceGroupName'),'Microsoft.Network/publicIPAddresses',  parameters('endPointName'))]",                      
+                      "target": "[parameters('endPointFqdn')]",
+                      "weight": 1,
+                      "priority": 1,
+                      "endpointLocation": "[parameters('endPointLocation')]"
+                    }
+                  }
+                ]
             }
         }
     ]

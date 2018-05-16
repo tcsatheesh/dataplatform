@@ -112,6 +112,21 @@ function Get-IotHubProperty {
     return $val
 }
 
+function Get-Fqdn {
+    param (
+        [object]$ref
+    )
+    $publicIPAddressName = Get-ValueFromResource -resourceType $ref.resourceType `
+        -property $ref.property -typeFilter $ref.typeFilter
+    $pip = Get-AzureRmPublicIpAddress | Where-Object {$_.name -eq $publicIPAddressName}
+    if ($pip -eq $null) {
+        throw "Public IP Address $publicIPAddressName not found"
+    }else {
+        $val = $pip1.DnsSettings.Fqdn
+    }
+    return $val
+}
+
 function Get-KeyEncryptionKeyUrl {
     param (
         [string]$resourceType,
@@ -191,6 +206,9 @@ function Set-AdditionalParameters {
             }
             elseif ($resourceparam.type -eq "subnet") {
                 Write-Verbose "This is handled else where."
+            }
+            elseif ($resourceparam.type -eq "fqdn") {
+                $val = Get-Fqdn -ref $resourceparam.ref
             }
             else {
                 throw "you are missing the resource type $($resourceparam.type)"

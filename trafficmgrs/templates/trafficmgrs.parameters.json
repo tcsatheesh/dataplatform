@@ -22,6 +22,42 @@
                             "name": "trafficRoutingMethod",
                             "type": "value",
                             "value": "Performance"
+                        },
+                        {
+                            "name": "endPointResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "property": "name",
+                                "typeFilter": "vnet"
+                            }
+                        },
+                        {
+                            "name": "endPointName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",                                
+                                "typeFilter": "appgw",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "endPointLocation",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",                                
+                                "typeFilter": "appgw",
+                                "property": "location"
+                            }
+                        },
+                        {
+                            "name": "endPointFqdn",
+                            "type": "fqdn",
+                            "ref": {
+                                "resourceType": "pubips",                                
+                                "typeFilter": "appgw",
+                                "property": "name"
+                            }
                         }
                     ]
                 }
