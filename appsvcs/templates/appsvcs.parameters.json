@@ -6,7 +6,7 @@
             "value": [
                 {
                     "type": "appsvcwinnossl",
-                    "enabled": true,
+                    "enabled": false,
                     "resourceType": "appsvcs",
                     "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}app01",
@@ -61,7 +61,7 @@
                 },
                 {
                     "type": "appsvclin",
-                    "enabled": false,
+                    "enabled": true,
                     "resourceType": "appsvcs",
                     "resourceGroupTypeRef": "web",
                     "name": "{0}{1}{2}app02",

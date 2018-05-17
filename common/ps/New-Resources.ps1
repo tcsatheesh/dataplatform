@@ -55,7 +55,7 @@ function Get-KeyVaultId {
     Write-Verbose "Resource group name is $resourceGroupName"
     $keyVault = Get-AzureRmKeyVault -ResourceGroupName $resourceGroupName -Name $keyVaultName 
     if ($keyVault -eq $null) {
-        throw "keyvault not found is not for $typeFilter "
+        throw "keyvault $keyVaultName not found in resource group $resourceGroupName for resource type $resourceType and typefilter $typeFilter and secretname $secretName "
     }
     return $keyVault.ResourceId
 }
