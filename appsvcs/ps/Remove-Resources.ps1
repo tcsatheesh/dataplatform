@@ -23,6 +23,7 @@ function Remove-ChildResources {
     Write-Verbose "Post-removing resource $($resource.name)"
     Remove-AzResource -resource $resource -name "appinsightsname"
     Remove-AzResource -resource $resource -name "hostingPlanName"
+    Remove-AzResource -resource $resource -name "sslCertName"
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
