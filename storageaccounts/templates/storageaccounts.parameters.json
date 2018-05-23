@@ -6,6 +6,7 @@
             "value": [
                 { 
                     "type": "sharedStorage",
+                    "enabled": false,
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "sharedStorage",
                     "name": "{0}nestgacc",
@@ -15,6 +16,7 @@
                 },
                 { 
                     "type": "storage",
+                    "enabled": false,
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "storage",
                     "name": "{0}{1}{2}nestgacc",
@@ -24,6 +26,7 @@
                 },
                 { 
                     "type": "v1storage",
+                    "enabled": false,
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "storage",
                     "name": "{0}{1}{2}nestgaccv1",
@@ -33,10 +36,21 @@
                 },
                 { 
                     "type": "mlstorage",
+                    "enabled": false,
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "storage",
                     "name": "{0}{1}{2}westgaccmlexp",
                     "location": "West Europe",
+                    "templateFileName": "v2genstorage.json",
+                    "parameterFileName": "v2genstorage.parameters.json"
+                },
+                { 
+                    "type": "usstorage",
+                    "enabled": true,
+                    "resourceType": "storageaccounts",
+                    "resourceGroupTypeRef": "storage",
+                    "name": "{0}{1}{2}eus2stgacc",
+                    "location": "East US 2",
                     "templateFileName": "v2genstorage.json",
                     "parameterFileName": "v2genstorage.parameters.json"
                 }
