@@ -87,18 +87,7 @@
                         "adlsowners",
                         "adlsfolders",
                         "adlas",
-                        "adfs",
-                        "sqldbs",
-                        "sqldws",
-                        "cosmosdbs",
-                        "analysis",
-                        "databricks",
-                        "mlstudios",
-                        "mlexps",
-                        "iothubs",
-                        "iotdevices",
-                        "tsinsights",
-                        "vnets"
+                        "adfs"
                     ]
                 }
             ]

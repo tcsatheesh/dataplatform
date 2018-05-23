@@ -10,20 +10,14 @@ function Get-ADGroupObjectId {
         [string]$adGroupType
     )
     $parameterFileName = "adgroups.parameters.json"
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $adGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $adGroupType}
     return $adGroup.id
 }
 
 function Get-CurrentUserUpn {
     $parameterFileName = "projects.parameters.json"
-    $commonPSFolder = "$PSScriptRoot\..\..\common\ps"
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
 
     $subscriptionId = ($parameters.parameters.resources.value | Where-Object {$_.type -eq "subscription"}).id
     $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId
@@ -70,7 +64,7 @@ function Remove-Resources {
     }
 }
 
-$parameterFileName = "adgroupmembers.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `

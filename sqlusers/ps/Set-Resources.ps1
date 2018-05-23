@@ -101,13 +101,11 @@ function Set-Resources {
     }
 }
 
-$resourceType = (Get-Item -path $PSScriptRoot).Parent.Name
-
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "$resourceType.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 
 & "$commonPSFolder\Invoke-SetProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType $resourceType `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName $parameterFileName `
     -procToRun {Set-Resources}

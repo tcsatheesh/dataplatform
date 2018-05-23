@@ -134,6 +134,6 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $parameterFileName = "projects.parameters.json"
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "starthere" `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName $parameterFileName `
     -procToRun {New-ProjectParameters}

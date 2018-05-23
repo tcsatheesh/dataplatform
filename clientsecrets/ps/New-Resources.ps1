@@ -17,10 +17,9 @@ function New-ClientSecretParameters {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "clientsecrets.parameters.json"
 
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "clientsecrets" `
-    -parameterFileName $parameterFileName `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
+    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
     -procToRun {New-ClientSecretParameters}

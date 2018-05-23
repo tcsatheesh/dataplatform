@@ -18,5 +18,5 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 
 & "$commonPSFolder\Remove-Resources.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "sqldbs" `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -postRemoveProcToRun {Remove-ChildResources}

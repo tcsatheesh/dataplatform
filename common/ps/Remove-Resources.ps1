@@ -10,11 +10,8 @@ function Get-ResourceGroup {
     param(
         [string]$resourceGroupTypeRef
     )
-    $groupParameterFileName = "resourcegroups.parameters.json"
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName    
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $groupParameterFileName
+    $parameterFileName = "resourcegroups.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
     Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
     return $resourceGroup
@@ -95,9 +92,8 @@ function Remove-AllResources {
 
 Write-Verbose "Script Block $preRemoveProcToRun"
 
-$parameterFileName = "$resourceType.parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
+    -parameterFileName "$resourceType.parameters.json" `
     -procToRun {Remove-AllResources}

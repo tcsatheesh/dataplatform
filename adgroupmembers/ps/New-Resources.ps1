@@ -8,10 +8,9 @@ function New-Resources {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "adgroupmembers.parameters.json"
 
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "adgroupmembers" `
-    -parameterFileName $parameterFileName `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
+    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
     -procToRun {New-Resources}

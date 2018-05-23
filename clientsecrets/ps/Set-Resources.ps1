@@ -100,8 +100,7 @@ function Set-Principal {
     Write-Verbose "Processing $($principal.application.name)"
  
     Write-Verbose "Secret for $($principal.application.name) does not exist in the keyvault. Creating new..."
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $secret = & "$commonPSFolder\New-Password.ps1"
+    $secret = New-Password
     $secretValue = $secret.securePassword
     
     $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyvault.type
@@ -177,9 +176,8 @@ function Get-Principal {
     param (
         [string]$principalref
     )
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
     $parameterFileName = "principals.parameters.json"
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal" -and $_.subtype -eq $principalref}
     Write-Verbose "Got principal $($resource.application.name) for principalref $principalref"
     return $resource
@@ -204,18 +202,6 @@ function Set-SecretValueInKeyVault {
     }
 }
 
-function Get-KeyVaultName {
-    param (
-        [string]$keyVaultType
-    )
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameterFileName = "keyvaults.parameters.json"
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $keyVaultType}
-    $keyVaultName = $resource.name
-    return $keyVaultName
-}
-
 function Set-ClientSecrets {
     $resources = $parameters.parameters.resources.value 
     foreach ($resource in $resources) {
@@ -225,7 +211,7 @@ function Set-ClientSecrets {
     }    
 }
 
-$parameterFileName = "clientsecrets.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `

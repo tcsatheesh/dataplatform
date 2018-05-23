@@ -36,12 +36,9 @@ function Set-RoleAssignment {
 function Get-ProjectParameters {
     param (
         [string]$parameterFileName
-    )
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $applicationsParameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
-    return $applicationsParameters
+    )    
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    return $parameters
 }
 
 function Get-ApplicationParameters {
@@ -96,7 +93,7 @@ function Set-Groups {
     }
 }
 
-$parameterFileName = "resourcegroups.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `

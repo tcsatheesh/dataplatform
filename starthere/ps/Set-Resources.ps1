@@ -15,8 +15,8 @@ function Set-Resource {
     $psFolder = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\ps").FullName
     $newScript = ( Get-Item -Path "$psFolder\New-Resources.ps1").FullName
     $setScript = ( Get-Item -Path "$psFolder\Set-Resources.ps1").FullName
-    Write-Verbose "Creating new resource parameter for $resource"
-    Write-Verbose "New script is $newScript"
+    Write-Verbose "Creating new resource parameter for $resourceType"
+    # Write-Verbose "New script is $newScript"
     & $newScript -projectsParameterFile $projectsParameterFile 
     & $setScript -projectsParameterFile $projectsParameterFile    
 }

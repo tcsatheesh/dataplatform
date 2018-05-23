@@ -8,4 +8,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 
 & "$commonPSFolder\Set-Resources.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "keyvaults"
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name

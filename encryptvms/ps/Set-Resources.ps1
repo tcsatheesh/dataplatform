@@ -4,21 +4,6 @@ param
     [String]$projectsParameterFile
 )
 
-function Get-ResourceGroupName {
-    param(
-        [string]$resourceGroupTypeRef
-    )
-
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $groupParameterFileName = "resourcegroups.parameters.json"
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $groupParameterFileName
-    $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
-    Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
-    return $resourceGroup.name
-}
-
 function Set-Resource {
     param (
         [object]$resource
@@ -67,7 +52,7 @@ function Set-Resources {
     }
 }
 
-$parameterFileName = "encryptvms.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `

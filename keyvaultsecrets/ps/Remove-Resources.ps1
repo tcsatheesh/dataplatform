@@ -4,18 +4,6 @@ param
     [String]$projectsParameterFile
 )
 
-function Get-KeyVaultName {
-    param (
-        [string]$keyVaultType
-    )
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameterFileName = "keyvaults.parameters.json"
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $keyVaultType}
-    $keyVaultName = $resource.name
-    return $keyVaultName
-}
-
 function Remove-Resource {
     param (
         [string]$keyVaultName,
@@ -41,7 +29,7 @@ function Remove-AllSecrets {
     }
 }
 
-$parameterFileName = "keyvaultsecrets.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `

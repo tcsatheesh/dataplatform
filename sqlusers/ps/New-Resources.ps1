@@ -28,13 +28,10 @@ function New-Resources {
     }
 }
 
-$resourceType = (Get-Item -path $PSScriptRoot).Parent.Name
-
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "$resourceType.parameters.json"
 
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType $resourceType `
-    -parameterFileName $parameterFileName `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
+    -parameterFileName $((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json `
     -procToRun {New-Resources}

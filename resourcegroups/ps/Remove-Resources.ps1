@@ -18,7 +18,7 @@ function Remove-AllResourceGroups {
     }
 }
 
-$parameterFileName = "resourcegroups.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `

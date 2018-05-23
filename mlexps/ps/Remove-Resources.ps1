@@ -21,5 +21,5 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 
 & "$commonPSFolder\Remove-Resources.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "mlexps" `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -preRemoveProcToRun {Remove-NestedResources} 

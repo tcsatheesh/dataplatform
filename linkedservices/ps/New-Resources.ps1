@@ -195,6 +195,6 @@ New-Resources -parameters $parameters
 $parameterFileName = (Get-Item -Path $linkedServiceParametersFile).Name
 
 Store-ParametersToFile `
- -resourceName "linkedservices" `
+ -resourceName (Get-Item -Path $PSScriptRoot).Parent.Name `
  -parameters $parameters `
  -parameterFileName $parameterFileName

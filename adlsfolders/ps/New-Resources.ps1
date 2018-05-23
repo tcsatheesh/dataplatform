@@ -9,10 +9,7 @@ function Get-Principal {
         [string]$subtype
     )
     $parameterFileName = "principals.parameters.json"
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $resource = $parameters.parameters.resources.value | Where-Object {$_.subtype -eq $subtype}
     return $resource.servicePrincipal
 }
@@ -21,10 +18,7 @@ function Get-ADGroup {
         [string]$type
     )
     $parameterFileName = "adgroups.parameters.json"
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}  
     return $resource 
 }
@@ -32,7 +26,6 @@ function Get-ADGroup {
 function New-Resources {
     $folderParameters = $parameters.parameters.resources.value
 
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName 
     $folderParameters.adlStoreName = Get-FormatedText $folderParameters.adlStoreName
 
     foreach ($folder in $folderParameters.folders) {
@@ -60,10 +53,9 @@ function New-Resources {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "adlsfolders.parameters.json"
 
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "adlsfolders" `
-    -parameterFileName $parameterFileName `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
+    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
     -procToRun {New-Resources}

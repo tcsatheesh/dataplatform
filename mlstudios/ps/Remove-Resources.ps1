@@ -8,4 +8,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 
 & "$commonPSFolder\Remove-Resources.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -resourceType "mlstudios"
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name

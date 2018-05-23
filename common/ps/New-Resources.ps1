@@ -185,7 +185,7 @@ function Set-AdditionalParameters {
             }
             elseif ($resourceparam.type -eq "ipaddress") {
                 $commonPSFolder = "$PSScriptRoot\..\..\common\ps"
-                $val = & "$commonPSFolder\Get-IPAddress.ps1"                    
+                $val = Get-CurrentIPAddress                   
             }
             elseif ($resourceparam.type -eq "value") {
                 $val = $resourceparam.value
@@ -229,8 +229,7 @@ function New-ParameterFile {
     param(
         [object]$resource
     )    
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $resourceParameters = & "$commonPSFolder\Get-TemplateParameters.ps1" `
+    $resourceParameters = Get-TemplateParameters `
         -resourceType $resource.ResourceType `
         -parameterFileName $resource.parameterFileName
     
@@ -256,10 +255,9 @@ function New-Parameters {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "$resourceType.parameters.json"
 
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
     -resourceType $resourceType `
-    -parameterFileName $parameterFileName `
+    -parameterFileName "$resourceType.parameters.json" `
     -procToRun {New-Parameters}

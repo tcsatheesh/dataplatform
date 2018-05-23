@@ -37,18 +37,6 @@ function Get-SqlConnectionString {
     return $secretValue    
 }
 
-function Get-KeyVaultName {
-    param (
-        [string]$keyVaultType
-    )
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameterFileName = "keyvaults.parameters.json"
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $keyVaultType}
-    $keyVaultName = $resource.name
-    return $keyVaultName
-}
-
 function Set-Secret {
     param (
         [object]$resource
@@ -58,8 +46,7 @@ function Set-Secret {
         $secureSecretValue = Get-StorageConnectionString -resource $resource
     }
     elseif ($resource.type -eq "login") {
-        $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-        $secret = & "$commonPSFolder\New-Password.ps1"
+        $secret = New-Password
         $secureSecretValue = $secret.securePassword
     }
     elseif ($resource.type -eq "sqldbconnectionstring") {
@@ -69,8 +56,7 @@ function Set-Secret {
         $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
         $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePasswordSecretName -ErrorAction SilentlyContinue
         if ( $secret -eq $null) {
-            $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-            $secret = & "$commonPSFolder\New-Password.ps1"
+            $secret = New-Password
             $secureSecretValue = $secret.securePassword
             $secretExpiryTerm = $resource.expiryTerm
             $secretExpiry = (Get-Date -Date $resource.startdate).AddYears($secretExpiryTerm)        
@@ -96,7 +82,6 @@ function Set-Secret {
         $certificateValue = ConvertTo-SecureString -AsPlainText $rawCert -Force
         $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePublicSecretName -ErrorAction SilentlyContinue
         if ( $secret -eq $null) {
-            $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
             $secretExpiryTerm = $resource.expiryTerm
             $secretExpiry = (Get-Date -Date $resource.startdate).AddYears($secretExpiryTerm)        
             $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $resource.certificatePublicSecretName -SecretValue $certificateValue -Expires $secretExpiry

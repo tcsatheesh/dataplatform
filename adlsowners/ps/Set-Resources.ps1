@@ -10,10 +10,7 @@ function Get-ADLStoreName {
     )
 
     $parameterFileName = "adlstores.parameters.json"
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $adlstore = $parameters.parameters.resources.value | Where-Object {$_.type -eq $adlstoreType}
     return $adlstore.name
 }
@@ -23,10 +20,7 @@ function Get-ADGroupObjectId {
         [string]$adGroupType
     )
     $parameterFileName = "adgroups.parameters.json"
-    $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-    $parameters = & "$commonPSFolder\Get-ResourceParameters.ps1" `
-        -projectsParameterFile $projectsParameterFile `
-        -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     $adGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $adGroupType}
     return $adGroup.id
 }
@@ -41,7 +35,7 @@ function Set-Resources {
     }
 }
 
-$parameterFileName = "adlsowners.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
