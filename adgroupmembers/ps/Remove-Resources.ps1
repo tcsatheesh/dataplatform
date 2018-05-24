@@ -33,7 +33,7 @@ function Remove-Resource {
     )
     $user = Get-AzureADUser -SearchString $userPrincipalName
     $membershipStatus = Get-AzureADGroupMember `
-        -ObjectId $groupObjectId | Where {$_.UserPrincipalName -eq $userPrincipalName}
+        -ObjectId $groupObjectId | Where-Object {$_.UserPrincipalName -eq $userPrincipalName}
     if ($membershipStatus -ne $null) {
         if ($user -ne $null) {
             Write-Verbose "Removing Azure AD Group Member"
