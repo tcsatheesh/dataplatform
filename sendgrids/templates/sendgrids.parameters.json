@@ -1,0 +1,31 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "customeremail",        
+                    "enabled": true,            
+                    "resourceType": "sendgrids",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}sgrd01",
+                    "location": "North Europe",
+                    "templateFileName": "sendgrid.json",
+                    "parameterFileName": "sendgrid.parameters.json",                
+                    "parameters": [
+                        {
+                            "name": "password",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}sgrd01-sendgrid-password"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

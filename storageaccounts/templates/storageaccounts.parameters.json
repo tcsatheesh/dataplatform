@@ -6,7 +6,7 @@
             "value": [
                 { 
                     "type": "sharedStorage",
-                    "enabled": false,
+                    "enabled": true,
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "sharedStorage",
                     "name": "{0}nestgacc",
@@ -46,7 +46,7 @@
                 },
                 { 
                     "type": "usstorage",
-                    "enabled": true,
+                    "enabled": false,
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "storage",
                     "name": "{0}{1}{2}eus2stgacc",
