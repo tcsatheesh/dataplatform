@@ -16,6 +16,12 @@
         },
         "planName": {
             "value": ""
+        },
+        "skuName": {
+            "value": ""
+        },
+        "skuTier": {
+            "value": ""
         }
     }
 }

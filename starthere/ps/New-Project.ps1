@@ -50,7 +50,8 @@ function Get-SubscriptionDetails {
         Write-Host "Select the Azure Subscription to use"
         for ($index = 1; $index -le $subCount ; $index++) {
             $name = $subscription[$index - 1].Name
-            Write-Host "$index : $name"
+            $subscriptionId = $subscription[$index - 1].SubscriptionId
+            Write-Host "$index : $name - $subscriptionId"
         }
         do {
             $selectedItem = Read-Host "Select Azure Subscription" 

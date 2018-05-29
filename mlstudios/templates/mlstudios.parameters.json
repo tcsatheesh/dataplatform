@@ -35,6 +35,16 @@
                             "name": "planName",
                             "type": "format",
                             "value": "{0}{1}{2}mlspln01"                            
+                        },
+                        {
+                            "name": "skuName",
+                            "type": "value",
+                            "value": "DevTest"
+                        },
+                        {
+                            "name": "skuTier",
+                            "type": "value",
+                            "value": "Standard"
                         }
                     ]
                 }
