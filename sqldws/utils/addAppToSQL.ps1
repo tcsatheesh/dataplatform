@@ -75,7 +75,7 @@ function Get-ParameterValue {
                 -property $parameter.ref.name
         }
     }
-    else if ($parameter.type -eq "value"){
+    elseif ($parameter.type -eq "value"){
         $val = $parameter.value
     }
     return $val

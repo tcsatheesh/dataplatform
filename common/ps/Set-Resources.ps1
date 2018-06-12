@@ -35,12 +35,6 @@ function Set-Resource {
 
 function Set-Resources {
     foreach ($resource in $parameters.parameters.resources.value) {
-        $enabled = $resource.enabled
-        if ($enabled -ne $null) {            
-            $enabled = [System.Convert]::ToBoolean($resource.enabled)   
-        }else{
-            $enabled = $true
-        }
         if ( $enabled ) {
             Write-Verbose "Deploying resource: $($resource.name)"
             Set-Resource -resource $resource

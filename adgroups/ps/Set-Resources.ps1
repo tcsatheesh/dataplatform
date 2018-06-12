@@ -14,7 +14,7 @@ function Get-CreateADGroupsStatus {
     return $createNew
 }
 
-function Set-Resource {
+function Set-Group {
     param(
         [string]$groupName,
         [bool]$createNew
@@ -39,19 +39,16 @@ function Set-Resource {
     return $groupId
 }
 
-function Set-Resources {
-    $adgroups = $parameters.parameters.resources.value
+function Set-Resource {
+    param (
+        [object]$resource
+    )
     $createNew = Get-CreateADGroupsStatus
-    foreach ($adgroup in $adgroups) {        
-        $adgroup.id = Set-Resource -groupName $adgroup.name -createNew $createNew
-    }
+    $resource.id = Set-Group -groupName $resource.name -createNew $createNew
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Resources}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
 
 

@@ -4,7 +4,10 @@ param
     [String]$projectsParameterFile,
     
     [Parameter(Mandatory = $True, HelpMessage = 'The type of resource.')]
-    [String]$resourceType
+    [String]$resourceType,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
 function Store-ParametersToFile { 
@@ -184,8 +187,9 @@ function Set-AdditionalParameters {
                 -keyName $keyName
             }
             elseif ($resourceparam.type -eq "ipaddress") {
-                $commonPSFolder = "$PSScriptRoot\..\..\common\ps"
-                $val = Get-CurrentIPAddress                   
+                $commonPSFolder = "$PSScriptRoot\..\..\common\ps"                
+                $val = Get-CurrentIPAddress
+                $resourceparam.value = $val
             }
             elseif ($resourceparam.type -eq "value") {
                 $val = $resourceparam.value
@@ -245,13 +249,13 @@ function New-ParameterFile {
     return $resourceParameterFileName   
 }
 
-function New-Parameters {
-    $resources = $parameters.parameters.resources.value
-    foreach ($resource in $resources) {
-        $resource.Name = Get-FormatedText($resource.name)    
-        $resource.parameterFileName = New-ParameterFile -resource $resource
-        Copy-TemplateFile -resourceName $resource.resourceType -templateFileName $resource.templateFileName
-    }
+function New-Resource {
+    param(
+        [object]$resource
+    )
+    $resource.Name = Get-FormatedText($resource.name)    
+    $resource.parameterFileName = New-ParameterFile -resource $resource
+    Copy-TemplateFile -resourceName $resource.resourceType -templateFileName $resource.templateFileName
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
@@ -260,4 +264,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
     -projectsParameterFile $projectsParameterFile `
     -resourceType $resourceType `
     -parameterFileName "$resourceType.parameters.json" `
-    -procToRun {New-Parameters}
+    -runas $runas

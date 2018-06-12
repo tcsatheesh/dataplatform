@@ -1,7 +1,10 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
 function New-Resource {
@@ -12,17 +15,10 @@ function New-Resource {
     $resource.name = Get-FormatedText -strFormat $resource.name
 }
 
-function New-Resources {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        Write-Verbose "Processing resource $($resource.name)"
-        New-Resource $resource
-    }
-}
-
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
     -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-Resources}
+    -runas $runas

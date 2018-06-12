@@ -1,19 +1,16 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
-function New-ClientSecretParameter {
+function New-Resource {
     param(
         [object]$resource
     )
-}
-
-function New-ClientSecretParameters {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        New-ClientSecretParameter -resource $resource
-    }
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
@@ -22,4 +19,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
     -projectsParameterFile $projectsParameterFile `
     -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-ClientSecretParameters}
+    -runas $runas

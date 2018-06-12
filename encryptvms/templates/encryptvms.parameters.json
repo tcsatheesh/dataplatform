@@ -18,8 +18,7 @@
                             "type": "reference",
                             "ref" : {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "diskEncryptionPrincipal",
+                                "typeFilter": "diskEncryptionPrincipal",
                                 "property": "application.clientId"
                             }
                         },

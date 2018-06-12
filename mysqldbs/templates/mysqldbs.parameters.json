@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type" : "appdb",        
-                    "enabled": true,            
                     "resourceType": "mysqldbs",
                     "resourceGroupTypeRef": "data",
                     "name" : "{0}{1}{2}mysqlsvr01",

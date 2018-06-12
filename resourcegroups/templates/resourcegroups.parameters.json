@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type": "sharedStorage",
-                    "enabled": true,
                     "name": "{0}-shd-stg-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -21,7 +20,6 @@
                 },
                 {
                     "type": "storage",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-stg-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -36,7 +34,6 @@
                 },
                 {
                     "type": "data",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-data-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -51,7 +48,6 @@
                 },
                 {
                     "type": "app",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-app-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -73,7 +69,6 @@
                 },
                 {
                     "type": "databricks",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-db-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -88,7 +83,6 @@
                 },
                 {
                     "type": "vnet",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-vnet-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -103,7 +97,6 @@
                 },
                 {
                     "type": "vms",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-vms-rg",
                     "location": "North Europe",
                     "contributors": {
@@ -118,7 +111,6 @@
                 },
                 {
                     "type": "web",
-                    "enabled": false,
                     "name": "{0}-{1}-{2}-web-rg",
                     "location": "North Europe",
                     "contributors": {

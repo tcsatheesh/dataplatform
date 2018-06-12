@@ -78,7 +78,7 @@ function Get-SubscriptionDetails {
     return $props
 }
 
-function New-ProjectParameter {
+function New-Resource2 {
     param (
         [object]$parameters,
         [string]$type,
@@ -90,21 +90,6 @@ function New-ProjectParameter {
     if (-not ([string]::IsNullOrEmpty($id))) {
         $resource.id = $id
     }
-}
-
-function New-ProjectParameters {
-    New-ProjectParameter -parameters $parameters -type "department" -name $department
-    New-ProjectParameter -parameters $parameters -type "projectName" -name $projectName
-    New-ProjectParameter -parameters $parameters -type "environment" -name $environment 
-
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq "createADGroups"}
-    $resource.status = $createADGroups
-
-    $subdetails = Get-SubscriptionDetails 
-    New-ProjectParameter -parameters $parameters -type "tenant" -name $tenant -id $subdetails.tenantId
-    New-ProjectParameter -parameters $parameters -type "subscription" -name $subdetails.subscriptionName -id $subdetails.subscriptionId
-
-    Update-OutputFile -parameters $parameters
 }
 
 function Get-OutputFile {
@@ -130,11 +115,22 @@ function Update-OutputFile {
     return $projectParameterFullPath    
 }
 
-$projectsParameterFile = Get-OutputFile
-$commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$parameterFileName = "projects.parameters.json"
-& "$commonPSFolder\Invoke-NewProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
-    -parameterFileName $parameterFileName `
-    -procToRun {New-ProjectParameters}
+function New-Resources2 {
+    param (
+        [object]$parameters
+    )
+    New-Resource2 -parameters $parameters -type "department" -name $department
+    New-Resource2 -parameters $parameters -type "projectName" -name $projectName
+    New-Resource2 -parameters $parameters -type "environment" -name $environment 
+
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq "createADGroups"}
+    $resource.status = $createADGroups
+
+    $subdetails = Get-SubscriptionDetails 
+    New-Resource2 -parameters $parameters -type "tenant" -name $tenant -id $subdetails.tenantId
+    New-Resource2 -parameters $parameters -type "subscription" -name $subdetails.subscriptionName -id $subdetails.subscriptionId    
+}
+
+$parameters = Get-Content -Path (Get-Item -Path "$PSScriptRoot\..\templates\projects.parameters.json").FullName -Raw | ConvertFrom-JSON
+New-Resources2 -parameters $parameters
+Update-OutputFile -parameters $parameters

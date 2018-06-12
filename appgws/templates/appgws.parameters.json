@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type": "appgw",
-                    "enabled": false,
                     "resourceType": "appgws",
                     "resourceGroupTypeRef": "vnet",
                     "name": "{0}{1}{2}appgw01",
@@ -101,7 +100,6 @@
                 },
                 {
                     "type": "appgwd",
-                    "enabled": true,
                     "resourceType": "appgws",
                     "resourceGroupTypeRef": "vnet",
                     "name": "{0}{1}{2}appgw01",

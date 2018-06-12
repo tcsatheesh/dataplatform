@@ -1,16 +1,19 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
 function Get-Principal {
     param (
-        [string]$subtype
+        [string]$type
     )
     $parameterFileName = "principals.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.subtype -eq $subtype}
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
     return $resource.servicePrincipal
 }
 function Get-ADGroup {
@@ -23,12 +26,13 @@ function Get-ADGroup {
     return $resource 
 }
 
-function New-Resources {
-    $folderParameters = $parameters.parameters.resources.value
+function New-Resource {    
+    param(
+        [object]$resource
+    )
+    $resource.adlStoreName = Get-FormatedText $resource.adlStoreName
 
-    $folderParameters.adlStoreName = Get-FormatedText $folderParameters.adlStoreName
-
-    foreach ($folder in $folderParameters.folders) {
+    foreach ($folder in $resource.folders) {
         $folderName = $folder.folderName
         Write-Verbose "Processing $folderName"
         foreach ($permission in $folder.permissions) {
@@ -36,7 +40,7 @@ function New-Resources {
             $aadType = $permission.AADType
             Write-Verbose "Permission in $folderName for $aadName"
             if ($aadType -eq "SPN") {
-                $resource = Get-Principal -subtype $aadName
+                $resource = Get-Principal -type $aadName
                 $aadName = $resource.name
                 $objectid = $resource.id
             } 
@@ -58,4 +62,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
     -projectsParameterFile $projectsParameterFile `
     -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-Resources}
+    -runas $runas

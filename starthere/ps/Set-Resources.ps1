@@ -4,33 +4,41 @@ param
     [String]$projectsParameterFile,
 
     [Parameter(Mandatory = $True, HelpMessage = 'The user type to runas.')]
-    [ValidateSet ("user-administrator", "subscription-owner", "keyvault-administrator", "manager", "vsts", "developer")]
+    [ValidateSet (  "user-administrator",
+                    "subscription-owner", 
+                    "keyvault-administrator", 
+                    "manager", 
+                    "vsts",
+                    "definition"
+                )]
     [String]$runas
 )
 
-function Set-Resource {
+function Set-Resource2 {
     param (
         [object]$resourceType
     )
     $psFolder = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\ps").FullName
+
     $newScript = ( Get-Item -Path "$psFolder\New-Resources.ps1").FullName
+    Write-Verbose "************** Creating new resourceType $resourceType *************"
+    & $newScript -projectsParameterFile $projectsParameterFile -runas $runas
+
     $setScript = ( Get-Item -Path "$psFolder\Set-Resources.ps1").FullName
-    Write-Verbose "Creating new resource parameter for $resourceType"
-    # Write-Verbose "New script is $newScript"
-    & $newScript -projectsParameterFile $projectsParameterFile 
+    Write-Verbose "************** Setting resourceType $resourceType *******************"
     & $setScript -projectsParameterFile $projectsParameterFile    
 }
 
-function Set-Deploy {
+function Set-Resources2 {
+    param (
+        [object]$parameters
+    )
     $deploy = $parameters.parameters.resources.value | Where-Object {$_.type -eq $runas}
     foreach ($resource in $deploy.resources) {
-        Set-Resource -resourceType $resource
+        Set-Resource2 -resourceType $resource.resourceType
     }
 }
 
-$parameterFileName = "projects.parameters.json"
-$commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Deploy}
+$parameters = Get-Content -Path (Get-Item -Path $projectsParameterFile).FullName -Raw | ConvertFrom-JSON
+
+Set-Resources2 -parameters $parameters

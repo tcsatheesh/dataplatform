@@ -1,32 +1,27 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
-function New-PrincipalParameters {
-    param(
-        [object]$parameters
+function New-Resource {
+    param (
+        [object]$resource
     )
-    $principals = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal"}
-    foreach ($principal in $principals) {
-        $principal.application.name = Get-FormatedText -strFormat $principal.application.name
-        Write-Verbose "Processing principal $($principal.application.name)"
-        $principal.application.uri = Get-FormatedText -strFormat $principal.application.uri
-        if (-not [string]::IsNullOrEmpty($principal.application.replyUrl)) {
-            $principal.application.replyUrl = Get-FormatedText -strFormat $principal.application.replyUrl
-            $principal.application.homepage = Get-FormatedText -strFormat $principal.application.homepage    
-        }
-        $principal.servicePrincipal.name = Get-FormatedText -strFormat $principal.servicePrincipal.name
-
-        $principal.application.passwordSecretName = "$($principal.application.name)-password"
-        $principal.application.certificateSecretName = "$($principal.application.name)-certificate"
-        $principal.application.certificatePasswordSecretName = "$($principal.application.name)-certificate-password"
+    $resource.application.name = Get-FormatedText -strFormat $resource.application.name
+    $resource.application.uri = Get-FormatedText -strFormat $resource.application.uri
+    if (-not [string]::IsNullOrEmpty($resource.application.replyUrl)) {
+        $resource.application.replyUrl = Get-FormatedText -strFormat $resource.application.replyUrl
+        $resource.application.homepage = Get-FormatedText -strFormat $resource.application.homepage    
     }
-}
+    $resource.servicePrincipal.name = Get-FormatedText -strFormat $resource.servicePrincipal.name
 
-function New-ApplicationParameters {
-    New-PrincipalParameters -parameters $parameters
+    $resource.application.passwordSecretName = "$($resource.application.name)-password"
+    $resource.application.certificateSecretName = "$($resource.application.name)-certificate"
+    $resource.application.certificatePasswordSecretName = "$($resource.application.name)-certificate-password"
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
@@ -35,4 +30,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
     -projectsParameterFile $projectsParameterFile `
     -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-ApplicationParameters}
+    -runas $runas

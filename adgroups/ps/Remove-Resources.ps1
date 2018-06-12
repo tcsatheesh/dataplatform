@@ -4,7 +4,7 @@ param
     [String]$projectsParameterFile
 )
 
-function Remove-Resource {
+function Remove-Group {
     param (
         [string]$groupName
     )
@@ -25,15 +25,15 @@ function Remove-Resource {
     }
 }
 
-function Remove-Resources {
-    foreach ($group in $parameters.parameters.resources.value) {        
-        Remove-Resource -groupName $group.name
-    }
+function Remove-Resource {
+    param (
+        [object]$resource
+    )
+    Remove-Group -groupName $resource.name
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-Resources}
+    -parameterFileName $parameterFileName

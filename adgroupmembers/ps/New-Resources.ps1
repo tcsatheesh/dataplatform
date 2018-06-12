@@ -1,10 +1,13 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
-function New-Resources {
+function New-Resource {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
@@ -13,4 +16,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
     -projectsParameterFile $projectsParameterFile `
     -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
     -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-Resources}
+    -runas $runas

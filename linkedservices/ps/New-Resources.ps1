@@ -1,7 +1,10 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+    
+    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
+    [string]$runas
 )
 
 function Store-ParametersToFile { 
@@ -157,6 +160,13 @@ function New-Resource {
         "sqldb" { $linkedService = Get-SqlLinkedService -resource $resource -linkedService $linkedService}
         "default" { throw "hmmm... you need to add this type $type"}        
     }
+
+    $linkedServiceName = Get-ValueFromResource `
+        -resourceType $resource.name.ref.resourceType `
+        -typeFilter $resource.name.ref.typeFilter `
+        -property $resource.name.ref.property
+     
+    $resource.name = $linkedServiceName
     
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
     $destinationPath = "$projectFolder\linkedservices"
@@ -167,34 +177,10 @@ function New-Resource {
     Write-Verbose "Created linked service configuration $desitinationFile"
 }
 
-function New-Resources {
-    param (
-        [object]$parameters
-    )
-    $resources = $parameters.parameters.resources.value
-    foreach ($resource in $resources) {
-        if (($resource.enabled -eq $null) -or ($resource.enabled -eq $true)) {
-            Write-Verbose "Processing $($resource.type)"
-            New-Resource -resource $resource
-        }
-        else
-        {
-            Write-Verbose "Skipping deployment of $($resource.name)"
-        }
-    }
-}
-
-
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-. "$commonPSFolder\Get-CommonFunctions.ps1"
 
-$linkedServiceParametersFile = "$PSScriptRoot\..\templates\linkedservices.parameters.json"
-$parameters = Get-Content $linkedServiceParametersFile -Raw | ConvertFrom-Json
-New-Resources -parameters $parameters
-
-$parameterFileName = (Get-Item -Path $linkedServiceParametersFile).Name
-
-Store-ParametersToFile `
- -resourceName (Get-Item -Path $PSScriptRoot).Parent.Name `
- -parameters $parameters `
- -parameterFileName $parameterFileName
+& "$commonPSFolder\Invoke-NewProcess.ps1" `
+    -projectsParameterFile $projectsParameterFile `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
+    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
+    -runas $runas

@@ -5,6 +5,7 @@
         "resources": {
             "value": [
                 {
+                    "type": "ownergroup",
                     "adlstoreType": "adlstore",
                     "adGroupType": "managers",
                     "path": "/"

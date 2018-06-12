@@ -18,10 +18,7 @@ function Remove-Resource {
         -typeFilter $resource.dataFactoryNameRef `
         -property "name"
             
-    $linkedServiceName = Get-ValueFromResource `
-        -resourceType $resource.name.ref.resourceType `
-        -typeFilter $resource.name.ref.typeFilter `
-        -property $resource.name.ref.property
+    $linkedServiceName = $resource.name
 
     Write-Verbose "Removing linked service $linkedServiceName"
         
@@ -31,24 +28,6 @@ function Remove-Resource {
         -Name $linkedServiceName -Force
 }
 
-function Remove-Resources {
-    param (
-        [object]$parameters
-    )
-    $resources = $parameters.parameters.resources.value
-    $index = $resources.Length - 1
-    foreach ($r in $resources) {
-        $resource = $resources[$index--]
-        Write-Verbose "Removing resource $resource"
-        Remove-Resource -resource $resource
-    }
-}
-
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-. "$commonPSFolder\Get-CommonFunctions.ps1"
-
-$projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-$linkedServiceParametersFile = "$projectFolder\linkedservices\$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
-$parameters = Get-Content $linkedServiceParametersFile -Raw | ConvertFrom-Json
-Remove-Resources -parameters $parameters
-
+& "$commonPSFolder\Invoke-RemoveProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

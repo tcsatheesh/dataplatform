@@ -92,6 +92,26 @@ function Set-PrincipalCertificate {
     return $props
 }
 
+function Set-SecretValueInKeyVault {
+    param(
+        [string]$keyVaultName,
+        [string]$secretName,
+        [securestring]$secretValue,
+        [object]$startdate,
+        [int]$expriryTerm
+    )
+    $secretExpiry = (Get-Date -Date $startdate).AddYears($expiryTerm)
+    $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName -ErrorAction SilentlyContinue
+    if ($secret -eq $null) {
+        Write-Verbose "Setting secret $secretName to the key vault $keyVaultName"
+        $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName -SecretValue $secretValue -Expires $secretExpiry
+        Write-Verbose "Secret $secretName added to the key vault $keyVaultName"
+    }
+    else {
+        Write-Verbose "Secret $secretName already in the key vault $keyVaultName"
+    }
+}
+
 function Set-Principal {
     param (
         [object]$principal,
@@ -178,42 +198,20 @@ function Get-Principal {
     )
     $parameterFileName = "principals.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal" -and $_.subtype -eq $principalref}
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $principalref}
     Write-Verbose "Got principal $($resource.application.name) for principalref $principalref"
     return $resource
 }
 
-function Set-SecretValueInKeyVault {
+function Set-Resource {
     param(
-        [string]$keyVaultName,
-        [string]$secretName,
-        [securestring]$secretValue,
-        [object]$startdate,
-        [int]$expriryTerm
-    )
-    $secretExpiry = (Get-Date -Date $startdate).AddYears($expiryTerm)
-    $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName -ErrorAction SilentlyContinue
-    if ($secret -eq $null) {
-        $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName -SecretValue $secretValue -Expires $secretExpiry
-        Write-Verbose "Secret $secretName added to the key vault $keyVaultName"
-    }
-    else {
-        Write-Verbose "Secret $secretName already in the key vault $keyVaultName"
-    }
-}
-
-function Set-ClientSecrets {
-    $resources = $parameters.parameters.resources.value 
-    foreach ($resource in $resources) {
-        $principalref = $resource.principalref
-        $principal = Get-Principal -principalref $principalref    
-        Set-Principal -principal $principal -resource $resource        
-    }    
+        [object]$resource
+    )        
+    $principalref = $resource.principalref
+    $principal = Get-Principal -principalref $principalref    
+    Set-Principal -principal $principal -resource $resource            
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-ClientSecrets}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

@@ -113,8 +113,7 @@
                             "type": "applicationPrincipal",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "application.clientId"
                             }
                         },
@@ -122,8 +121,7 @@
                             "type": "servicePrincipal",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "servicePrincipal.id"
                             }
                         },
@@ -139,8 +137,7 @@
                             "type": "secretName",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "application.passwordSecretName"
                             }
                         }
@@ -195,8 +192,7 @@
                             "type": "applicationPrincipal",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "application.clientId"
                             }
                         },
@@ -204,8 +200,7 @@
                             "type": "servicePrincipal",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "servicePrincipal.id"
                             }
                         },
@@ -221,8 +216,7 @@
                             "type": "secretName",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "application.passwordSecretName"
                             }
                         }

@@ -61,7 +61,10 @@ function Set-ResourceGroupAcls {
     $applicationsParameters = Get-ApplicationParameters    
     foreach ($principalTypeRef in $acls.principalsTypeRef) {
         Write-Verbose "Processing principalTypeRef $principalTypeRef"
-        $principalObj = $applicationsParameters.parameters.resources.value | Where-Object {$_.subtype -eq $principalTypeRef}
+        $principalObj = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $principalTypeRef}
+        if ($principalObj -eq $null){
+            throw "Principal object cannot be null here"
+        }
         Set-RoleAssignment -resourceGroupName $resourceGroupName -objectId $principalObj.servicePrincipal.id -roleName $roleName
     }
 
@@ -73,29 +76,19 @@ function Set-ResourceGroupAcls {
     }
 }
 
-function Set-ResourceGroup {
+function Set-Resource {
     param (
-        [object]$group
+        [object]$resource
     )
-    $resourceGroupName = $group.name
-    New-ResourceGroup -Name $resourceGroupName `
-        -Location $group.location
+    $resourceGroupName = $resource.name
+    New-ResourceGroup -Name $resourceGroupName -Location $resource.location
     
-    $acls = $group.contributors
+    $acls = $resource.contributors
     Set-ResourceGroupAcls -resourceGroupName $resourceGroupName -acls $acls -roleName "Contributor"
-    $acls = $group.readers
+    $acls = $resource.readers
     Set-ResourceGroupAcls -resourceGroupName $resourceGroupName -acls $acls -roleName "Reader"
-}
-
-function Set-Groups {
-    foreach ($group in $parameters.parameters.resources.value) {
-        Set-ResourceGroup -group $group
-    }
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Groups}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName 

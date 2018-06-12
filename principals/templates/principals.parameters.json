@@ -5,9 +5,7 @@
         "resources": {
             "value": [
                 {
-                    "type": "principal",
-                    "subtype": "deploymentPrincipal",
-                    "enabled": false,
+                    "type": "deploymentPrincipal",
                     "application": {
                         "name": "{0}-{1}-{2}-dep-prn",
                         "uri": "https://{0}-{1}-{2}-dep-prn",
@@ -25,9 +23,7 @@
                     }
                 },
                 {
-                    "type" : "principal",
-                    "subtype": "applicationPrincipal",
-                    "enabled": false,
+                    "type": "applicationPrincipal",
                     "application": {
                         "name": "{0}-{1}-{2}-app-prn",
                         "uri": "https://{0}-{1}-{2}-app-prn",
@@ -45,9 +41,7 @@
                     }
                 },
                 {
-                    "type" : "principal",
-                    "subtype": "diskEncryptionPrincipal",
-                    "enabled": false,
+                    "type": "diskEncryptionPrincipal",
                     "application": {
                         "name": "{0}-{1}-{2}-dsk-prn",
                         "uri": "https://{0}-{1}-{2}-dsk-prn",
@@ -65,9 +59,7 @@
                     }
                 },
                 {
-                    "type" : "principal",
-                    "subtype": "wepAppAuthenticationPrincipal",
-                    "enabled": true,
+                    "type" : "wepAppAuthenticationPrincipal",
                     "application": {
                         "name": "{0}-{1}-{2}-web-prn",
                         "uri": "https://{0}{1}{2}app01.azurewebsites.net",

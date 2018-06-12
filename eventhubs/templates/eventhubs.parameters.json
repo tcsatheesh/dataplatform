@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type" : "eventhub",
-                    "enabled": false,
                     "resourceType": "eventhubs",
                     "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}ehns01",
@@ -38,7 +37,6 @@
                 },
                 {
                     "type" : "eventhub",
-                    "enabled": true,
                     "resourceType": "eventhubs",
                     "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}mehns02",

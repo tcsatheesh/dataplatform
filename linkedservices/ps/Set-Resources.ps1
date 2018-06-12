@@ -20,10 +20,7 @@ function Set-Resource {
         -typeFilter $resource.dataFactoryNameRef `
         -property "name"
             
-    $linkedServiceName = Get-ValueFromResource `
-        -resourceType $resource.name.ref.resourceType `
-        -typeFilter $resource.name.ref.typeFilter `
-        -property $resource.name.ref.property
+    $linkedServiceName = $resource.name
      
     Write-Verbose "Set linked service $linkedServiceName"
 
@@ -34,27 +31,9 @@ function Set-Resource {
         -DefinitionFile $configFile -Force
 }
 
-function Set-Resources {
-    param (
-        [object]$parameters
-    )
-    $storageServices = $parameters.parameters.resources.value
-    foreach ($resource in $storageServices) {
-        if (($resource.enabled -eq $null) -or ($resource.enabled -eq $true)) {
-            Set-Resource -resource $resource
-        }
-        else
-        {
-            Write-Verbose "Skipping deployment of $($resource.name)"
-        }
-    }
-}
 
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-. "$commonPSFolder\Get-CommonFunctions.ps1"
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
 
-$projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-$linkedServiceParametersFile = "$projectFolder\linkedservices\$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
-$parameters = Get-Content $linkedServiceParametersFile -Raw | ConvertFrom-Json
-Set-Resources -parameters $parameters
 

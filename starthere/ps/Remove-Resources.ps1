@@ -8,16 +8,16 @@ param
                     "subscription-owner", 
                     "keyvault-administrator", 
                     "manager", 
-                    "developer",
-                    "vsts"
+                    "vsts",
+                    "definition"
                 )]
     [String]$runas
 )
-function Remove-Resource {
+function Remove-Resource2 {
     param (
         [object]$resourceType
     ) 
-    Write-Verbose "Removing resource $resourceType"
+    Write-Verbose "**************** Removing resource $resourceType ****************"
     $psFolder = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\ps").FullName
     try{
         $removeScript = ( Get-Item -Path "$psFolder\Remove-Resources.ps1").FullName
@@ -31,19 +31,15 @@ function Remove-Resource {
     }
 }
 
-function Remove-AllEnvs {
+function Remove-Resources2 {
     $resources = ($parameters.parameters.resources.value | Where-Object {$_.type -eq $runas}).resources
     $index = $resources.Length - 1
     foreach ($r in $resources) {
-        $resource = $resources[$index--]
-        Write-Verbose "Removing resource $resource"
-        Remove-Resource -resource $resource
+        $resource = $resources[$index--]        
+        Remove-Resource2 -resourceType $resource.resourceType
     }
 }
 
-$parameterFileName = "projects.parameters.json"
-$commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-AllEnvs}
+$parameters = Get-Content -Path (Get-Item -Path $projectsParameterFile).FullName -Raw | ConvertFrom-JSON
+
+Remove-Resources2 -parameters $parameters

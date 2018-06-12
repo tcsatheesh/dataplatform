@@ -189,3 +189,13 @@ function Get-ResourceGroupName {
     Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
     return $resourceGroup.name
 }
+
+function Get-ResourcesFromResourceType {
+    param (
+        [string]$resourceType
+    )
+
+    $parameterFileName = "projects.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    
+}

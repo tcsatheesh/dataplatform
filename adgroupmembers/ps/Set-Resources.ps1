@@ -27,7 +27,7 @@ function Get-CurrentUserUpn {
 }
 
 
-function Set-Resource {
+function Set-GroupMember {
     param (
         [string]$groupObjectId,
         [string]$userPrincipalName
@@ -49,26 +49,24 @@ function Set-Resource {
     }
 }
 
-function Set-Resources {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        $adGroupObjectId = Get-ADGroupObjectId -adGroupType $resource.adgrouptyperef
-        foreach ($membersupn in $resource.membersupn) {
-            Write-Verbose "Adding user $membersupn to ad group $($resource.adgrouptyperef)"
-            $upn = $membersupn
-            if ($upn -eq "current") {
-                $upn = Get-CurrentUserUpn
-            }
-            Set-Resource -groupObjectId $adGroupObjectId -userPrincipalName $upn
+function Set-Resource {
+    param (
+        [object]$resource
+    )
+    $adGroupObjectId = Get-ADGroupObjectId -adGroupType $resource.adgrouptyperef
+    foreach ($membersupn in $resource.membersupn) {
+        Write-Verbose "Adding user $membersupn to ad group $($resource.adgrouptyperef)"
+        $upn = $membersupn
+        if ($upn -eq "current") {
+            $upn = Get-CurrentUserUpn
         }
+        Set-GroupMember -groupObjectId $adGroupObjectId -userPrincipalName $upn
     }
 }
 
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Resources}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
 
 

@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type" : "rhel", 
-                    "enabled": false,
                     "resourceType": "vms",
                     "resourceGroupTypeRef": "vms",
                     "name" : "{0}{1}{2}vm01",
@@ -98,7 +97,6 @@
                 },
                 {
                     "type" : "rhel2", 
-                    "enabled": false,
                     "resourceType": "vms",
                     "resourceGroupTypeRef": "vms",
                     "name" : "{0}{1}{2}vm02",
@@ -190,7 +188,6 @@
                 },                
                 {
                     "type" : "market", 
-                    "enabled": true,
                     "resourceType": "vms",
                     "resourceGroupTypeRef": "vms",
                     "name" : "{0}{1}{2}vm03",

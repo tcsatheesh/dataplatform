@@ -72,28 +72,7 @@ function Remove-Resource {
     }
 }
 
-function Remove-AllResources {
-    $resources = $parameters.parameters.resources.value
-    foreach ($resource in $resources) {
-        $enabled = $resource.enabled
-        if ($enabled -ne $null) {
-            $enabled = [System.Convert]::ToBoolean($resource.enabled)   
-        }else{
-            $enabled = $true
-        }
-        if ( $enabled ) {
-            Write-Verbose "Removing resource: $($resource.name)"
-            Remove-Resource -resource $resource
-        }else {
-            Write-Verbose "Skipping removing resource: $($resource.name)"
-        }
-    }
-}
-
-Write-Verbose "Script Block $preRemoveProcToRun"
-
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -parameterFileName "$resourceType.parameters.json" `
-    -procToRun {Remove-AllResources}
+    -parameterFileName "$resourceType.parameters.json"

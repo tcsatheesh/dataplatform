@@ -3,308 +3,311 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resources": {
-            "value": {
-                "adlStoreName": "{0}{1}{2}neadlsstore",
-                "help": "Allowed values for AceType: User, Group, Mask, Other; Allowed values for Permission: None, Execute, Write, WriteExecute, Read, ReadExecute, ReadWrite, All; Allowed values for AADType: Group, SPN, User",
-                "folders": [
-                    {
-                        "folderName": "/",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "managers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "managers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "ReadExecute",
-                                "Default": "false",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "ReadExecute",
-                                "Default": "true",
-                                "AADName": "testers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "ReadExecute",
-                                "Default": "false",
-                                "AADName": "testers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "applicationPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "applicationPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "deploymentPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "deploymentPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
+            "value": [
+                {
+                    "type": "default",
+                    "adlStoreName": "{0}{1}{2}neadlsstore",
+                    "help": "Allowed values for AceType: User, Group, Mask, Other; Allowed values for Permission: None, Execute, Write, WriteExecute, Read, ReadExecute, ReadWrite, All; Allowed values for AADType: Group, SPN, User",
+                    "folders": [
+                        {
+                            "folderName": "/",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "managers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "managers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "ReadExecute",
+                                    "Default": "false",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "ReadExecute",
+                                    "Default": "true",
+                                    "AADName": "testers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "ReadExecute",
+                                    "Default": "false",
+                                    "AADName": "testers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "The ADLS root folder. Don't want anyone to be able to create anything here just browse and drill down"
                             }
-                        ],
-                        "metadata": {
-                            "description": "The ADLS root folder. Don't want anyone to be able to create anything here just browse and drill down"
-                        }
-                    },
-                    {
-                        "folderName": "/raw",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
+                        },
+                        {
+                            "folderName": "/raw",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "Set the default ACL permissions for the root raw folder.  Apps can't delete this folder but can add to it."
                             }
-                        ],
-                        "metadata": {
-                            "description": "Set the default ACL permissions for the root raw folder.  Apps can't delete this folder but can add to it."
-                        }
-                    },
-                    {
-                        "folderName": "/stage",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
+                        },
+                        {
+                            "folderName": "/stage",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "Set the default ACL permissions for the root raw folder.  Apps can't delete this folder but can add to it."
                             }
-                        ],
-                        "metadata": {
-                            "description": "Set the default ACL permissions for the root raw folder.  Apps can't delete this folder but can add to it."
-                        }
-                    },
-                    {
-                        "folderName": "/enriched",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
+                        },
+                        {
+                            "folderName": "/enriched",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "Set the default ACL permissions for the root raw folder.  Apps can't delete this folder but can add to it."
                             }
-                        ],
-                        "metadata": {
-                            "description": "Set the default ACL permissions for the root raw folder.  Apps can't delete this folder but can add to it."
-                        }
-                    },
-                    {
-                        "folderName": "/clusterlogs",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
+                        },
+                        {
+                            "folderName": "/clusterlogs",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "Set the default ACL permissions for the root logs folder."
                             }
-                        ],
-                        "metadata": {
-                            "description": "Set the default ACL permissions for the root logs folder."
-                        }
-                    },
-                    {
-                        "folderName": "/archive",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
+                        },
+                        {
+                            "folderName": "/archive",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "Set the default ACL permissions for the root archive folder."
                             }
-                        ],
-                        "metadata": {
-                            "description": "Set the default ACL permissions for the root archive folder."
-                        }
-                    },
-                    {
-                        "folderName": "/system",
-                        "permissions": [
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "managers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "managers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "ReadExecute",
-                                "Default": "false",
-                                "AADName": "developers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "ReadExecute",
-                                "Default": "true",
-                                "AADName": "testers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "Group",
-                                "Permission": "ReadExecute",
-                                "Default": "false",
-                                "AADName": "testers",
-                                "Id": "",
-                                "AADType": "Group"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "applicationPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "applicationPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "deploymentPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "deploymentPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
+                        },
+                        {
+                            "folderName": "/system",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "managers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "managers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "ReadExecute",
+                                    "Default": "false",
+                                    "AADName": "developers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "ReadExecute",
+                                    "Default": "true",
+                                    "AADName": "testers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "ReadExecute",
+                                    "Default": "false",
+                                    "AADName": "testers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "The ADLA catalog folder."
                             }
-                        ],
-                        "metadata": {
-                            "description": "The ADLA catalog folder."
-                        }
-                    },
-                    {
-                        "folderName": "/cluster",
-                        "permissions": [                            
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "applicationPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "applicationPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "true",
-                                "AADName": "deploymentPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
-                            },
-                            {
-                                "AceType": "User",
-                                "Permission": "All",
-                                "Default": "false",
-                                "AADName": "deploymentPrincipal",
-                                "Id": "",
-                                "AADType": "SPN"
+                        },
+                        {
+                            "folderName": "/cluster",
+                            "permissions": [
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "The ADLA catalog folder."
                             }
-                        ],
-                        "metadata": {
-                            "description": "The ADLA catalog folder."
                         }
-                    }
-                ]
-            }
+                    ]
+                }
+            ]
         }
     }
 }
