@@ -26,6 +26,11 @@ if (-not [string]::Equals($projectsParameterFileName.toLower(), $parameterFileNa
     else {
         $selectedresources = $parameters.parameters.resources.value | Where-Object {$_.type -in $resourceTypedef.resources.type}
     }
+    if ($selectedresources -eq $null) {
+        Write-Verbose "No resource selected. Exiting..."
+        exit
+    }
+    Write-Verbose "Selected resources $selectedresources"
     $selectedresources | ForEach-Object {$_.enabled = $true}
 }
 
@@ -34,7 +39,7 @@ function New-Resources {
         [object]$parameters
     )    
     foreach ($resource in $parameters.parameters.resources.value) {
-        Write-Verbose "Resource $($resource.type) is enabled: $($resource.enabled)"
+        Write-Verbose "===== Resource $($resource.type) is enabled: $($resource.enabled) ====="
         if ($resource.enabled) {
             Write-Verbose "Processing new resource $($resource.type)"
             New-Resource $resource

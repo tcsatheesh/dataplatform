@@ -376,11 +376,37 @@
                                     "type": "default"
                                 }
                             ]
+                        },
+                        {
+                            "resourceType": "cogsvcs",
+                            "resources" : [
+                                {
+                                    "type": "luis"
+                                },
+                                {
+                                    "type": "textanalytics"
+                                },
+                                {
+                                    "type": "vision"
+                                },
+                                {
+                                    "type": "face"
+                                },
+                                {
+                                    "type": "speech"
+                                },
+                                {
+                                    "type": "speechtranslation"
+                                },
+                                {
+                                    "type": "search"
+                                }
+                            ]
                         }
                     ]
                 },
                 {
-                    "type": "tp",
+                    "type": "teamproject",
                     "resources": [
                         {
                             "resourceType": "teamprojects",
