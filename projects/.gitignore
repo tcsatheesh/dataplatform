@@ -1,1 +1,5 @@
-[^.]*
+# ignore all subdirectories
+# [^.]*
+
+# ignore project specific directories that have a - in them
+*-*-*
