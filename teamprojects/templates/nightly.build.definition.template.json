@@ -1,0 +1,80 @@
+{
+    "name": "",
+    "type": "build",
+    "quality": "definition",
+    "queue": {
+        "id": 1,
+        "name": "Hosted"
+    },
+    "build": [
+        {
+            "enabled": false,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Copy Files to: $(Build.ArtifactStagingDirectory)",
+            "timeoutInMinutes": 0,
+            "task": {
+                "id": "5bfb729a-a7c8-4a78-a7c3-8d717bb7c13c",
+                "versionSpec": "1.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "SourceFolder": "$(Build.SourcesDirectory)",
+                "Contents": "**\\*",
+                "TargetFolder": "$(Build.ArtifactStagingDirectory)",
+                "CleanTargetFolder": "false",
+                "OverWrite": "false",
+                "flattenFolders": "false"
+            }
+        },
+        {
+            "enabled": false,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Publish Artifact: Drop",
+            "timeoutInMinutes": 0,
+            "task": {
+                "id": "2ff763a7-ce83-4e1f-bc89-0ae63477cebe",
+                "versionSpec": "1.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "PathtoPublish": "$(Build.ArtifactStagingDirectory)",
+                "ArtifactName": "Drop",
+                "ArtifactType": "Container",
+                "TargetPath": "\\\\my\\share\\$(Build.DefinitionName)\\$(Build.BuildNumber)"
+            }
+        }
+    ],
+    "triggers": [
+        {
+            "schedules": [
+                {
+                    "branchFilters": [
+                        ""
+                    ],
+                    "timeZoneId": "UTC",
+                    "startHours": 19,
+                    "startMinutes": 0,
+                    "daysToBuild": 31
+                }
+            ],
+            "triggerType": "schedule"
+        }
+    ],
+    "variables": {
+        "system.debug": {
+            "value": "true",
+            "allowOverride": true
+        }
+    },
+    "repository": {
+        "type": "TfsGit",
+        "name": "",
+        "url": "",
+        "defaultBranch": "",
+        "clean": "false"
+    },
+    "path": "\\",
+    "comment": "Platform build definition"
+}

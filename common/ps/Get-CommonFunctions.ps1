@@ -108,6 +108,25 @@ function Get-TemplateParameters {
     $parameters = Get-Content -Path $templateParametersFullPath -Raw | ConvertFrom-JSON
     return $parameters
 }
+function Get-ApplicationParameter {
+    param (
+        [string]$type
+    )
+    $applicationsParameterFileName = "principals.parameters.json"
+    $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName
+    $principal = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $type}
+    return $principal
+}
+
+function Get-ADGroupParameter {
+    param (
+        [string]$type
+    )
+    $adgroupsParameterFileName = "adgroups.parameters.json"
+    $adgroupsParameters = Get-ResourceParameters -parameterFileName $adgroupsParameterFileName
+    $adgroup = $adgroupsParameters.parameters.resources.value | Where-Object { $_.type -eq $type } 
+    return $adgroup
+}
 
 function New-Password {
     param
@@ -141,6 +160,18 @@ function New-Password {
     return $props
 }
 
+function Get-ProjectParameter {
+    param (
+        [string]$type
+    )
+    $parameters = Get-Content -Path (Get-Item -Path $projectsParameterFile).FullName -Raw | ConvertFrom-Json
+    $parameter = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
+    if ($parameter -eq $null) {
+        throw "You are missing the vsts account information in the projects.parameter.json"
+    }
+    return $parameter
+}
+
 function Update-ProjectParameters {
     param
     (
@@ -150,13 +181,9 @@ function Update-ProjectParameters {
         [Parameter(Mandatory = $True, HelpMessage = 'The name of the parameter file.')]
         [string]$parameterFileName
     )
-    # Write-Verbose "Projects Parameter File $projectsParameterFile"
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    # Write-Verbose "Projects Folder $projectFolder"
     $projectParameterFullPath = "$projectFolder\$parameterFileName"
-    # Write-Verbose "Project Parameter Full Path: $projectParameterFullPath"
     $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $projectParameterFullPath -Force -Encoding utf8
-    # Write-Verbose "Project parameter file updated at: $projectParameterFullPath"
 }
 
 function Set-Subscription {

@@ -12,6 +12,12 @@ param
     [Parameter(Mandatory = $True, HelpMessage = 'The environment for this project.')]
     [String]$tenant,
 
+    [Parameter(Mandatory = $True, HelpMessage = 'The vsts account name.')]
+    [String]$vstsaccountname,
+
+    [Parameter(Mandatory = $True, HelpMessage = 'The vsts account branch.')]
+    [String]$branch,
+
     [Parameter(Mandatory = $False, HelpMessage = 'Should we create AD Groups in Azure AD.')]
     [bool]$createADGroups = $false,
 
@@ -78,20 +84,6 @@ function Get-SubscriptionDetails {
     return $props
 }
 
-function New-Resource2 {
-    param (
-        [object]$parameters,
-        [string]$type,
-        [object]$name,
-        [string]$id
-    )
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
-    $resource.name = $name
-    if (-not ([string]::IsNullOrEmpty($id))) {
-        $resource.id = $id
-    }
-}
-
 function Get-OutputFile {
     $parameterFileName = "projects.parameters.json"
     $projectFolderName = "{0}-{1}-{2}" -f $department, $projectName, $environment
@@ -119,16 +111,33 @@ function New-Resources2 {
     param (
         [object]$parameters
     )
-    New-Resource2 -parameters $parameters -type "department" -name $department
-    New-Resource2 -parameters $parameters -type "projectName" -name $projectName
-    New-Resource2 -parameters $parameters -type "environment" -name $environment 
+    $resources = $parameters.parameters.resources.value
 
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq "createADGroups"}
+    $resource = $resources | Where-Object {$_.type -eq "department"}
+    $resource.name = $department
+
+    $resource = $resources | Where-Object {$_.type -eq "projectName"}
+    $resource.name = $projectName
+
+    $resource = $resources | Where-Object {$_.type -eq "environment"}
+    $resource.name = $environment
+
+    $resource = $resources | Where-Object {$_.type -eq "createADGroups"}
     $resource.status = $createADGroups
 
     $subdetails = Get-SubscriptionDetails 
-    New-Resource2 -parameters $parameters -type "tenant" -name $tenant -id $subdetails.tenantId
-    New-Resource2 -parameters $parameters -type "subscription" -name $subdetails.subscriptionName -id $subdetails.subscriptionId    
+    $resource = $resources | Where-Object {$_.type -eq "tenant"}
+    $resource.name = $tenant
+    $resource.id = $subdetails.tenantId
+
+    $resource = $resources | Where-Object {$_.type -eq "subscription"}
+    $resource.name = $subdetails.subscriptionName
+    $resource.id = $subdetails.subscriptionId
+
+    $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
+    Write-Verbose $resource
+    $resource.name = $vstsaccountname
+    $resource.branch = $branch
 }
 
 $parameters = Get-Content -Path (Get-Item -Path "$PSScriptRoot\..\templates\projects.parameters.json").FullName -Raw | ConvertFrom-JSON

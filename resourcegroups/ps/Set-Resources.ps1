@@ -33,45 +33,22 @@ function Set-RoleAssignment {
     }
 }
 
-function Get-ProjectParameters {
-    param (
-        [string]$parameterFileName
-    )    
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    return $parameters
-}
-
-function Get-ApplicationParameters {
-    $applicationsParameterFileName = "principals.parameters.json"
-    $applicationsParameters = Get-ProjectParameters -parameterFileName $applicationsParameterFileName
-    return $applicationsParameters
-}
-
-function Get-ADGroupParameters {
-    $adgroupsParameterFileName = "adgroups.parameters.json"
-    $adgroupsParameters = Get-ProjectParameters -parameterFileName $adgroupsParameterFileName
-    return $adgroupsParameters
-}
 function Set-ResourceGroupAcls {
     param(
         [string]$resourceGroupName,
         [object]$acls,
         [string]$roleName
     )
-    $applicationsParameters = Get-ApplicationParameters    
+
     foreach ($principalTypeRef in $acls.principalsTypeRef) {
         Write-Verbose "Processing principalTypeRef $principalTypeRef"
-        $principalObj = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $principalTypeRef}
-        if ($principalObj -eq $null){
-            throw "Principal object cannot be null here"
-        }
+        $principalObj = Get-ApplicationParameter -type $principalTypeRef
         Set-RoleAssignment -resourceGroupName $resourceGroupName -objectId $principalObj.servicePrincipal.id -roleName $roleName
     }
-
-    $adgroupsParameters = Get-ADGroupParameters
+    
     foreach ($adgroupTypeRef in $acls.adgroupsTypeRef) {
         Write-Verbose "Processing ad group $adgroupTypeRef"
-        $selectedADGroup = $adgroupsParameters.parameters.resources.value | Where-Object { $_.type -eq $adgroupTypeRef }        
+        $selectedADGroup = Get-ADGroupParameter -type $adgroupTypeRef
         Set-RoleAssignment -resourceGroupName $resourceGroupName -objectId $selectedADGroup.id -roleName $roleName
     }
 }
