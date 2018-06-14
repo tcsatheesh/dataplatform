@@ -24,9 +24,15 @@ function Set-RoleAssignment {
     if ($objectId -ne $null) {
         $res1 = Get-AzureRmRoleAssignment -ObjectId $objectId -ResourceGroupName $resourceGroupName -RoleDefinitionName $roleName -ErrorAction SilentlyContinue
     }
-    if ($res1 -eq $null) {        
-        $res1 = New-AzureRmRoleAssignment -ObjectId $objectId -ResourceGroupName $resourceGroupName -RoleDefinitionName $roleName
-        Write-Verbose "Role assigned to $resourceGroupName"
+    if ($res1 -eq $null -and $objectId -ne $null) {
+        $app = Get-AzureRmADApplication -ObjectId $objectId -ErrorAction SilentlyContinue
+        if ($app -ne $null) {
+            $res1 = New-AzureRmRoleAssignment -ObjectId $objectId -ResourceGroupName $resourceGroupName -RoleDefinitionName $roleName
+            Write-Verbose "Role assigned to $resourceGroupName"
+        }
+        else {
+            Write-Verbose "Application with objectId $objectId does not exist in the Azure AD"
+        }
     }
     else {
         Write-Verbose "Role assignment exists for $resourceGroupName"

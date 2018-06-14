@@ -417,6 +417,27 @@
                             ]
                         }                        
                     ]
+                },
+                {
+                    "type": "datalakestore",
+                    "resources": [
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "storage"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adlstores",
+                            "resources": [
+                                {
+                                    "type": "adlstore"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

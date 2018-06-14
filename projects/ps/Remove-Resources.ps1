@@ -4,13 +4,6 @@ param
     [String]$projectsParameterFile,
 
     [Parameter(Mandatory = $True, HelpMessage = 'The user type to runas.')]
-    [ValidateSet (  "user-administrator",
-                    "subscription-owner", 
-                    "keyvault-administrator", 
-                    "manager", 
-                    "vsts",
-                    "definition"
-                )]
     [String]$runas
 )
 function Remove-Resource2 {
