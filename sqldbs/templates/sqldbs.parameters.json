@@ -37,7 +37,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "managers",
+                                "typeFilter": "sqladmins",
                                 "property" : "name"
                             }
                         },
@@ -46,8 +46,17 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "managers",
+                                "typeFilter": "sqladmins",
                                 "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "emailAddress",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "sqladmins",
+                                "property" : "email"
                             }
                         },
                         {
@@ -100,7 +109,7 @@
                             "name": "firewallRuleName",
                             "type": "value",
                             "value": "for_deployment_only"
-                        }                                                
+                        }                                                                        
                     ]
                 },
                 {

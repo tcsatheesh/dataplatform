@@ -1,10 +1,7 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile,
-
-    [Parameter(Mandatory = $True, HelpMessage = 'The user type to runas.')]
-    [String]$runas
+    [String]$projectsParameterFile
 )
 
 function Set-Resource2 {
@@ -15,7 +12,7 @@ function Set-Resource2 {
 
     $newScript = ( Get-Item -Path "$psFolder\New-Resources.ps1").FullName
     Write-Verbose "************** Creating new resourceType $resourceType *************"
-    & $newScript -projectsParameterFile $projectsParameterFile -runas $runas
+    & $newScript -projectsParameterFile $projectsParameterFile
 
     $setScript = ( Get-Item -Path "$psFolder\Set-Resources.ps1").FullName
     Write-Verbose "************** Setting resourceType $resourceType *******************"
@@ -26,7 +23,8 @@ function Set-Resources2 {
     param (
         [object]$parameters
     )
-    $deploy = $parameters.parameters.resources.value | Where-Object {$_.type -eq $runas}
+    $environmentToDeploy = $parameters.parameters.resources.value | Where-Object {$_.type -eq "envtype"}
+    $deploy = $parameters.parameters.resources.value | Where-Object {$_.type -eq $environmentToDeploy.value}
     foreach ($resource in $deploy.resources) {
         Set-Resource2 -resourceType $resource.resourceType
     }

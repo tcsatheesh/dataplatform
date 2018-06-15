@@ -22,7 +22,10 @@ param
     [bool]$createADGroups = $false,
 
     [Parameter(Mandatory = $False, HelpMessage = 'The project folder')]
-    [string]$projectFolder = $null
+    [string]$projectFolder = $null,
+
+    [Parameter(Mandatory = $True, HelpMessage = 'The type of environment to deploy.')]
+    [String]$envtype
 )
 
 function Get-SubscriptionDetails {
@@ -138,6 +141,29 @@ function New-Resources2 {
     Write-Verbose $resource
     $resource.name = $vstsaccountname
     $resource.branch = $branch
+
+    $newarray = @()
+    $resources | ForEach-Object {
+        $resource = $_;
+        if ($resource.type -eq "department" -or `
+                $resource.type -eq "projectName" -or `
+                $resource.type -eq "environment" -or `
+                $resource.type -eq "createADGroups" -or `
+                $resource.type -eq "tenant" -or `
+                $resource.type -eq "subscription" -or `
+                $resource.type -eq "vstsaccount" -or `
+                $resource.type -eq $envtype
+        ) {
+            $newarray += $resource
+        }
+    }
+    $props = @{
+        type = "envtype"
+        value = $envtype
+    }
+    $newarray += $props
+
+    $parameters.parameters.resources.value = $newarray
 }
 
 $parameters = Get-Content -Path (Get-Item -Path "$PSScriptRoot\..\templates\projects.parameters.json").FullName -Raw | ConvertFrom-JSON

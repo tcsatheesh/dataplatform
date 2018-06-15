@@ -1,10 +1,7 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile,
-    
-    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
-    [string]$runas
+    [String]$projectsParameterFile
 )
 
 function Store-ParametersToFile { 
@@ -182,5 +179,4 @@ $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 & "$commonPSFolder\Invoke-NewProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
     -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
-    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -runas $runas
+    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"

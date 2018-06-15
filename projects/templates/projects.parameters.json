@@ -70,12 +70,10 @@
                             "resourceType": "adgroupmembers",
                             "resources" : [
                                 {
-                                    "type": "member",
-                                    "subtype": "keyvaultadmins"
+                                    "type": "keyvaultadmins"
                                 },
                                 {
-                                    "type": "member",
-                                    "subtype": "managers"
+                                    "type": "managers"
                                 }
                             ]
                         }
@@ -282,12 +280,10 @@
                             "resourceType": "adgroupmembers",
                             "resources" : [
                                 {
-                                    "type": "member",
-                                    "subtype": "keyvaultadmins"
+                                    "type": "keyvaultadmins"
                                 },
                                 {
-                                    "type": "member",
-                                    "subtype": "managers"
+                                    "type": "managers"
                                 }
                             ]
                         },
@@ -426,6 +422,9 @@
                             "resources": [
                                 {
                                     "type": "storage"
+                                },
+                                {
+                                    "type": "app"
                                 }
                             ]
                         },
@@ -434,6 +433,102 @@
                             "resources": [
                                 {
                                     "type": "adlstore"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adlas",
+                            "resources": [
+                                {
+                                    "type": "adla"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "sqldb",
+                    "resources": [
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "deploymentPrincipal"
+                                },
+                                {
+                                    "type": "applicationPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "keyvaultadmins"
+                                },
+                                {
+                                    "type": "sqladmins"
+                                },
+                                {
+                                    "type": "developers"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adgroupmembers",
+                            "resources": [
+                                {
+                                    "type": "keyvaultadmins"
+                                },
+                                {
+                                    "type": "sqladmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "sharedStorage"
+                                },
+                                {
+                                    "type": "data"
+                                },
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "storageaccounts",
+                            "resources": [
+                                {
+                                    "type": "sharedStorage"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "appkeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "sqladmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldbs",
+                            "resources": [
+                                {
+                                    "type": "appdb"
                                 }
                             ]
                         }

@@ -5,17 +5,22 @@
         "resources": {
             "value": [
                 {
-                    "type": "member",
-                    "subtype": "keyvaultadmins",
+                    "type": "keyvaultadmins",
                     "adgrouptyperef": "keyvaultadmins",
                     "membersupn": [
                         "current"
                     ]
                 },
                 {
-                    "type": "member",
-                    "subtype": "managers",
+                    "type": "managers",
                     "adgrouptyperef": "managers",
+                    "membersupn": [
+                        "current"
+                    ]
+                },
+                {
+                    "type": "sqladmins",
+                    "adgrouptyperef": "sqladmins",
                     "membersupn": [
                         "current"
                     ]

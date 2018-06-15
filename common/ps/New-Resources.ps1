@@ -4,10 +4,7 @@ param
     [String]$projectsParameterFile,
     
     [Parameter(Mandatory = $True, HelpMessage = 'The type of resource.')]
-    [String]$resourceType,
-    
-    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
-    [string]$runas
+    [String]$resourceType
 )
 
 function Store-ParametersToFile { 
@@ -259,9 +256,4 @@ function New-Resource {
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-
-& "$commonPSFolder\Invoke-NewProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -resourceType $resourceType `
-    -parameterFileName "$resourceType.parameters.json" `
-    -runas $runas
+& "$commonPSFolder\Invoke-NewProcess.ps1" -projectsParameterFile $projectsParameterFile -resourceType $resourceType -parameterFileName "$resourceType.parameters.json"

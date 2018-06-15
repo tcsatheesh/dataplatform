@@ -21,10 +21,10 @@ function Set-RoleAssignment {
     )
     Write-Verbose "Role assignment for role $roleName with id $objectId for resource group $resourceGroupName"
     $res1 = $null
-    if ($objectId -ne $null) {
+    if (-not [string]::IsNullOrEmpty($objectId)) {
         $res1 = Get-AzureRmRoleAssignment -ObjectId $objectId -ResourceGroupName $resourceGroupName -RoleDefinitionName $roleName -ErrorAction SilentlyContinue
     }
-    if ($res1 -eq $null -and $objectId -ne $null) {
+    if ($res1 -eq $null -and (-not [string]::IsNullOrEmpty($objectId))) {
         $app = Get-AzureRmADApplication -ObjectId $objectId -ErrorAction SilentlyContinue
         if ($app -ne $null) {
             $res1 = New-AzureRmRoleAssignment -ObjectId $objectId -ResourceGroupName $resourceGroupName -RoleDefinitionName $roleName

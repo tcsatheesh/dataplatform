@@ -110,8 +110,13 @@ function Set-Resource {
     $secretCredential = New-Object System.Management.Automation.PSCredential ($resource.name, $secureSecretValue)   
     $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -ErrorAction SilentlyContinue
     if ( $secret -eq $null) {
-        $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -SecretValue $secretCredential.Password -Expires $secretExpiry
-        Write-Verbose "Secret $($secretCredential.UserName) added to the key vault $keyVaultName"
+        $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -SecretValue $secretCredential.Password -Expires $secretExpiry -ErrorAction SilentlyContinue
+        if ($kyvlt -eq $null){
+            Write-Verbose "Secret $($secretCredential.UserName) not added to the key vault $keyVaultName. $keyvlt"
+        }
+        else {
+            Write-Verbose "Secret $($secretCredential.UserName) added to the key vault $keyVaultName"
+        }
     }
     elseif ($resource.updateSecret) {
         Write-Verbose "Update specified for the secret $($secretCredential.UserName) in the key vault $keyVaultName"

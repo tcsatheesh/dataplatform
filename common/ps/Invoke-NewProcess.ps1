@@ -4,9 +4,7 @@ param(
     [Parameter(Mandatory = $True, HelpMessage = 'The resource type.')]
     [string]$resourceType,
     [Parameter(Mandatory = $True, HelpMessage = 'The parameter file for the resource type.')]
-    [string]$parameterFileName,
-    [Parameter(Mandatory = $True, HelpMessage = 'The runas role.')]
-    [string]$runas
+    [string]$parameterFileName
     
 )
 
@@ -17,7 +15,8 @@ $parameters = Get-TemplateParameters -resourceType $resourceType -parameterFileN
 $projectsParameterFileName = "projects.parameters.json"
 if (-not [string]::Equals($projectsParameterFileName.toLower(), $parameterFileName.toLower())) {
     $projectParameters = Get-ResourceParameters -parameterFileName $projectsParameterFileName
-    $selectedreslist = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $runas}
+    $environment = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq "envtype"}
+    $selectedreslist = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $environment.value}
     $resourceTypedef = $selectedreslist.resources | Where-Object {$_.resourceType -eq $resourceType}
     $parameters.parameters.resources.value | ForEach-Object { if ($_.enabled -eq $null) {$_ | Add-Member -Name 'enabled' -MemberType Noteproperty -Value $false} else {$_.enabled = $false} }
     if ($resourceTypedef.resources.subtype -ne $null) {

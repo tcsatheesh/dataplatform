@@ -1,10 +1,7 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile,
-
-    [Parameter(Mandatory = $True, HelpMessage = 'The user type to runas.')]
-    [String]$runas
+    [String]$projectsParameterFile
 )
 function Remove-Resource2 {
     param (
@@ -25,7 +22,8 @@ function Remove-Resource2 {
 }
 
 function Remove-Resources2 {
-    $resources = ($parameters.parameters.resources.value | Where-Object {$_.type -eq $runas}).resources
+    $deployedEnvironment = $parameters.parameters.resources.value | Where-Object {$_.type -eq "envtype"}
+    $resources = ($parameters.parameters.resources.value | Where-Object {$_.type -eq $deployedEnvironment.value}).resources
     $index = $resources.Length - 1
     foreach ($r in $resources) {
         $resource = $resources[$index--]        

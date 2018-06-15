@@ -42,7 +42,7 @@ function Set-Group {
 function Set-Resource {
     param (
         [object]$resource
-    )
+    )    
     $createNew = Get-CreateADGroupsStatus
     $resource.id = Set-Group -groupName $resource.name -createNew $createNew
 }

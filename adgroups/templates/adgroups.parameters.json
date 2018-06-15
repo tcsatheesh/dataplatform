@@ -41,7 +41,7 @@
                     "email": "{0}-{1}-{2}-endusers@{3}"
                 },
                 {
-                    "type": "analysisadmin",
+                    "type": "analysts",
                     "name": "Developers",
                     "id": "",
                     "email": "developers@rubycom.info"
