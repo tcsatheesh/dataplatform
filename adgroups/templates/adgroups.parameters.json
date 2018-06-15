@@ -42,9 +42,9 @@
                 },
                 {
                     "type": "analysts",
-                    "name": "Developers",
+                    "name": "{0}-{1}-{2}-analysts",
                     "id": "",
-                    "email": "developers@rubycom.info"
+                    "email": "{0}-{1}-{2}-analysts@{3}"
                 }
             ],
             "metadata": {

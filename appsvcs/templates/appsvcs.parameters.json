@@ -167,7 +167,7 @@
                         {
                             "name": "sslCertName",
                             "type": "value",
-                            "value": "portal.rubycom.info"
+                            "value": "<portal certificate name>"
                         },
                         {
                             "name": "sslCertData",
@@ -175,7 +175,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "portal-rubycom-info-certificate"
+                                "secretName": "<portal certificate name replace dot with dash>-certificate"
                             }
                         },
                         {
@@ -184,13 +184,13 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "portal-rubycom-info-certificate-password"
+                                "secretName": "<portal certificate name replace dot with dash>-certificate-password"
                             }
                         },
                         {
                             "name": "sslCertHostName",
                             "type": "value",
-                            "value": "portal.rubycom.info"
+                            "value": "<portal certificate name>"
                         },
                         {
                             "name": "sslCertThumbprint",
@@ -259,7 +259,7 @@
                         {
                             "name": "sslCertName",
                             "type": "value",
-                            "value": "app.rubycom.info"
+                            "value": "<certificate name>"
                         },
                         {
                             "name": "sslCertData",
@@ -267,7 +267,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate"
+                                "secretName": "<app certificate name replace dot with dash>-certificate"
                             }
                         },
                         {
@@ -276,13 +276,13 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate-password"
+                                "secretName": "<app certificate name replace dot with dash>-certificate-password"
                             }
                         },
                         {
                             "name": "sslCertHostName",
                             "type": "value",
-                            "value": "app.rubycom.info"
+                            "value": "<certificate name>"
                         },
                         {
                             "name": "sslCertThumbprint",

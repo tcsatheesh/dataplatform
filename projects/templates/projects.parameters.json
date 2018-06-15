@@ -418,14 +418,6 @@
                     "type": "datalakestore",
                     "resources": [
                         {
-                            "resourceType": "principals",
-                            "resources": [
-                                {
-                                    "type": "deploymentPrincipal"
-                                }
-                            ]
-                        },
-                        {
                             "resourceType": "adgroups",
                             "resources": [
                                 {
