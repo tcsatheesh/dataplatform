@@ -113,19 +113,23 @@ function Get-ApplicationParameter {
         [string]$type
     )
     $applicationsParameterFileName = "principals.parameters.json"
-    $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName
-    $principal = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $type}
-    return $principal
+    $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue
+    if ($applicationsParameters -ne $null) {
+        $principal = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $type}
+        return $principal
+    }
 }
 
-function Get-ADGroupParameter {
+function Get-ADGroupFromType {
     param (
         [string]$type
     )
     $adgroupsParameterFileName = "adgroups.parameters.json"
-    $adgroupsParameters = Get-ResourceParameters -parameterFileName $adgroupsParameterFileName
-    $adgroup = $adgroupsParameters.parameters.resources.value | Where-Object { $_.type -eq $type } 
-    return $adgroup
+    $adgroupsParameters = Get-ResourceParameters -parameterFileName $adgroupsParameterFileName -ErrorAction SilentlyContinue
+    if ($adgroupsParameters -ne $null) {
+        $adgroup = $adgroupsParameters.parameters.resources.value | Where-Object { $_.type -eq $type } 
+        return $adgroup
+    }
 }
 
 function New-Password {

@@ -8,120 +8,250 @@
                     "type": "sharedStorage",
                     "name": "{0}-shd-stg-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "storage",
                     "name": "{0}-{1}-{2}-stg-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Data Lake Store Super User",
+                            "policies":[
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "data",
                     "name": "{0}-{1}-{2}-data-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "app",
                     "name": "{0}-{1}-{2}-app-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    },
-                    "readers": {
-                        "adgroupsTypeRef": [
-                            "keyvaultadmins",
-                            "developers",
-                            "testers"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Reader",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "keyvaultadmins",
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Data Lake Analytics Developer",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Data Factory Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "databricks",
                     "name": "{0}-{1}-{2}-db-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "vnet",
                     "name": "{0}-{1}-{2}-vnet-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "vms",
                     "name": "{0}-{1}-{2}-vms-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "web",
                     "name": "{0}-{1}-{2}-web-rg",
                     "location": "North Europe",
-                    "contributors": {
-                        "adgroupsTypeRef": [
-                            "managers"
-                        ],
-                        "principalsTypeRef": [
-                            "deploymentPrincipal",
-                            "applicationPrincipal"
-                        ]
-                    }
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "metadata": {

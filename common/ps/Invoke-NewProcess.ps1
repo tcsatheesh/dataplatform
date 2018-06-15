@@ -31,6 +31,7 @@ if (-not [string]::Equals($projectsParameterFileName.toLower(), $parameterFileNa
     }
     Write-Verbose "Selected resources $selectedresources"
     $selectedresources | ForEach-Object {$_.enabled = $true}
+    $parameters.parameters.resources.value = $selectedresources
 }
 
 function New-Resources {
