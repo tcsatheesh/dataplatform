@@ -1,0 +1,269 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "sharedStorage",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "storage",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "data",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "app",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Reader",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "keyvaultadmins",
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "databricks",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "vnet",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "vms",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "web",
+                    "resourceType": "resourcegroups",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "managers"
+                                    ]
+                                },
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal",
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "adla",
+                    "resourceType": "adlas",
+                    "accesspolicies": [
+                        {
+                            "type": "Data Lake Analytics Developer",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "adf",
+                    "resourceType": "adfs",
+                    "accesspolicies": [
+                        {
+                            "type": "Data Factory Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "adlstore",
+                    "resourceType": "adlstores",
+                    "accesspolicies": [
+                        {
+                            "type": "Data Lake Store Super User",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers",
+                                        "testers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

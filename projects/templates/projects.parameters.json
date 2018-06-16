@@ -459,6 +459,20 @@
                                     "type": "adla"
                                 }
                             ]
+                        },
+                        {
+                            "resourceType": "accesspolicies",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                },
+                                {
+                                    "type": "adlstore"
+                                },
+                                {
+                                    "type": "adla"
+                                }
+                            ]
                         }
                     ]
                 },
