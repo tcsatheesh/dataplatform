@@ -437,10 +437,18 @@
                             "resourceType": "resourcegroups",
                             "resources": [
                                 {
-                                    "type": "storage"
+                                    "type": "sharedstorage"
                                 },
                                 {
                                     "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "storageaccounts",
+                            "resources": [
+                                {
+                                    "type": "sharedstorage"
                                 }
                             ]
                         },
@@ -461,16 +469,18 @@
                             ]
                         },
                         {
+                            "resourceType": "adfs",
+                            "resources": [                                
+                                {
+                                    "type": "adf"
+                                }
+                            ]
+                        },
+                        {
                             "resourceType": "accesspolicies",
                             "resources": [
                                 {
                                     "type": "app"
-                                },
-                                {
-                                    "type": "adlstore"
-                                },
-                                {
-                                    "type": "adla"
                                 }
                             ]
                         }
@@ -559,6 +569,19 @@
                             "resources": [
                                 {
                                     "type": "appdb"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "customroles",
+                    "resources": [
+                        {
+                            "resourceType": "customroles",
+                            "resources": [
+                                {
+                                    "type": "dataandaideveloper"
                                 }
                             ]
                         }

@@ -7,30 +7,15 @@ param
     [String]$resourceType
 )
 
-function Store-ParametersToFile { 
-    param (
-        [string]$resourceName,
-        [object]$parameters,
-        [string]$parameterFileName
-    )
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $destinationPath = "$projectFolder\$resourceName"
-    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
-    $destinationPath = "$destinationPath\$parameterFileName"
-    Write-Verbose "Destination Path is $destinationPath"
-    $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $destinationPath -Force -Encoding utf8
-    Write-Verbose "Project parameter file created at: $destinationPath"
-}
-
 function Copy-TemplateFile {
     param(
-        [string]$resourceName,
+        [string]$resourceType,
         [string]$templateFileName
     )
-    $sourcePath = (Get-Item -Path "$PSScriptRoot\..\..\$resourceName\templates\$templateFileName").FullName
+    $sourcePath = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\templates\$templateFileName").FullName
     Write-Verbose "Source Path is $sourcePath"
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $destinationPath = "$projectFolder\$resourceName"
+    $destinationPath = "$projectFolder\$resourceType"
     $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
     $destinationPath = "$destinationPath\$templateFileName"
     Write-Verbose "Destination Path is $destinationPath"
@@ -240,7 +225,7 @@ function New-ParameterFile {
     Set-AdditionalParameters -resource $resource -resourceParameters $resourceParameters
 
     $resourceParameterFileName = "$($resource.type).parameters.json"
-    Store-ParametersToFile -resourceName $resource.resourceType `
+    Set-ParametersToFile -resourceType $resource.resourceType `
         -parameters $resourceParameters `
         -parameterFileName $resourceParameterFileName
     return $resourceParameterFileName   
@@ -252,7 +237,7 @@ function New-Resource {
     )
     $resource.Name = Get-FormatedText($resource.name)    
     $resource.parameterFileName = New-ParameterFile -resource $resource
-    Copy-TemplateFile -resourceName $resource.resourceType -templateFileName $resource.templateFileName
+    Copy-TemplateFile -resourceType $resource.resourceType -templateFileName $resource.templateFileName
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName

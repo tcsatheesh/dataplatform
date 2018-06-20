@@ -7,7 +7,7 @@
                 {
                     "type": "adlstore",
                     "resourceType": "adlstores",
-                    "resourceGroupTypeRef": "storage",
+                    "resourceGroupTypeRef": "app",
                     "name": "{0}{1}{2}neadlsstore",
                     "location": "North Europe",
                     "templateFileName": "adlstore.json",

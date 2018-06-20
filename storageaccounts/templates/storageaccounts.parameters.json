@@ -16,7 +16,7 @@
                 { 
                     "type": "storage",
                     "resourceType": "storageaccounts",
-                    "resourceGroupTypeRef": "storage",
+                    "resourceGroupTypeRef": "app",
                     "name": "{0}{1}{2}nestgacc",
                     "location": "North Europe",
                     "templateFileName": "v2genstorage.json",

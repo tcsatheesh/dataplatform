@@ -18,14 +18,15 @@ param
     [Parameter(Mandatory = $True, HelpMessage = 'The vsts account branch.')]
     [String]$branch,
 
+    [Parameter(Mandatory = $True, HelpMessage = 'The type of environment to deploy.')]
+    [String]$envtype,
+
     [Parameter(Mandatory = $False, HelpMessage = 'Should we create AD Groups in Azure AD.')]
     [bool]$createADGroups = $false,
 
     [Parameter(Mandatory = $False, HelpMessage = 'The project folder')]
-    [string]$projectFolder = $null,
+    [string]$projectFolder = $null
 
-    [Parameter(Mandatory = $True, HelpMessage = 'The type of environment to deploy.')]
-    [String]$envtype
 )
 
 function Get-SubscriptionDetails {

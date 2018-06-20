@@ -16,10 +16,7 @@ function Get-ADGroupObjectId {
 }
 
 function Get-CurrentUserUpn {
-    $parameterFileName = "projects.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-
-    $subscriptionId = ($parameters.parameters.resources.value | Where-Object {$_.type -eq "subscription"}).id
+    $subscriptionId = Get-SubscriptionId
     $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId
     $upn = $sub.Account.Id
     Write-Verbose "Current user upn is : $upn"

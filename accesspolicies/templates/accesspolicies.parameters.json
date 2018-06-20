@@ -49,6 +49,17 @@
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            "type": "Data and AI Developer",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers"
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 },
@@ -104,9 +115,18 @@
                                 {
                                     "type": "adgroups",
                                     "ref": [
-                                        "keyvaultadmins",
-                                        "developers",
-                                        "testers"
+                                        "keyvaultadmins"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Data and AI Developer",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "developers"
                                     ]
                                 }
                             ]

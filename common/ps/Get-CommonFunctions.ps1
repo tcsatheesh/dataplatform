@@ -78,19 +78,17 @@ function Get-CurrentIPAddress {
 function Get-ResourceParameters {
     param
     (
-        [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
+        [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
         [String]$parameterFileName
     )
 
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $projectParameterFullPath = "$projectFolder\$parameterFileName"
-    # Write-Verbose "Project Parameter Full Path: $projectParameterFullPath"
-    if (-not (Test-Path -Path $projectParameterFullPath)) {
-        throw "Project parameter file not found in $projectParameterFullPath"
+    $parameterFullPath = "$projectFolder\$parameterFileName"
+    if (-not (Test-Path -Path $parameterFullPath)) {
+        throw "Project parameter file not found in $parameterFullPath"
     }
-    $projectParameterFullPath = (Get-Item -Path $projectParameterFullPath).FullName
-    # Write-Verbose "Project Parameter Full Path: $projectParameterFullPath"
-    $parameters = Get-Content -Path $projectParameterFullPath -Raw | ConvertFrom-JSON
+    $parameterFullPath = (Get-Item -Path $parameterFullPath).FullName    
+    $parameters = Get-Content -Path $parameterFullPath -Raw | ConvertFrom-JSON
     return $parameters 
 }
 
@@ -190,12 +188,17 @@ function Update-ProjectParameters {
     $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $projectParameterFullPath -Force -Encoding utf8
 }
 
-function Set-Subscription {
+function Get-SubscriptionId {    
     $parameterFileName = "projects.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
 
     $subscriptionId = ($parameters.parameters.resources.value | Where-Object {$_.type -eq "subscription"}).id
-    $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId    
+    return $subscriptionId
+}
+
+function Set-Subscription {
+    $subscriptionId = Get-SubscriptionId
+    $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId
 }
 
 function Get-KeyVaultName {
@@ -229,4 +232,28 @@ function Get-ResourcesFromResourceType {
     $parameterFileName = "projects.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
     
+}
+
+function Set-ParametersToFile { 
+    param (
+        [string]$resourceType,
+        [object]$parameters,
+        [string]$parameterFileName
+    )
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    $destinationPath = "$projectFolder\$resourceType"
+    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
+    $destinationPath = "$destinationPath\$parameterFileName"
+    Write-Verbose "Destination Path is $destinationPath"
+    $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $destinationPath -Force -Encoding utf8
+    Write-Verbose "Project parameter file created at: $destinationPath"
+}
+
+function Get-ProjectTemplateFilePath {
+    param(
+        [string]$resourceType,
+        [string]$fileName
+    )
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    return (Get-Item -Path "$projectFolder\$resourceType\$fileName").FullName
 }
