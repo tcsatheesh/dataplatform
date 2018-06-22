@@ -29,7 +29,10 @@ function Remove-Resource {
     param (
         [object]$resource
     )
-    Remove-Group -groupName $resource.name
+    $createNew = Get-CreateADGroupsStatus
+    if ($createNew) {
+        Remove-Group -groupName $resource.name
+    }
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"

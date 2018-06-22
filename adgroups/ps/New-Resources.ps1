@@ -9,7 +9,11 @@ function New-Resource {
         [object]$resource
     )
     $resource.name = Get-FormatedText -strFormat $resource.name
-    $resource.email = Get-FormatedText -strFormat $resource.email
+    $group = Get-AzureADGroup -SearchString $resource.name -ErrorAction SilentlyContinue
+    if ($group -ne $null) {
+        $resource.id = $group.ObjectId
+        $resource.email = $group.mail    
+    }
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName

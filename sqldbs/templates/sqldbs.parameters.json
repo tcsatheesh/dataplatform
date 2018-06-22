@@ -7,7 +7,7 @@
                 {
                     "type" : "appdb",        
                     "resourceType": "sqldbs",
-                    "resourceGroupTypeRef": "data",
+                    "resourceGroupTypeRef": "web",
                     "name" : "{0}{1}{2}sqldb01",
                     "location": "North Europe",
                     "templateFileName": "sqldb.json",

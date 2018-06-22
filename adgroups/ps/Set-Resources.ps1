@@ -4,16 +4,6 @@ param
     [String]$projectsParameterFile
 )
 
-function Get-CreateADGroupsStatus {
-    $createADGroups = "createADGroups"
-    $parameterFileName = "projects.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $createADGroups}
-    $createNew = $resource.status
-    Write-Verbose "Create status for AD Groups $createNew"
-    return $createNew
-}
-
 function Set-Group {
     param(
         [string]$groupName,
@@ -36,7 +26,7 @@ function Set-Group {
     }
     $groupId = $group.ObjectId
     Write-Verbose "Group id for $groupName is $groupId"
-    return $groupId
+    return $group
 }
 
 function Set-Resource {
@@ -44,7 +34,7 @@ function Set-Resource {
         [object]$resource
     )    
     $createNew = Get-CreateADGroupsStatus
-    $resource.id = Set-Group -groupName $resource.name -createNew $createNew
+    $group = Set-Group -groupName $resource.name -createNew $createNew
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"

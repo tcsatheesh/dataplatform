@@ -257,3 +257,13 @@ function Get-ProjectTemplateFilePath {
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
     return (Get-Item -Path "$projectFolder\$resourceType\$fileName").FullName
 }
+
+function Get-CreateADGroupsStatus {
+    $createADGroups = "createADGroups"
+    $parameterFileName = "projects.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $createADGroups}
+    $createNew = $resource.status
+    Write-Verbose "Create status for AD Groups $createNew"
+    return $createNew
+}

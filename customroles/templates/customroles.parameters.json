@@ -7,7 +7,14 @@
                 {
                     "type": "dataandaideveloper",
                     "path": "datadeveloper.json",
-                    "update": false
+                    "update": true,
+                    "name": "Data and AI Developer"
+                },
+                {
+                    "type": "datalakestoresuperuser",
+                    "path": "datalakestoresuperuser.json",
+                    "update": true,
+                    "name": "Data Lake Store Super User"
                 }
             ]
         }

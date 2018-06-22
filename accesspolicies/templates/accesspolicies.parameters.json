@@ -49,17 +49,6 @@
                                     ]
                                 }
                             ]
-                        },
-                        {
-                            "type": "Data and AI Developer",
-                            "policies": [
-                                {
-                                    "type": "adgroups",
-                                    "ref": [
-                                        "developers"
-                                    ]
-                                }
-                            ]
                         }
                     ]
                 },
@@ -95,12 +84,6 @@
                             "type": "Contributor",
                             "policies": [
                                 {
-                                    "type": "adgroups",
-                                    "ref": [
-                                        "managers"
-                                    ]
-                                },
-                                {
                                     "type": "principals",
                                     "ref": [
                                         "deploymentPrincipal",
@@ -115,7 +98,7 @@
                                 {
                                     "type": "adgroups",
                                     "ref": [
-                                        "keyvaultadmins"
+                                        "onprem-keyvaultadmins"
                                     ]
                                 }
                             ]
@@ -126,7 +109,7 @@
                                 {
                                     "type": "adgroups",
                                     "ref": [
-                                        "developers"
+                                        "onprem-developers"
                                     ]
                                 }
                             ]
@@ -213,16 +196,32 @@
                             "type": "Contributor",
                             "policies": [
                                 {
-                                    "type": "adgroups",
-                                    "ref": [
-                                        "managers"
-                                    ]
-                                },
-                                {
                                     "type": "principals",
                                     "ref": [
                                         "deploymentPrincipal",
                                         "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Website Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "onprem-developers"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Application Insights Component Contributor",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "onprem-developers"
                                     ]
                                 }
                             ]
@@ -275,8 +274,7 @@
                                 {
                                     "type": "adgroups",
                                     "ref": [
-                                        "developers",
-                                        "testers"
+                                        "onprem-developers"
                                     ]
                                 }
                             ]

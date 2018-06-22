@@ -14,6 +14,15 @@
                     "parameterFileName": "v2genstorage.parameters.json"
                 },
                 { 
+                    "type": "diagnostics",
+                    "resourceType": "storageaccounts",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}nestgdia",
+                    "location": "North Europe",
+                    "templateFileName": "v2genstorage.json",
+                    "parameterFileName": "v2genstorage.parameters.json"
+                },
+                { 
                     "type": "storage",
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "app",

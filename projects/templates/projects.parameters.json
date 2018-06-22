@@ -36,409 +36,19 @@
                     "branch": ""
                 },
                 {
-                    "type": "user-administrator",
-                    "resources": [
-                        {
-                            "resourceType": "principals",
-                            "resources" : [
-                                {
-                                    "type": "deploymentPrincipal"
-                                },
-                                {
-                                    "type": "applicationPrincipal"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adgroups",
-                            "resources" : [
-                                {
-                                    "type": "managers"                                    
-                                },
-                                {
-                                    "type": "keyvaultadmins"                                    
-                                },
-                                {
-                                    "type": "developers"                                    
-                                },
-                                {
-                                    "type": "testers"                                    
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adgroupmembers",
-                            "resources" : [
-                                {
-                                    "type": "keyvaultadmins"
-                                },
-                                {
-                                    "type": "managers"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "subscription-owner",
-                    "resources": [
-                        {
-                            "resourceType": "resourcegroups",
-                            "resources" : [
-                                {
-                                    "type": "sharedStorage"
-                                },
-                                {
-                                    "type": "storage"
-                                },
-                                {
-                                    "type": "data"
-                                },
-                                {
-                                    "type": "app"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "storageaccounts",
-                            "resources" : [
-                                {
-                                    "type": "sharedStorage"
-                                },
-                                {
-                                    "type": "storage"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "keyvault-administrator",
-                    "resources": [
-                        {
-                            "resourceType": "keyvaults",
-                            "resources" : [
-                                {
-                                    "type" : "appkeyvault"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "clientsecrets",
-                            "resources" : [
-                                {
-                                    "type": "password",
-                                    "subtype": "deploymentPrincipal"
-                                },
-                                {
-                                    "type": "password",
-                                    "subtype": "applicationPrincipal"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "keyvaultsecrets",
-                            "resources" : [
-                                {
-                                    "type": "storageconnectionstring",
-                                    "subtype": "storage"
-                                },
-                                {
-                                    "type": "login",
-                                    "subtype": "sqladmin"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "manager",
-                    "resources": [
-                        {
-                            "resourceType": "adlstores",
-                            "resources" : [
-                                {
-                                    "type": "adlstore"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adlsowners",
-                            "resources" : [
-                                {
-                                    "type": "ownergroup"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adlsfolders",
-                            "resources" : [
-                                {
-                                    "type": "default"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "vsts",
-                    "resources": [
-                        {
-                            "resourceType": "adfs",
-                            "resources" : [
-                                {
-                                    "type": "adf"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adlas",
-                            "resources" : [
-                                {
-                                    "type": "adla"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "sqldbs",
-                            "resources" : [
-                                {
-                                    "type": "appdb"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "sqldws",
-                            "resources" : [
-                                {
-                                    "type": "appdw"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "analysis",
-                            "resources" : [
-                                {
-                                    "type": "as"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "linkedservices",
-                            "resources" : [
-                                {
-                                    "type": "keyvault"
-                                },
-                                {
-                                    "type": "storage"
-                                },
-                                {
-                                    "type": "adlstore"
-                                },
-                                {
-                                    "type": "adla"
-                                },
-                                {
-                                    "type": "sqldb"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "definition",
-                    "resources": [
-                        {
-                            "resourceType": "principals",
-                            "resources" : [
-                                {
-                                    "type": "deploymentPrincipal"
-                                },
-                                {
-                                    "type": "applicationPrincipal"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adgroups",
-                            "resources" : [
-                                {
-                                    "type": "managers"                                    
-                                },
-                                {
-                                    "type": "keyvaultadmins"                                    
-                                },
-                                {
-                                    "type": "developers"                                    
-                                },
-                                {
-                                    "type": "testers"                                    
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adgroupmembers",
-                            "resources" : [
-                                {
-                                    "type": "keyvaultadmins"
-                                },
-                                {
-                                    "type": "managers"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "resourcegroups",
-                            "resources" : [
-                                {
-                                    "type": "sharedStorage"
-                                },
-                                {
-                                    "type": "storage"
-                                },
-                                {
-                                    "type": "data"
-                                },
-                                {
-                                    "type": "app"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "storageaccounts",
-                            "resources" : [
-                                {
-                                    "type": "sharedStorage"
-                                },
-                                {
-                                    "type": "storage"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "keyvaults",
-                            "resources" : [
-                                {
-                                    "type" : "appkeyvault"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "clientsecrets",
-                            "resources" : [
-                                {
-                                    "type": "password",
-                                    "subtype": "deploymentPrincipal"
-                                },
-                                {
-                                    "type": "password",
-                                    "subtype": "applicationPrincipal"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "keyvaultsecrets",
-                            "resources" : [
-                                {
-                                    "type": "storageconnectionstring",
-                                    "subtype": "storage"
-                                },
-                                {
-                                    "type": "login",
-                                    "subtype": "sqladmin"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adlstores",
-                            "resources" : [
-                                {
-                                    "type": "adlstore"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adlsowners",
-                            "resources" : [
-                                {
-                                    "type": "ownergroup"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adlsfolders",
-                            "resources" : [
-                                {
-                                    "type": "default"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "cogsvcs",
-                            "resources" : [
-                                {
-                                    "type": "luis"
-                                },
-                                {
-                                    "type": "textanalytics"
-                                },
-                                {
-                                    "type": "vision"
-                                },
-                                {
-                                    "type": "face"
-                                },
-                                {
-                                    "type": "speech"
-                                },
-                                {
-                                    "type": "speechtranslation"
-                                },
-                                {
-                                    "type": "search"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "teamproject",
-                    "resources": [
-                        {
-                            "resourceType": "teamprojects",
-                            "resources": [
-                                {
-                                    "type": "teamproject"
-                                }
-                            ]
-                        }                        
-                    ]
-                },
-                {
-                    "type": "datalakestore",
+                    "type": "devplatform",
                     "resources": [
                         {
                             "resourceType": "adgroups",
                             "resources": [
                                 {
-                                    "type": "developers"
-                                }
-                            ]
-                        },
-                        {
-                            "resourceType": "adgroupmembers",
-                            "resources": [
-                                {
-                                    "type": "developers"
+                                    "type": "onprem-developers"
                                 }
                             ]
                         },
                         {
                             "resourceType": "resourcegroups",
                             "resources": [
-                                {
-                                    "type": "sharedstorage"
-                                },
                                 {
                                     "type": "app"
                                 }
@@ -448,7 +58,7 @@
                             "resourceType": "storageaccounts",
                             "resources": [
                                 {
-                                    "type": "sharedstorage"
+                                    "type": "diagnostics"
                                 }
                             ]
                         },
@@ -481,6 +91,9 @@
                             "resources": [
                                 {
                                     "type": "app"
+                                },
+                                {
+                                    "type": "adlstore"
                                 }
                             ]
                         }
@@ -582,6 +195,54 @@
                             "resources": [
                                 {
                                     "type": "dataandaideveloper"
+                                },
+                                {
+                                    "type": "datalakestoresuperuser"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "webplatform",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "onprem-developers"
+                                }
+                            ]
+                        },                        
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "web"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldbs",
+                            "resources": [
+                                {
+                                    "type": "appdb"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "appsvcs",
+                            "resources": [
+                                {
+                                    "type": "appsvcwinnossl"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "accesspolicies",
+                            "resources": [
+                                {
+                                    "type": "web"
                                 }
                             ]
                         }

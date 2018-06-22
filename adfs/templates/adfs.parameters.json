@@ -18,7 +18,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "storageaccounts",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "diagnostics",
                                 "property" : "name"
                             }                            
                         },
@@ -27,7 +27,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "resourcegroups",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "app",
                                 "property" : "name"
                             }                            
                         }

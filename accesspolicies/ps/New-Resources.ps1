@@ -21,6 +21,15 @@ function New-Resource {
         $selectedResourceResourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef $selectedResource.type
         $resource | Add-Member -Name 'resourceGroupName' -MemberType Noteproperty -Value $selectedResourceResourceGroupName
     }
+    foreach ($policy in $resource.accesspolicies) {
+        Write-Verbose "Policy type is $($policy.type)"
+        if ($policy.type -eq "Custom") {
+            $val = Get-ValueFromResource -resourceType $policy.ref.resourceType `
+                                        -typeFilter $policy.ref.typeFilter `
+                                        -property $policy.ref.property
+            $policy.type = $val
+        }
+    }
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName

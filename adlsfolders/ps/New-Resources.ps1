@@ -37,14 +37,14 @@ function New-Resource {
             $aadType = $permission.AADType
             Write-Verbose "Permission in $folderName for $aadName"
             if ($aadType -eq "SPN") {
-                $resource = Get-Principal -type $aadName
-                $aadName = $resource.name
-                $objectid = $resource.id
+                $principal = Get-Principal -type $aadName
+                $aadName = $principal.name
+                $objectid = $principal.id
             } 
             else {
-                $resource = Get-ADGroup -type $aadName
-                $aadName = $resource.name
-                $objectid = $resource.id
+                $group = Get-ADGroup -type $aadName
+                $aadName = $group.name
+                $objectid = $group.id
             }
             Write-Verbose "Processing folder $folderName for aad user $aadName"
             $permission.AADName = $aadName

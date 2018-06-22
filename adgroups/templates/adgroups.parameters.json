@@ -8,43 +8,85 @@
                     "type": "managers",
                     "name": "{0}-{1}-{2}-managers",
                     "id": "",
-                    "email": "{0}-{1}-{2}-managers@{3}"
+                    "email": ""
                 },
                 {
                     "type": "keyvaultadmins",
                     "name": "{0}-{1}-{2}-keyvaultadmins",
                     "id": "",
-                    "email": "{0}-{1}-{2}-keyvaultadmins@{3}"
+                    "email": ""
                 },
                 {
                     "type": "sqladmins",
                     "name": "{0}-{1}-{2}-sqladmins",
                     "id": "",
-                    "email": "{0}-{1}-{2}-sqladmins@{3}"
+                    "email": ""
                 },
                 {
                     "type": "developers",
                     "name": "{0}-{1}-{2}-developers",
                     "id": "",
-                    "email": "{0}-{1}-{2}-developers@{3}"
+                    "email": ""
                 },
                 {
                     "type": "testers",
                     "name": "{0}-{1}-{2}-testers",
                     "id": "",
-                    "email": "{0}-{1}-{2}-testers@{3}"
+                    "email": ""
                 },
                 {
                     "type": "endusers",
                     "name": "{0}-{1}-{2}-endusers",
                     "id": "",
-                    "email": "{0}-{1}-{2}-endusers@{3}"
+                    "email": ""
                 },
                 {
                     "type": "analysts",
                     "name": "{0}-{1}-{2}-analysts",
                     "id": "",
-                    "email": "{0}-{1}-{2}-analysts@{3}"
+                    "email": ""
+                },
+                {
+                    "type": "onprem-analysts",
+                    "name": "Data Analysts",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "onprem-developers",
+                    "name": "Application Developers",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "onprem-support",
+                    "name": "Application Supporters",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "onprem-platform",
+                    "name": "Platform Management",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "onprem-dbadmins",
+                    "name": "Database Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "onprem-endusers",
+                    "name": "End Users",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "onprem-kevaultadmins",
+                    "name": "Keyvault Administrators",
+                    "id": "",
+                    "email": ""
                 }
             ],
             "metadata": {

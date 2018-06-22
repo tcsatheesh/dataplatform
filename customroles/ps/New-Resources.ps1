@@ -11,6 +11,8 @@ function New-Resource {
     $resourceType = (Get-Item -Path $PSScriptRoot).Parent.Name
     $resourceParameterFileName = $resource.path
     $resourceParameters = Get-TemplateParameters -resourceType $resourceType -parameterFileName $resourceParameterFileName
+    $resource.name = Get-FormatedText -strFormat $resource.name
+    $resourceParameters.Name = $resource.name
     $name = $resourceParameters.Name
     $rdef = Get-AzureRmRoleDefinition -Name $name -ErrorAction SilentlyContinue
     if ($rdef -ne $null -and $resource.update) {
