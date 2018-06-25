@@ -13,7 +13,6 @@
 		"Microsoft.Support/*",
 		"Microsoft.DataLakeAnalytics/accounts/*",
 		"Microsoft.Storage/storageAccounts/listkeys/action",
-		"Microsoft.Storage/storageAccounts/regeneratekey/action",
 		"Microsoft.Storage/storageAccounts/blobServices/containers/delete",
 		"Microsoft.Storage/storageAccounts/blobServices/containers/read",
 		"Microsoft.Storage/storageAccounts/blobServices/containers/write"
