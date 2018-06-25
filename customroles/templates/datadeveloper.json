@@ -1,7 +1,7 @@
 {
 	"Name": "Data and AI Developer",
 	"IsCustom": true,
-	"Description": "Lets a user or group be a developer.",
+	"Description": "Lets a user or group be a developer. This is a combination of Data Lake Analytics, Data Factory, Storage Account Key Operator Service Role and Storage Blob Data Contributor roles",
 	"Actions": [
 		"*/read",	
 		"Microsoft.Authorization/*/read",
@@ -11,7 +11,12 @@
 		"Microsoft.Resources/deployments/*",
 		"Microsoft.Resources/subscriptions/resourceGroups/read",
 		"Microsoft.Support/*",
-		"Microsoft.DataLakeAnalytics/accounts/*"
+		"Microsoft.DataLakeAnalytics/accounts/*",
+		"Microsoft.Storage/storageAccounts/listkeys/action",
+		"Microsoft.Storage/storageAccounts/regeneratekey/action",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/delete",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/read",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/write"
 	],
 	"NotActions": [
 		"Microsoft.DataLakeAnalytics/accounts/Delete",
@@ -26,7 +31,11 @@
 		"Microsoft.DataLakeAnalytics/accounts/computePolicies/Write",
 		"Microsoft.DataLakeAnalytics/accounts/computePolicies/Delete"
 	],
-	"DataActions": [],
+	"DataActions": [
+		"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write"
+	],
 	"NotDataActions": [],
 	"AssignableScopes": []
 }
