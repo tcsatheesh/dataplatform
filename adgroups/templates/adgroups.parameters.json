@@ -84,7 +84,7 @@
                 },
                 {
                     "type": "onprem-kevaultadmins",
-                    "name": "Keyvault Administrators",
+                    "name": "Key Vault Administrators",
                     "id": "",
                     "email": ""
                 }

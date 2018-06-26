@@ -70,14 +70,14 @@
                     ]
                 },
                 {
-                    "type": "discenckeyvault",
+                    "type": "vmskeyvault",
                     "resourceType": "keyvaults",
-                    "resourceGroupTypeRef": "app",
+                    "resourceGroupTypeRef": "vms",
                     "name": "{0}{1}{2}nekvltacc2",
                     "location": "North Europe",
                     "expiryTerm": 4,
                     "templateFileName": "keyvault.json",
-                    "parameterFileName": "keyvault.parameters.json",
+                    "parameterFileName": "keyvault-nosp.parameters.json",
                     "parameters": [
                         {
                             "name": "tenant",
@@ -96,57 +96,13 @@
                             "ref": {
                                 "resourceType": "adgroups",
                                 "property": "id",
-                                "typeFilter": "keyvaultadmins"
+                                "typeFilter": "onprem-kevaultadmins"
                             }
                         },
                         {
                             "name": "accessPolicies",
                             "subname": "tenantId",
                             "index": 0,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "projects",
-                                "property": "id",
-                                "typeFilter": "tenant"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "objectId",
-                            "index": 1,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "property": "servicePrincipal.id",
-                                "typeFilter": "deploymentPrincipal"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "tenantId",
-                            "index": 1,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "projects",
-                                "property": "id",
-                                "typeFilter": "tenant"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "objectId",
-                            "index": 2,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "property": "servicePrincipal.id",
-                                "typeFilter": "diskEncryptionPrincipal"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "tenantId",
-                            "index": 2,
                             "type": "reference",
                             "ref": {
                                 "resourceType": "projects",

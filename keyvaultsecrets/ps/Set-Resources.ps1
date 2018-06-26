@@ -112,7 +112,7 @@ function Set-Resource {
     if ( $secret -eq $null) {
         $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -SecretValue $secretCredential.Password -Expires $secretExpiry -ErrorAction SilentlyContinue
         if ($kyvlt -eq $null){
-            Write-Verbose "Secret $($secretCredential.UserName) not added to the key vault $keyVaultName. $keyvlt"
+            Write-Verbose "Secret $($secretCredential.UserName) not added to the key vault $keyVaultName. $kyvlt"
         }
         else {
             Write-Verbose "Secret $($secretCredential.UserName) added to the key vault $keyVaultName"

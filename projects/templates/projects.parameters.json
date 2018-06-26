@@ -36,7 +36,7 @@
                     "branch": ""
                 },
                 {
-                    "type": "devplatform",
+                    "type": "it-dp7-d",
                     "resources": [
                         {
                             "resourceType": "adgroups",
@@ -100,7 +100,7 @@
                     ]
                 },
                 {
-                    "type": "sqldb",
+                    "type": "it-sqldb-d",
                     "resources": [
                         {
                             "resourceType": "principals",
@@ -188,7 +188,7 @@
                     ]
                 },
                 {
-                    "type": "customroles",
+                    "type": "it-base-d",
                     "resources": [
                         {
                             "resourceType": "customroles",
@@ -204,7 +204,7 @@
                     ]
                 },
                 {
-                    "type": "webplatform",
+                    "type": "it-web-d",
                     "resources": [
                         {
                             "resourceType": "adgroups",
@@ -243,6 +243,71 @@
                             "resources": [
                                 {
                                     "type": "web"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-clstrs-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "onprem-kevaultadmins"
+                                }
+                            ]
+                        },                      
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "vnet"
+                                },
+                                {
+                                    "type": "vms"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "vmskeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "vmadmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "vnets",
+                            "resources": [
+                                {
+                                    "type": "dplt"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "pubips",
+                            "resources": [
+                                {
+                                    "type": "pubip"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "vms",
+                            "resources": [
+                                {
+                                    "type": "ubuntu1804"
                                 }
                             ]
                         }

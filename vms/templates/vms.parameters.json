@@ -238,6 +238,69 @@
                             "value": "dsvm"                            
                         }
                     ]
+                },                
+                {
+                    "type" : "ubuntu1804", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm03",
+                    "location": "North Europe",
+                    "templateFileName": "ubuntu1804.json",
+                    "parameterFileName": "ubuntu1804.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUserName",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "vmskeyvault",
+                                "secretName" : "{0}{1}{2}vm01-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "virtualMachineSize",
+                            "type": "value",
+                            "value": "Standard_F16s"
+                        },
+                        {
+                            "name": "virtualNetworkResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "virtualNetworkName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "kubernetes"                            
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Premium_LRS"
+                        },
+                        {
+                            "name": "diskSizeGB",
+                            "type": "value",
+                            "value": "64"
+                        }
+                    ]
                 }
             ]
         }

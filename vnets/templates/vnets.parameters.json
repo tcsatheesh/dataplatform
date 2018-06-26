@@ -16,7 +16,7 @@
                         {
                             "name": "addressPrefix",
                             "type": "value",
-                            "value": "10.0.0.0/22"
+                            "value": "10.0.0.0/21"
                         },
                         {
                             "name": "subnets",
@@ -38,6 +38,12 @@
                                     "name": "appgw",
                                     "properties": {
                                         "addressPrefix": "10.0.3.0/24"
+                                    }
+                                },
+                                {
+                                    "name": "kubernetes",
+                                    "properties": {
+                                        "addressPrefix": "10.0.4.0/24"
                                     }
                                 },
                                 {

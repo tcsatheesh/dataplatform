@@ -28,9 +28,13 @@ function Get-KeyVaultId {
         [string]$typeFilter,
         [string]$secretName
     )
+    $keyVaultResourceGroupTypeRefName = Get-ValueFromResource `
+        -resourceType $resourceType `
+        -typeFilter $typeFilter `
+        -property "resourceGroupTypeRef"
     $resourceGroupName = Get-ValueFromResource `
         -resourceType "resourcegroups" `
-        -typeFilter "app" `
+        -typeFilter $keyVaultResourceGroupTypeRefName `
         -property "name"
     $keyVaultName = Get-ValueFromResource `
         -resourceType $resourceType `
