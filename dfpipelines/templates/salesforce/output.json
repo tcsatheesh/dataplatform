@@ -1,0 +1,42 @@
+{
+    "name": "ADLSDataSetSF",
+    "type": "datasets",
+    "apiVersion": "2017-09-01-preview",
+    "properties": {
+      "type": "AzureDataLakeStoreFile",
+      "linkedServiceName": {
+        "referenceName": "",
+        "type": "LinkedServiceReference"
+      },
+      "structure": [
+        {
+          "name": "Id",
+          "type": "String"
+        },
+        {
+          "name": "Name",
+          "type": "String"
+        }
+      ],
+      "typeProperties": {
+        "format": {
+          "type": "TextFormat",
+          "columnDelimiter": ",",
+          "treatEmptyAsNull": true
+        },
+        "folderPath": {
+          "value": "@concat('raw/', formatDateTime(pipeline().parameters.windowStart,'yyyy'), '/', formatDateTime(pipeline().parameters.windowStart,'MM'), '/', formatDateTime(pipeline().parameters.windowStart,'dd'), '/', formatDateTime(pipeline().parameters.windowStart,'HH'), '/', formatDateTime(pipeline().parameters.windowStart,'mm'), '/')",
+          "type": "Expression"
+        },
+        "fileName": {
+          "value": "@dataset().outputFilePath",
+          "type": "Expression"
+        }
+      },
+      "parameters": {
+        "outputFilePath": {
+          "type": "String"
+        }
+      }
+    }
+  }

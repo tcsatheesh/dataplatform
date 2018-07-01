@@ -1,0 +1,22 @@
+{
+    "name": "SalesforceDataset",
+    "type": "datasets",
+    "apiVersion": "2017-09-01-preview",
+    "properties": {
+      "linkedServiceName": {
+        "referenceName": "Salesforce",
+        "type": "LinkedServiceReference"
+      },
+      "type": "SalesforceObject",
+      "structure": [
+        {
+          "name": "Id",
+          "type": "String"
+        },
+        {
+          "name": "Name",
+          "type": "String"
+        }
+      ]
+    }
+  }

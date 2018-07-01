@@ -26,8 +26,8 @@ function Remove-Resource {
         [object]$resource
     )
         $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
-        Write-Verbose "Removing resource $($resource.secretName) from $keyVaultName"
-        Remove-Secret -keyVaultName $keyVaultName -secretName $resource.secretName
+        Write-Verbose "Removing resource $($resource.name) from $keyVaultName"
+        Remove-Secret -keyVaultName $keyVaultName -secretName $resource.name
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"

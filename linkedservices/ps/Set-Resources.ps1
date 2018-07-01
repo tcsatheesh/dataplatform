@@ -8,8 +8,6 @@ function Set-Resource {
     param (
         [object]$resource
     )
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $configFile = "$projectFolder\linkedservices\$($resource.templateFileName)"
     $dataFactoryResourceGroupName = Get-ValueFromResource `
         -resourceType "resourcegroups" `
         -typeFilter $resource.dataFactoryResourceGroupTypeRef `
@@ -21,9 +19,11 @@ function Set-Resource {
         -property "name"
             
     $linkedServiceName = $resource.name
-     
+    
     Write-Verbose "Set linked service $linkedServiceName"
 
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    $configFile = "$projectFolder\linkedservices\$($resource.templateFileName)"
     $depl = Set-AzureRmDataFactoryV2LinkedService `
         -ResourceGroupName  $dataFactoryResourceGroupName `
         -DataFactoryName $dataFactoryName `

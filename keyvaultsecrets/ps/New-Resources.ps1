@@ -32,6 +32,9 @@ function New-Resource {
     }
     elseif ($resource.type -eq "certificate") { 
         $val = $resource.name
+    }    
+    elseif ($resource.type -eq "value") { 
+        $val = $resource.name
     }
     else {
             throw "resource type $($resource.type) not defined"

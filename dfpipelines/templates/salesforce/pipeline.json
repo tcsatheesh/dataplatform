@@ -1,0 +1,56 @@
+{
+    "type": "pipelines",
+    "name": "SalesforcePipeline",
+    "apiVersion": "2017-09-01-preview",
+    "properties": {
+      "activities": [
+        {
+          "name": "CopySalesforceToADLS",
+          "type": "Copy",
+          "inputs": [
+            {
+              "referenceName": "SalesforceDataset",
+              "type": "DatasetReference"
+            }
+          ],
+          "outputs": [
+            {
+              "referenceName": "ADLSDataSetSF",
+              "type": "DatasetReference",
+              "parameters": {
+                "outputFilePath": "@pipeline().parameters.outputFilePath"
+              }
+            }
+          ],
+          "typeProperties": {
+            "source": {
+              "type": "SalesforceSource",
+              "query": {
+                "value": "SELECT Id, Name FROM Account WHERE Name = 'sForce'",
+                "type": "Expression"
+              }
+            },
+            "sink": {
+              "type": "AzureDataLakeStoreSink"
+            },
+            "enableStaging": false,
+            "cloudDataMovementUnits": 0
+          }
+        }
+      ],
+      "parameters": {
+        "inputFilePath": {
+          "type": "string"
+        },
+        "outputFilePath": {
+          "type": "string"
+        },
+        "windowStart": {
+          "type": "dateTime"
+        },
+        "windowEnd": {
+          "type": "dateTime"
+        }
+      }
+    }
+  }

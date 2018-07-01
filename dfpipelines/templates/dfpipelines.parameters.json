@@ -1,0 +1,125 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "salesforce",
+                    "datafactoryResourceGroup": {
+                        "name": "",
+                        "ref": {
+                            "resourceType": "resourcegroups",
+                            "type": "app",
+                            "property": "name"
+                        }
+                    },
+                    "dataFactory": {
+                        "name": "",
+                        "ref": {
+                            "resourceType": "adfs",
+                            "type": "adf",
+                            "property": "name"
+                        }
+                    },
+                    "resources": {
+                        "linkedservices": [
+                            {
+                                "name": "salesforce",
+                                "type": "salesforce",
+                                "templateFile": "salesforce\\salesforce.json",
+                                "parameters": [
+                                    {
+                                        "type": "usernameSecretName",
+                                        "ref": {
+                                            "resourceType": "keyvaultsecrets",
+                                            "typeFilter": "value",
+                                            "subtypeFilter": "salesforce.com.username",
+                                            "property": "name"
+                                        }
+                                    },
+                                    {
+                                        "type": "passwordSecretName",
+                                        "ref": {
+                                            "resourceType": "keyvaultsecrets",
+                                            "typeFilter": "value",
+                                            "subtypeFilter": "salesforce.com.password",
+                                            "property": "name"
+                                        }
+                                    },
+                                    {
+                                        "type": "securityTokenSecretName",
+                                        "ref": {
+                                            "resourceType": "keyvaultsecrets",
+                                            "typeFilter": "value",
+                                            "subtypeFilter": "salesforce.com.securitytoken",
+                                            "property": "name"
+                                        }
+                                    },
+                                    {
+                                        "type": "keyvault",
+                                        "ref": {
+                                            "resourceType": "keyvaults",
+                                            "typeFilter": "appkeyvault",
+                                            "property": "name"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "datasets": [
+                            {
+                                "name": "SalesforceDataset",
+                                "templateFile": "salesforce\\input.json"
+                            },
+                            {
+                                "name": "ADLSDataSetSF",
+                                "templateFile": "salesforce\\output.json",
+                                "parameters": [
+                                    {
+                                        "type": "referenceName",
+                                        "ref": {
+                                            "resourceType": "adlstores",
+                                            "type": "adlstore",
+                                            "property": "name"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "pipelines": [
+                            {
+                                "name": "SalesforcePipeline",
+                                "templateFile": "salesforce\\pipeline.json"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "name": "SalesForceTrigger",
+                                "templateFile": "salesforce\\trigger.json",
+                                "parameters": [
+                                    {
+                                        "type": "startTime",
+                                        "value": "2018-07-01T07:30:00Z"
+                                    },
+                                    {
+                                        "type":"pipelineName",
+                                        "value": "SalesforcePipeline"
+                                    },
+                                    {
+                                        "type": "inputFilePath",
+                                        "value": "unused.csv"
+                                    },
+                                    {
+                                        "type": "outputFilePath",
+                                        "value": "sf.csv"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

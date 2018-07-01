@@ -61,7 +61,7 @@
                                     "type": "developers"
                                 }
                             ]
-                        },                        
+                        },
                         {
                             "resourceType": "resourcegroups",
                             "resources": [
@@ -106,7 +106,7 @@
                                     "type": "keyvaultadmins"
                                 }
                             ]
-                        },                      
+                        },
                         {
                             "resourceType": "resourcegroups",
                             "resources": [
@@ -179,13 +179,13 @@
                             "resourceType": "adgroups",
                             "resources": [
                                 {
-                                    "type":  "managers"
+                                    "type": "managers"
                                 },
                                 {
-                                    "type":  "buildadmins"
+                                    "type": "buildadmins"
                                 },
                                 {
-                                    "type":  "datacontrollers"
+                                    "type": "datacontrollers"
                                 },
                                 {
                                     "type": "keyvaultadmins"
@@ -194,7 +194,7 @@
                                     "type": "developers"
                                 }
                             ]
-                        },                      
+                        },
                         {
                             "resourceType": "resourcegroups",
                             "resources": [
@@ -202,7 +202,7 @@
                                     "type": "app"
                                 }
                             ]
-                        },                      
+                        },
                         {
                             "resourceType": "storageaccounts",
                             "resources": [
@@ -317,6 +317,37 @@
                                 },
                                 {
                                     "type": "adlstore"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt2-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "value",
+                                    "subtype": "salesforce.com.username"
+                                },
+                                {
+                                    "type": "value",
+                                    "subtype": "salesforce.com.password"
+                                },
+                                {
+                                    "type": "value",
+                                    "subtype": "salesforce.com.securitytoken"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "dfpipelines",
+                            "resources": [
+                                {
+                                    "type": "salesforce"
                                 }
                             ]
                         }

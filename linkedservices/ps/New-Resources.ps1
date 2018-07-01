@@ -56,10 +56,10 @@ function Get-StorageLinkedService {
         [object]$resource,
         [object]$linkedService
     )
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"    
-    $secretName =  Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName" -subtype "storage"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"    
+    $secretName = Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName" -subtype "storage"
     
-    if ($secretName -eq $null){
+    if ($secretName -eq $null) {
         throw "Secret name for $storageAccountName is null"
     }
 
@@ -80,7 +80,7 @@ function Get-ADLStoreLinkedService {
     $tenantDomainName = Get-ValueFromResourceRef -parameters $resource.parameters -type "tenant"
     $appApplicationId = Get-ValueFromResourceRef -parameters $resource.parameters -type "applicationPrincipal"
     $appServicePrincipalId = Get-ValueFromResourceRef -parameters $resource.parameters -type "servicePrincipal"
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
     $subscriptionId = Get-ValueFromResourceRef -parameters $resource.parameters -type "subscriptionId"
     $secretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "secretName"
 
@@ -102,10 +102,10 @@ function Get-SqlLinkedService {
         [object]$linkedService
     )
 
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
-    $secretName =  Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    $secretName = Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName"
     
-    if ($secretName -eq $null){
+    if ($secretName -eq $null) {
         throw "Secret name for $storageAccountName is null"
     }
 
@@ -126,7 +126,7 @@ function Get-ADLALinkedService {
     $tenantDomainName = Get-ValueFromResourceRef -parameters $resource.parameters -type "tenant"
     $appApplicationId = Get-ValueFromResourceRef -parameters $resource.parameters -type "applicationPrincipal"
     $appServicePrincipalId = Get-ValueFromResourceRef -parameters $resource.parameters -type "servicePrincipal"
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
     $subscriptionId = Get-ValueFromResourceRef -parameters $resource.parameters -type "subscriptionId"
     $secretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "secretName"
 
@@ -150,22 +150,23 @@ function New-Resource {
     $linkedService = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
 
     $type = $resource.type
-    switch ( $type )
-    {
+    switch ( $type ) {
         "keyvault" { $linkedService = Get-KeyVaultLinkedService -resource $resource -linkedService $linkedService}
         "storage" { $linkedService = Get-StorageLinkedService -resource $resource -linkedService $linkedService}
         "adlstore" { $linkedService = Get-ADLStoreLinkedService -resource $resource -linkedService $linkedService}
         "adla" { $linkedService = Get-ADLALinkedService -resource $resource -linkedService $linkedService}
         "sqldb" { $linkedService = Get-SqlLinkedService -resource $resource -linkedService $linkedService}
-        "default" { throw "hmmm... you need to add this type $type"}        
+        "default" { throw "hmmm... you need to add this type $type in the data factory linked services"}        
     }
 
-    $linkedServiceName = Get-ValueFromResource `
-        -resourceType $resource.name.ref.resourceType `
-        -typeFilter $resource.name.ref.typeFilter `
-        -property $resource.name.ref.property
+    if ($resource.ref -ne $null) {
+        $linkedServiceName = Get-ValueFromResource `
+            -resourceType $resource.name.ref.resourceType `
+            -typeFilter $resource.name.ref.typeFilter `
+            -property $resource.name.ref.property
      
-    $resource.name = $linkedServiceName
+        $resource.name = $linkedServiceName
+    }
     
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
     $destinationPath = "$projectFolder\linkedservices"
