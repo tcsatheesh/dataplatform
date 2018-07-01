@@ -81,7 +81,7 @@
                             "type": "adlstoreResourceGroupName",
                             "ref": {
                                 "resourceType": "resourcegroups",
-                                "typeFilter": "storage",
+                                "typeFilter": "app",
                                 "property": "name"
                             }
                         },

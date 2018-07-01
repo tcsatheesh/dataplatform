@@ -1,0 +1,106 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "appkeyvault",
+                    "diagnosticsStorageAccount": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "diagnostics",
+                                "property": "name"
+                            }
+                        },
+                        "id": "",
+                        "retentionInDays": 7
+                    },
+                    "resource": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        },
+                        "id": ""
+                    }
+                },
+                {
+                    "type": "adlstore",
+                    "diagnosticsStorageAccount": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "diagnostics",
+                                "property": "name"
+                            }
+                        },
+                        "id": "",
+                        "retentionInDays": 7
+                    },
+                    "resource": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "adlstores",
+                                "typeFilter": "adlstore",
+                                "property": "name"
+                            }
+                        },
+                        "id": ""
+                    }
+                },
+                {
+                    "type": "adla",
+                    "diagnosticsStorageAccount": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "diagnostics",
+                                "property": "name"
+                            }
+                        },
+                        "id": "",
+                        "retentionInDays": 7
+                    },
+                    "resource": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "adlas",
+                                "typeFilter": "adla",
+                                "property": "name"
+                            }
+                        },
+                        "id": ""
+                    }
+                },
+                {
+                    "type": "adf",
+                    "diagnosticsStorageAccount": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "diagnostics",
+                                "property": "name"
+                            }
+                        },
+                        "id": "",
+                        "retentionInDays": 7
+                    },
+                    "resource": {
+                        "name": {
+                            "ref": {
+                                "resourceType": "adfs",
+                                "typeFilter": "adf",
+                                "property": "name"
+                            }
+                        },
+                        "id": ""
+                    }
+                }
+            ]
+        }
+    }
+}

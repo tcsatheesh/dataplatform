@@ -142,6 +142,11 @@ function New-Resources2 {
     $resource.name = $vstsaccountname
     $resource.branch = $branch
 
+    $resource = $resources | Where-Object {$_.type -eq $envtype}
+    if ($resource -eq $null) {
+        throw "Environment $envtype not defined in the project template."
+    }
+
     $newarray = @()
     $resources | ForEach-Object {
         $resource = $_;

@@ -18,13 +18,18 @@ function Set-FolderPermissions {
         $permission = $objP.Permission
         $aceType = $objP.AceType
 
-        Write-Verbose "Granting $aceType $aadName with Id $objectId permissions $permission to folder $folderName"
-        if ($objP.Default -eq "true") {
-            Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission -Default
+        if ([string]::IsNullOrEmpty($objectId)) {
+            Write-Verbose "AceType $($objP.AceType) has no object Id"
         }
         else {
-            Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission
-        }        
+            Write-Verbose "Granting $aceType $aadName with Id $objectId permissions $permission to folder $folderName"
+            if ($objP.Default -eq "true") {
+                Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission -Default
+            }
+            else {
+                Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission
+            }        
+        }
     }
 }
 

@@ -1,7 +1,10 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile
+    [String]$projectsParameterFile,
+
+    [Parameter(Mandatory = $False, HelpMessage = 'Set to remove the corresponding project folder.')]
+    [Switch]$removeProjectFolder
 )
 function Remove-Resource2 {
     param (
@@ -34,3 +37,9 @@ function Remove-Resources2 {
 $parameters = Get-Content -Path (Get-Item -Path $projectsParameterFile).FullName -Raw | ConvertFrom-JSON
 
 Remove-Resources2 -parameters $parameters
+
+if ($removeProjectFolder) {
+    $projectFolder = (Get-Item -Path $projectsParameterFile).Directory
+    Write-Verbose "Removing the project folder $projectFolder"
+    Remove-Item -Path $projectFolder -Recurse
+}

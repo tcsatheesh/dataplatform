@@ -9,7 +9,7 @@
                     "resourceType": "adfs",
                     "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}adfv201",
-                    "location": "East US 2",
+                    "location": "North Europe",
                     "templateFileName": "adf.json",
                     "parameterFileName": "adf.parameters.json",
                     "parameters" : [

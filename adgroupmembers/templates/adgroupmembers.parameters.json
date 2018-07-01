@@ -19,8 +19,8 @@
                     ]
                 },
                 {
-                    "type": "sqladmins",
-                    "adgrouptyperef": "sqladmins",
+                    "type": "dbadmins",
+                    "adgrouptyperef": "dbadmins",
                     "membersupn": [
                         "current"
                     ]

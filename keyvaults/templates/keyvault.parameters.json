@@ -58,15 +58,30 @@
                     "objectId": "",
                     "tenantId": "",
                     "permissions": {
-                        "keys": [
-                            "Get",
-                            "List"
-                        ],
                         "secrets": [
+                            "Set",
                             "Get",
                             "List"
-                        ],
-                        "certificates": [
+                        ]
+                    }
+                },
+                {
+                    "objectId": "",
+                    "tenantId": "",
+                    "permissions": {
+                        "secrets": [
+                            "Set",
+                            "Get",
+                            "List"
+                        ]
+                    }
+                },
+                {
+                    "objectId": "",
+                    "tenantId": "",
+                    "permissions": {
+                        "secrets": [
+                            "Set",
                             "Get",
                             "List"
                         ]

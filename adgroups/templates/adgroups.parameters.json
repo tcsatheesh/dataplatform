@@ -5,86 +5,56 @@
         "resources": {
             "value": [
                 {
-                    "type": "managers",
-                    "name": "{0}-{1}-{2}-managers",
-                    "id": "",
-                    "email": ""
-                },
-                {
                     "type": "keyvaultadmins",
-                    "name": "{0}-{1}-{2}-keyvaultadmins",
+                    "name": "Key Vault Administrators",
                     "id": "",
                     "email": ""
                 },
                 {
-                    "type": "sqladmins",
-                    "name": "{0}-{1}-{2}-sqladmins",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "developers",
-                    "name": "{0}-{1}-{2}-developers",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "testers",
-                    "name": "{0}-{1}-{2}-testers",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "endusers",
-                    "name": "{0}-{1}-{2}-endusers",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "analysts",
-                    "name": "{0}-{1}-{2}-analysts",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "onprem-analysts",
-                    "name": "Data Analysts",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "onprem-developers",
-                    "name": "Application Developers",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "onprem-support",
-                    "name": "Application Supporters",
-                    "id": "",
-                    "email": ""
-                },
-                {
-                    "type": "onprem-platform",
+                    "type": "managers",
                     "name": "Platform Management",
                     "id": "",
                     "email": ""
                 },
                 {
-                    "type": "onprem-dbadmins",
+                    "type": "dbadmins",
                     "name": "Database Administrators",
                     "id": "",
                     "email": ""
                 },
                 {
-                    "type": "onprem-endusers",
-                    "name": "End Users",
+                    "type": "datacontrollers",
+                    "name": "Data Controllers",
                     "id": "",
                     "email": ""
                 },
                 {
-                    "type": "onprem-kevaultadmins",
-                    "name": "Key Vault Administrators",
+                    "type": "buildadmins",
+                    "name": "Build Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "developers",
+                    "name": "Application Developers",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "dataanalysts",
+                    "name": "Data Analysts",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "appsupport",
+                    "name": "Application Supporters",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "endusers",
+                    "name": "End Users",
                     "id": "",
                     "email": ""
                 }

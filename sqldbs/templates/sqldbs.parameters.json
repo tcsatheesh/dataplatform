@@ -37,7 +37,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "sqladmins",
+                                "typeFilter": "dbadmins",
                                 "property" : "name"
                             }
                         },
@@ -46,7 +46,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "sqladmins",
+                                "typeFilter": "dbadmins",
                                 "property" : "id"
                             }
                         },
@@ -55,7 +55,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "sqladmins",
+                                "typeFilter": "dbadmins",
                                 "property" : "email"
                             }
                         },

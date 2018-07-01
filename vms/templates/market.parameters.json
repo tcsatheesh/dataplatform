@@ -32,16 +32,16 @@
               }
         },
         "osPublisher": {
-            "value": "microsoft-ads"
+            "value": ""
         },
         "osOffer": {
-            "value": "linux-data-science-vm-ubuntu"
+            "value": ""
         },
         "osSku": {
-            "value": "linuxdsvmubuntu"
+            "value": ""
         },
         "osVersion": {
-            "value": "latest"
+            "value": ""
         }
     }
 }

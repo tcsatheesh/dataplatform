@@ -29,8 +29,10 @@ function Set-AccessPolicy {
         -typeFilter $resource.dataFactoryNameRef `
         -property "name"
     $servicePrincipal = Get-AzureRmADServicePrincipal -SearchString $dataFactoryName
-    if ($servicePrincipal -eq $null) {
-        throw "servicePrincipal for dataFactory $dataFactoryName is null"
+    while ($servicePrincipal -eq $null) {
+        Write-Verbose "ServicePrincipal for dataFactory $dataFactoryName is null. Waiting 5 seconds..."
+        Start-Sleep -Seconds 5
+        $servicePrincipal = Get-AzureRmADServicePrincipal -SearchString $dataFactoryName
     }
     Set-AzureRmKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $servicePrincipal.Id -PermissionsToSecrets get
 }
