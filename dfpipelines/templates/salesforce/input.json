@@ -7,16 +7,6 @@
         "referenceName": "Salesforce",
         "type": "LinkedServiceReference"
       },
-      "type": "SalesforceObject",
-      "structure": [
-        {
-          "name": "Id",
-          "type": "String"
-        },
-        {
-          "name": "Name",
-          "type": "String"
-        }
-      ]
+      "type": "SalesforceObject"
     }
   }

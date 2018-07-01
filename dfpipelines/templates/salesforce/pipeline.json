@@ -26,7 +26,7 @@
             "source": {
               "type": "SalesforceSource",
               "query": {
-                "value": "SELECT Id, Name FROM Account WHERE Name = 'sForce'",
+                "value": "@pipeline().parameters.query",
                 "type": "Expression"
               }
             },
@@ -43,6 +43,9 @@
           "type": "string"
         },
         "outputFilePath": {
+          "type": "string"
+        },
+        "query": {
           "type": "string"
         },
         "windowStart": {

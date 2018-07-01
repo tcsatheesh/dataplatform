@@ -80,6 +80,9 @@ function Get-TumbleTrigger {
     $outputFilePath = $resource.parameters | Where-Object {$_.type -eq "outputFilePath"}
     $trigger.properties.pipeline.parameters.outputFilePath = $outputFilePath.value
 
+    $query = $resource.parameters | Where-Object {$_.type -eq "query"}
+    $trigger.properties.pipeline.parameters.query = $query.value
+
     return $trigger
 }
 

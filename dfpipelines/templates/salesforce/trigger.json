@@ -23,6 +23,7 @@
         "parameters": {
           "inputFilePath": "[parameters('inputFilePath')]",
           "outputFilePath": "[parameters('outputFilePath')]",
+          "query": "[parameters('query')]",
           "windowStart": "@trigger().outputs.windowStartTime",
           "windowEnd": "@trigger().outputs.windowEndTime"
         }

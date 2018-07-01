@@ -3,6 +3,9 @@ param
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
     [String]$projectsParameterFile,
 
+    [Parameter(Mandatory = $False, HelpMessage = "Set to name of the trigger")]
+    [string]$nameofTrigger,
+
     [Parameter(Mandatory = $False, HelpMessage = "Set to start the trigger")]
     [Switch]$start,
 
@@ -52,16 +55,19 @@ function Set-Resource {
     $dataFactoryResourceGroupName = $resource.datafactoryResourceGroup.name
     $dataFactoryName = $resource.datafactory.name
     $triggerName = $resource.resources.triggers[0].name
-
-    Write-Verbose "Processing trigger $triggerName in datafactory $dataFactoryName in resource group $dataFactoryResourceGroupName"
-    if ($stop) {
-        Stop-Trigger -triggerName $triggerName
-    }
-    elseif ($start) {
-        Start-Trigger -triggerName $triggerName
-    }
-    else {
-        Get-TriggerState -triggerName $triggerName
+    if ([string]::IsNullOrEmpty($nameofTrigger) -or ($triggerName -eq $nameofTrigger)) {
+        Write-Verbose "Processing trigger $triggerName in datafactory $dataFactoryName in resource group $dataFactoryResourceGroupName"
+        if ($stop) {
+            Stop-Trigger -triggerName $triggerName
+        }
+        elseif ($start) {
+            Start-Trigger -triggerName $triggerName
+        }
+        else {
+            Get-TriggerState -triggerName $triggerName
+        }
+    }else {
+        Write-Verbose "Skipping trigger execution for $triggerName"
     }
 }
 

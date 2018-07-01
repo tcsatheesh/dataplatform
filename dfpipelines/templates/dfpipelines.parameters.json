@@ -113,6 +113,10 @@
                                     {
                                         "type": "outputFilePath",
                                         "value": "sf.csv"
+                                    },
+                                    {
+                                        "type": "query",
+                                        "value": "SELECT Id, Name, Type, BillingCountry AccountNumber FROM Account"
                                     }
                                 ]
                             }

@@ -8,21 +8,12 @@
         "referenceName": "",
         "type": "LinkedServiceReference"
       },
-      "structure": [
-        {
-          "name": "Id",
-          "type": "String"
-        },
-        {
-          "name": "Name",
-          "type": "String"
-        }
-      ],
       "typeProperties": {
         "format": {
           "type": "TextFormat",
           "columnDelimiter": ",",
-          "treatEmptyAsNull": true
+          "treatEmptyAsNull": true,
+          "firstRowAsHeader": true
         },
         "folderPath": {
           "value": "@concat('raw/', formatDateTime(pipeline().parameters.windowStart,'yyyy'), '/', formatDateTime(pipeline().parameters.windowStart,'MM'), '/', formatDateTime(pipeline().parameters.windowStart,'dd'), '/', formatDateTime(pipeline().parameters.windowStart,'HH'), '/', formatDateTime(pipeline().parameters.windowStart,'mm'), '/')",
