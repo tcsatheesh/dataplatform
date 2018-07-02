@@ -121,15 +121,11 @@
                                 "parameters": [
                                     {
                                         "type": "startTime",
-                                        "value": "2018-07-01T07:30:00Z"
+                                        "value": "2018-07-02T05:00:00Z"
                                     },
                                     {
                                         "type":"pipelineName",
                                         "value": "SalesforcePipeline"
-                                    },
-                                    {
-                                        "type": "inputFilePath",
-                                        "value": "unused.csv"
                                     },
                                     {
                                         "type": "outputFolderPath",

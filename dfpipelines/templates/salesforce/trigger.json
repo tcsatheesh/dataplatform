@@ -21,7 +21,6 @@
           "referenceName": "[parameters('pipelineName')]"
         },
         "parameters": {
-          "inputFilePath": "[parameters('inputFilePath')]",
           "outputFolderPath": "[parameters('outputFolderPath')]",
           "outputFilePath": "[parameters('outputFilePath')]",
           "query": "[parameters('query')]",

@@ -96,9 +96,6 @@ function Get-TumbleTrigger {
     $pipelineName = $service.parameters | Where-Object {$_.type -eq "pipelineName"}
     $trigger.properties.pipeline.pipelineReference.referenceName = $pipelineName.value
 
-    $inputFilePath = $service.parameters | Where-Object {$_.type -eq "inputFilePath"}
-    $trigger.properties.pipeline.parameters.inputFilePath = $inputFilePath.value
-
     $outputFolderPath = $service.parameters | Where-Object {$_.type -eq "outputFolderPath"}
     $trigger.properties.pipeline.parameters.outputFolderPath = $outputFolderPath.value
 

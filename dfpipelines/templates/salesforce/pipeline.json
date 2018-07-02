@@ -40,9 +40,6 @@
         }
       ],
       "parameters": {
-        "inputFilePath": {
-          "type": "string"
-        },
         "outputFolderPath": {
           "type": "string"
         },
