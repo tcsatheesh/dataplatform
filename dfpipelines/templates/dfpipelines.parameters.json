@@ -117,6 +117,7 @@
                         "triggers": [
                             {
                                 "name": "SalesForceTrigger",
+                                "type": "salesforce",
                                 "templateFile": "salesforce\\trigger.json",
                                 "parameters": [
                                     {
@@ -124,7 +125,7 @@
                                         "value": "2018-07-02T05:00:00Z"
                                     },
                                     {
-                                        "type":"pipelineName",
+                                        "type": "pipelineName",
                                         "value": "SalesforcePipeline"
                                     },
                                     {
@@ -133,11 +134,83 @@
                                     },
                                     {
                                         "type": "outputFilePath",
-                                        "value": "sf.csv"
+                                        "value-old": "account.csv",
+                                        "value": "contact.csv"
                                     },
                                     {
                                         "type": "query",
-                                        "value": "SELECT Id, Name, Type, BillingCountry AccountNumber FROM Account"
+                                        "value-old": "SELECT Id, Name, Type, BillingCountry AccountNumber FROM Account",
+                                        "value": "SELECT Id, AccountId, FirstName, LastName FROM Contact"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "foreach",
+                    "datafactoryResourceGroup": {
+                        "name": "",
+                        "ref": {
+                            "resourceType": "resourcegroups",
+                            "type": "app",
+                            "property": "name"
+                        }
+                    },
+                    "dataFactory": {
+                        "name": "",
+                        "ref": {
+                            "resourceType": "adfs",
+                            "type": "adf",
+                            "property": "name"
+                        }
+                    },
+                    "resources": {
+                        "pipelines": [
+                            {
+                                "name": "SalesforcePipeline-ForEach",
+                                "type": "foreach",
+                                "templateFile": "foreach\\pipeline.json",
+                                "parameters": [
+                                    {
+                                        "type": "inputdataset",
+                                        "value": "SalesforceDataset-ForEach"
+                                    },
+                                    {
+                                        "type": "outputdataset",
+                                        "value": "ADLSDataSetSF-ForEach"
+                                    }
+                                ]
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "name": "SalesForceTrigger-ForEach",
+                                "type": "foreach",
+                                "templateFile": "foreach\\trigger.json",
+                                "parameters": [
+                                    {
+                                        "type": "startTime",
+                                        "value": "2018-07-02T05:00:00Z"
+                                    },
+                                    {
+                                        "type": "pipelineName",
+                                        "value": "SalesforcePipeline-ForEach"
+                                    },
+                                    {
+                                        "type": "configtables",
+                                        "value": [
+                                            {
+                                                "query": "SELECT Id, Name, Type, BillingCountry AccountNumber FROM Account",
+                                                "outputFolderPath": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')",
+                                                "outputFilePath": "account-fe.csv"
+                                            },
+                                            {
+                                                "query": "SELECT Id, AccountId, FirstName, LastName FROM Contact",
+                                                "outputFolderPath": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')",
+                                                "outputFilePath": "contact-fe.csv"
+                                            }
+                                        ]
                                     }
                                 ]
                             }

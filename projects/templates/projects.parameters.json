@@ -342,12 +342,32 @@
                                     "subtype": "salesforce.com.securitytoken"
                                 }
                             ]
-                        },
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt3-d",
+                    "parent": "it-dblt2-d",
+                    "resources": [
                         {
                             "resourceType": "dfpipelines",
                             "resources": [
                                 {
                                     "type": "salesforce"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt4-d",
+                    "parent": "it-dblt3-d",
+                    "resources": [                        
+                        {
+                            "resourceType": "dfpipelines",
+                            "resources": [
+                                {
+                                    "type": "foreach"
                                 }
                             ]
                         }

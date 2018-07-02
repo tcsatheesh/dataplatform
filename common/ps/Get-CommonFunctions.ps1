@@ -76,10 +76,12 @@ function Get-CurrentIPAddress {
 function Get-ParentProjectParameterFilePath {
     param
     (
+        [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
+        [String]$projectsParameterFullFilePath,
         [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
         [String]$parameterFileName
     )
-    $projectParameters = Get-Content -Path $projectsParameterFile -Raw | ConvertFrom-JSON
+    $projectParameters = Get-Content -Path $projectsParameterFullFilePath -Raw | ConvertFrom-JSON
     $envType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq "envType"}
     Write-Verbose "Env type is $envType"
     $currentType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $envType.value}
@@ -87,14 +89,23 @@ function Get-ParentProjectParameterFilePath {
     if ($currentType.parent -ne $null) {
         Write-Verbose "This is a child project. Parent is $($currentType.parent)"
         $projectFolder = (Get-Item -Path $projectsParameterFile).FullName
-        Write-Verbose "Project Folder is $projectFolder"
+        Write-Verbose "1. Project Folder is $projectFolder"
         $projectFolder = (Get-Item -Path $projectFolder).DirectoryName
-        Write-Verbose "Project Folder is $projectFolder"
+        Write-Verbose "2. Project Folder is $projectFolder"                
         $parentProjectFolder = "$projectFolder\..\$($currentType.parent)"
+        Write-Verbose "1. Project Parent Folder is $parentProjectFolder"
         $parentProjectFolder = (Get-Item -Path $parentProjectFolder).FullName
-        Write-Verbose "Project Parent Folder is $parentProjectFolder"
+        Write-Verbose "2. Project Parent Folder is $parentProjectFolder"
         $parameterFullPath = "$parentProjectFolder\$parameterFileName"
-        Write-Verbose "Project Parent filepath is $parameterFullPath"
+        Write-Verbose "3. Project Parent filepath is $parameterFullPath"
+        if (-not (Test-Path -Path $parameterFullPath)) {
+            Write-Verbose "Parameter file $parameterFileName not found. Check if this is a child project"
+            $lclProjectsParameterFullFilePath = "$parentProjectFolder\projects.parameters.json"
+            $parameterFullPath = Get-ParentProjectParameterFilePath -projectsParameterFullFilePath $lclProjectsParameterFullFilePath -parameterFileName $parameterFileName
+            if ($parameterFullPath -eq $null) {
+                throw "Project parameter file not found in $parameterFullPath"
+            }
+        }    
         return $parameterFullPath
     }
     else {
@@ -110,14 +121,13 @@ function Get-ResourceParameters {
     )
 
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    $projectsParameterFullFilePath = "$projectFolder\projects.parameters.json"
     $parameterFullPath = "$projectFolder\$parameterFileName"
     if (-not (Test-Path -Path $parameterFullPath)) {
         Write-Verbose "Parameter file $parameterFileName not found. Check if this is a child project"
-        $parentParameterFullPath = Get-ParentProjectParameterFilePath -parameterFileName $parameterFileName
-        if ($parentParameterFullPath -eq $null) {
+        $parameterFullPath = Get-ParentProjectParameterFilePath -projectsParameterFullFilePath $projectsParameterFullFilePath -parameterFileName $parameterFileName
+        if ($parameterFullPath -eq $null) {
             throw "Project parameter file not found in $parameterFullPath"
-        }else {
-            $parameterFullPath = $parentParameterFullPath
         }
     }
     $parameterFullPath = (Get-Item -Path $parameterFullPath).FullName    

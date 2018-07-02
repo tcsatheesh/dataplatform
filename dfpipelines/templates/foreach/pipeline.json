@@ -1,0 +1,49 @@
+{
+    "type": "pipelines",
+    "name": "[parameters('pipelineName')]",
+    "apiVersion": "2017-09-01-preview",
+    "properties": {
+      "activities": [
+        {
+          "type": "ForEach",
+          "name": "ForEachRecordInSalesForce",
+          "typeProperties": {
+            "items": {
+              "value": "@pipeline().parameters.configtables",
+              "type": "Expression"
+            },
+            "activities": [
+              {
+                "name": "ExecutePipeline-ForEach",
+                "type": "ExecutePipeline",
+                "typeProperties": {
+                  "pipeline": {
+                    "referenceName": "SalesforcePipeline",
+                    "type": "PipelineReference"
+                  },
+                  "parameters": {
+                    "outputFolderPath": "@item().outputFolderPath",
+                    "outputFilePath": "@item().outputFilePath",
+                    "query": "@item().query",
+                    "windowStart": "@pipeline().parameters.windowStart",
+                    "windowEnd": "@pipeline().parameters.windowEnd"
+                  }
+                }
+              }      
+            ]
+          }
+        }
+      ],
+      "parameters": {
+        "configtables": {
+          "type": "Array"
+        },
+        "windowStart": {
+          "type": "dateTime"
+        },
+        "windowEnd": {
+          "type": "dateTime"
+        }
+      }
+    }
+  }

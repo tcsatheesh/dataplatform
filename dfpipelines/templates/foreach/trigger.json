@@ -1,0 +1,30 @@
+{
+    "type": "triggers",
+    "name": "[parameters('triggerName')]",
+    "apiVersion": "2017-09-01-preview",
+    "properties": {
+      "type": "TumblingWindowTrigger",
+      "typeProperties": {
+        "frequency": "Minute",
+        "interval": "15",
+        "startTime": "[parameters('triggerStartTime')]",
+        "delay": "00:00:10",
+        "retryPolicy": {
+          "count": 0,
+          "intervalInSeconds": 30
+        },
+        "maxConcurrency": 1
+      },
+      "pipeline": {
+        "pipelineReference": {
+          "type": "PipelineReference",
+          "referenceName": "[parameters('pipelineName')]"
+        },
+        "parameters": {
+          "configtables": "[parameters('configtables')]",
+          "windowStart": "@trigger().outputs.windowStartTime",
+          "windowEnd": "@trigger().outputs.windowEndTime"
+        }
+      }
+    }
+  }
