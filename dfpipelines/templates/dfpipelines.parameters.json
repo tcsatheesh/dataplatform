@@ -25,9 +25,9 @@
                     "resources": {
                         "linkedservices": [
                             {
-                                "name": "salesforce",
+                                "name": "Salesforce",
                                 "type": "salesforce",
-                                "templateFile": "salesforce\\salesforce.json",
+                                "templateFile": "salesforce\\linkedservice.json",
                                 "parameters": [
                                     {
                                         "type": "usernameSecretName",
@@ -67,20 +67,30 @@
                                 ]
                             }
                         ],
-                        "datasets": [
+                        "inputdatasets": [
                             {
                                 "name": "SalesforceDataset",
-                                "templateFile": "salesforce\\input.json"
-                            },
+                                "type": "salesforce",
+                                "templateFile": "salesforce\\input.json",
+                                "parameters": [
+                                    {
+                                        "type": "referenceName",
+                                        "value": "Salesforce"
+                                    }
+                                ]
+                            }
+                        ],
+                        "outputdatasets": [
                             {
                                 "name": "ADLSDataSetSF",
+                                "type": "salesforce",
                                 "templateFile": "salesforce\\output.json",
                                 "parameters": [
                                     {
                                         "type": "referenceName",
                                         "ref": {
                                             "resourceType": "adlstores",
-                                            "type": "adlstore",
+                                            "typeFilter": "adlstore",
                                             "property": "name"
                                         }
                                     }
@@ -90,7 +100,18 @@
                         "pipelines": [
                             {
                                 "name": "SalesforcePipeline",
-                                "templateFile": "salesforce\\pipeline.json"
+                                "type": "salesforce",
+                                "templateFile": "salesforce\\pipeline.json",
+                                "parameters": [
+                                    {
+                                        "type": "inputdataset",
+                                        "value": "SalesforceDataset"
+                                    },
+                                    {
+                                        "type": "outputdataset",
+                                        "value": "ADLSDataSetSF"
+                                    }
+                                ]
                             }
                         ],
                         "triggers": [
@@ -109,6 +130,10 @@
                                     {
                                         "type": "inputFilePath",
                                         "value": "unused.csv"
+                                    },
+                                    {
+                                        "type": "outputFolderPath",
+                                        "value": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')"
                                     },
                                     {
                                         "type": "outputFilePath",

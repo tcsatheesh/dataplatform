@@ -92,8 +92,9 @@ function Get-ParentProjectParameterFilePath {
         Write-Verbose "Project Folder is $projectFolder"
         $parentProjectFolder = "$projectFolder\..\$($currentType.parent)"
         $parentProjectFolder = (Get-Item -Path $parentProjectFolder).FullName
-        Write-Verbose "Project Folder is $parentProjectFolder"
+        Write-Verbose "Project Parent Folder is $parentProjectFolder"
         $parameterFullPath = "$parentProjectFolder\$parameterFileName"
+        Write-Verbose "Project Parent filepath is $parameterFullPath"
         return $parameterFullPath
     }
     else {

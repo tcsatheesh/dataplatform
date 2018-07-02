@@ -1,6 +1,6 @@
 {
     "type": "triggers",
-    "name": "SalesForceTrigger",
+    "name": "[parameters('triggerName')]",
     "apiVersion": "2017-09-01-preview",
     "properties": {
       "type": "TumblingWindowTrigger",
@@ -22,6 +22,7 @@
         },
         "parameters": {
           "inputFilePath": "[parameters('inputFilePath')]",
+          "outputFolderPath": "[parameters('outputFolderPath')]",
           "outputFilePath": "[parameters('outputFilePath')]",
           "query": "[parameters('query')]",
           "windowStart": "@trigger().outputs.windowStartTime",

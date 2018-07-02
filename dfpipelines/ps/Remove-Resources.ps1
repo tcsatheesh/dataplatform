@@ -26,7 +26,14 @@ function Remove-Resource {
                 -DataFactoryName $dataFactoryName `
                 -Name $service.name -Force
         }
-        foreach ($service in $innerResource.datasets) {
+        foreach ($service in $innerResource.inputdatasets) {
+            Write-Verbose "Processing dataset $($service.templateFile)"
+            $depl = Remove-AzureRmDataFactoryV2Dataset `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name -Force   
+        }
+        foreach ($service in $innerResource.outputdatasets) {
             Write-Verbose "Processing dataset $($service.templateFile)"
             $depl = Remove-AzureRmDataFactoryV2Dataset `
                 -ResourceGroupName  $dataFactoryResourceGroupName `

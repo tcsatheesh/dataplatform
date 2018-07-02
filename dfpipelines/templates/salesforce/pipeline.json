@@ -1,6 +1,6 @@
 {
     "type": "pipelines",
-    "name": "SalesforcePipeline",
+    "name": "[parameters('pipelineName')]",
     "apiVersion": "2017-09-01-preview",
     "properties": {
       "activities": [
@@ -9,15 +9,16 @@
           "type": "Copy",
           "inputs": [
             {
-              "referenceName": "SalesforceDataset",
+              "referenceName": "[parameters('inputDataSetName')]",
               "type": "DatasetReference"
             }
           ],
           "outputs": [
             {
-              "referenceName": "ADLSDataSetSF",
+              "referenceName": "[parameters('outputDataSetName')]",
               "type": "DatasetReference",
               "parameters": {
+                "outputFolderPath": "@pipeline().parameters.outputFolderPath",
                 "outputFilePath": "@pipeline().parameters.outputFilePath"
               }
             }
@@ -40,6 +41,9 @@
       ],
       "parameters": {
         "inputFilePath": {
+          "type": "string"
+        },
+        "outputFolderPath": {
           "type": "string"
         },
         "outputFilePath": {

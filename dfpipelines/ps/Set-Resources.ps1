@@ -24,7 +24,17 @@ function Set-Resource {
                 -Name $service.name `
                 -DefinitionFile $configFile -Force
         }
-        foreach ($service in $innerResource.datasets) {
+        foreach ($service in $innerResource.inputdatasets) {
+            Write-Verbose "Processing dataset $($service.templateFile)"
+            $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+            $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"
+            $depl = Set-AzureRmDataFactoryV2Dataset `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name `
+                -DefinitionFile $configFile -Force   
+        }
+        foreach ($service in $innerResource.outputdatasets) {
             Write-Verbose "Processing dataset $($service.templateFile)"
             $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
             $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"

@@ -1,10 +1,10 @@
 {
-    "name": "SalesforceDataset",
+    "name": "[parameters('inputDataSetName')]",
     "type": "datasets",
     "apiVersion": "2017-09-01-preview",
     "properties": {
       "linkedServiceName": {
-        "referenceName": "Salesforce",
+        "referenceName": "[parameters('inputLinkedServiceName')]",
         "type": "LinkedServiceReference"
       },
       "type": "SalesforceObject"

@@ -19,39 +19,58 @@ function Write-OutputFile {
     Write-Verbose "Created linked service configuration $destinationFile"
 }
 
-function Set-DataFactoryServiceFile {
+function Get-SalesforceInputDataSet {
     param (
-        [object]$resource,
         [object]$service,
-        [string]$filePath
+        [object]$inputdataset
     )
-    $sourcePath = "$PSScriptRoot\..\templates\$filePath"
-    Write-Verbose "Getting linked service configuration template from $sourcePath"
-    $outputObj = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
-    foreach ($parameter in $service.parameters) {
-        if ($parameter.type -eq "referenceName") {
-            $value = Get-ValueFromResource -resourceType $parameter.ref.resourceType `
-                    -typeFilter $parameter.ref.type `
-                    -property $parameter.ref.property
-            $outputObj.properties.linkedServiceName.referenceName = $value
-        }
-        else {
-            throw "this parameter type $type is not supported currently"
-        }
-    }
-    Write-OutputFile -resource $resource -outputObj $outputObj -filePath $filePath
+    $inputdataset.name = $service.name
+
+    $referenceName = $service.parameters | Where-Object {$_.type -eq "referenceName"}
+    $inputdataset.properties.linkedServiceName.referenceName = $referenceName.value
+
+    return $inputdataset
+}
+function Get-SalesforceOutputDataSet {
+    param (
+        [object]$service,
+        [object]$outputdataset
+    )
+    $outputdataset.name = $service.name
+
+    $referenceName = Get-ValueFromResourceRef -parameters $service.parameters -type "referenceName"
+    $outputdataset.properties.linkedServiceName.referenceName = $referenceName
+
+    return $outputdataset
 }
 
+function Get-SalesforcePipeline {
+    param (
+        [object]$service,
+        [object]$pipeline
+    )
+    $pipeline.name = $service.name
+    
+    $inputdataset = $service.parameters | Where-Object {$_.type -eq "inputdataset"}
+    $pipeline.properties.activities.inputs[0].referenceName = $inputdataset.value
+
+    $outputdataset = $service.parameters | Where-Object {$_.type -eq "outputdataset"}
+    $pipeline.properties.activities.outputs[0].referenceName = $outputdataset.value
+
+    return $pipeline
+}
 function Get-SalesforceLinkedService {
     param (
-        [object]$resource,
+        [object]$service,
         [object]$linkedService
     )
 
-    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
-    $usernameSecretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "usernameSecretName"
-    $passwordSecretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "passwordSecretName"
-    $securityTokenSecretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "securityTokenSecretName"
+    $linkedService.name = $service.name
+
+    $keyVaultName = Get-ValueFromResourceRef -parameters $service.parameters -type "keyvault"
+    $usernameSecretName = Get-ValueFromResourceRef -parameters $service.parameters -type "usernameSecretName"
+    $passwordSecretName = Get-ValueFromResourceRef -parameters $service.parameters -type "passwordSecretName"
+    $securityTokenSecretName = Get-ValueFromResourceRef -parameters $service.parameters -type "securityTokenSecretName"
 
     $linkedService.properties.typeProperties.username.secretName = $usernameSecretName     
     $linkedService.properties.typeProperties.username.store.referenceName = $keyVaultName
@@ -65,22 +84,28 @@ function Get-SalesforceLinkedService {
 
 function Get-TumbleTrigger {
     param (
-        [object]$resource,
+        [object]$service,
         [object]$trigger
     )
-    $startTime = $resource.parameters | Where-Object {$_.type -eq "startTime"}
+
+    $trigger.name = $service.name
+
+    $startTime = $service.parameters | Where-Object {$_.type -eq "startTime"}
     $trigger.properties.typeProperties.startTime = $startTime.value
 
-    $pipelineName = $resource.parameters | Where-Object {$_.type -eq "pipelineName"}
+    $pipelineName = $service.parameters | Where-Object {$_.type -eq "pipelineName"}
     $trigger.properties.pipeline.pipelineReference.referenceName = $pipelineName.value
 
-    $inputFilePath = $resource.parameters | Where-Object {$_.type -eq "inputFilePath"}
+    $inputFilePath = $service.parameters | Where-Object {$_.type -eq "inputFilePath"}
     $trigger.properties.pipeline.parameters.inputFilePath = $inputFilePath.value
 
-    $outputFilePath = $resource.parameters | Where-Object {$_.type -eq "outputFilePath"}
+    $outputFolderPath = $service.parameters | Where-Object {$_.type -eq "outputFolderPath"}
+    $trigger.properties.pipeline.parameters.outputFolderPath = $outputFolderPath.value
+
+    $outputFilePath = $service.parameters | Where-Object {$_.type -eq "outputFilePath"}
     $trigger.properties.pipeline.parameters.outputFilePath = $outputFilePath.value
 
-    $query = $resource.parameters | Where-Object {$_.type -eq "query"}
+    $query = $service.parameters | Where-Object {$_.type -eq "query"}
     $trigger.properties.pipeline.parameters.query = $query.value
 
     return $trigger
@@ -107,20 +132,52 @@ function New-Resource {
             Write-Verbose "Getting linked service configuration template from $sourcePath"
             $linkedService = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
             if ($service.type -eq "salesforce") {
-                $linkedService = Get-SalesforceLinkedService -resource $service -linkedService $linkedService
+                $linkedService = Get-SalesforceLinkedService -service $service -linkedService $linkedService
             }
             else {
                 throw "the type $type of linked service is not supported yet"
             }
             Write-OutputFile -resource $resource -outputObj $linkedService -filePath $service.templateFile
         }
-        foreach ($service in $innerResource.datasets) {
-            Write-Verbose "Processing dataset $($service.templateFile)"
-            Set-DataFactoryServiceFile -resource $resource -service $service -filePath $service.templateFile
+        foreach ($service in $innerResource.inputdatasets) {
+            Write-Verbose "Processing input dataset $($service.templateFile)"
+            $sourcePath = "$PSScriptRoot\..\templates\$($service.templateFile)"
+            Write-Verbose "Getting input dataset configuration template from $sourcePath"
+            $inputdataset = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
+            if ($service.type -eq "salesforce") {
+                $inputdataset = Get-SalesforceInputDataSet -service $service -inputdataset $inputdataset
+            }
+            else {
+                throw "the type $type of linked service is not supported yet"
+            }
+            Write-OutputFile -resource $resource -outputObj $inputdataset -filePath $service.templateFile
+        }
+        foreach ($service in $innerResource.outputdatasets) {
+            Write-Verbose "Processing output dataset $($service.templateFile)"
+            $sourcePath = "$PSScriptRoot\..\templates\$($service.templateFile)"
+            Write-Verbose "Getting output dataset configuration template from $sourcePath"
+            $outputdataset = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
+            if ($service.type -eq "salesforce") {
+                $outputdataset = Get-SalesforceOutputDataSet -service $service -outputdataset $outputdataset
+            }
+            else {
+                throw "the type $type of linked service is not supported yet"
+            }
+            Write-OutputFile -resource $resource -outputObj $outputdataset -filePath $service.templateFile
         }
         foreach ($service in $innerResource.pipelines) {
             Write-Verbose "Processing pipeline $($service.templateFile)"
-            Set-DataFactoryServiceFile -resource $resource -service $service -filePath $service.templateFile
+            $sourcePath = "$PSScriptRoot\..\templates\$($service.templateFile)"
+            Write-Verbose "Getting pipeline configuration template from $sourcePath"
+            $pipeline = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
+            if ($service.type -eq "salesforce") {
+                $pipeline = Get-SalesforcePipeline -service $service -pipeline $pipeline
+            }
+            else {
+                throw "the type $type of linked service is not supported yet"
+            }
+            Write-OutputFile -resource $resource -outputObj $pipeline -filePath $service.templateFile
+
         }
         foreach ($service in $innerResource.triggers) {
             Write-Verbose "Processing trigger $($service.templateFile)"
@@ -128,7 +185,7 @@ function New-Resource {
             Write-Verbose "Getting linked service configuration template from $sourcePath"
             $trigger = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
             if ($trigger.properties.type -eq "TumblingWindowTrigger") {
-                $trigger = Get-TumbleTrigger -resource $service -trigger $trigger
+                $trigger = Get-TumbleTrigger -service $service -trigger $trigger
             }
             else {
                 throw "only tumble window is supported for now"
