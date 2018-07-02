@@ -5,11 +5,35 @@
     "properties": {
       "activities": [
         {
+          "name": "LookupActivity",
+          "type": "Lookup",
+          "typeProperties": {
+              "source": {
+                  "type": "AzureDataLakeStoreSource"
+              },
+              "dataset": { 
+                  "referenceName": "", 
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "inputFolderPath": "@pipeline().parameters.inputFolderPath",
+                    "inputFileName": "@pipeline().parameters.inputFileName"
+                  }
+              },
+              "firstRowOnly": false
+          }
+        },
+        {
           "type": "ForEach",
-          "name": "ForEachRecordInSalesForce",
+          "name": "ForEachRecordInSalesForce",                
+          "dependsOn": [ 
+              { 
+                  "activity": "LookupActivity", 
+                  "dependencyConditions": [ "Succeeded" ] 
+              }
+           ],
           "typeProperties": {
             "items": {
-              "value": "@pipeline().parameters.configtables",
+              "value": "@activity('LookupActivity').output.value",
               "type": "Expression"
             },
             "activities": [
@@ -22,12 +46,13 @@
                     "type": "PipelineReference"
                   },
                   "parameters": {
-                    "outputFolderPath": "@item().outputFolderPath",
+                    "outputFolderPath": "@pipeline().parameters.outputFolderPath",
                     "outputFilePath": "@item().outputFilePath",
                     "query": "@item().query",
                     "windowStart": "@pipeline().parameters.windowStart",
                     "windowEnd": "@pipeline().parameters.windowEnd"
-                  }
+                  },
+                  "waitOnCompletion": true
                 }
               }      
             ]
@@ -35,8 +60,14 @@
         }
       ],
       "parameters": {
-        "configtables": {
-          "type": "Array"
+        "outputFolderPath": {
+          "type": "string"
+        },
+        "inputFolderPath": {
+          "type": "string"
+        },
+        "inputFileName": {
+          "type": "string"
         },
         "windowStart": {
           "type": "dateTime"

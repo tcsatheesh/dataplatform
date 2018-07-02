@@ -166,6 +166,23 @@
                         }
                     },
                     "resources": {
+                        "inputdatasets": [
+                            {
+                                "name": "ADLSLookupDataset",
+                                "type": "foreach",
+                                "templateFile": "foreach\\input.json",
+                                "parameters": [
+                                    {
+                                        "type": "referenceName",
+                                        "ref": {
+                                            "resourceType": "adlstores",
+                                            "typeFilter": "adlstore",
+                                            "property": "name"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
                         "pipelines": [
                             {
                                 "name": "SalesforcePipeline-ForEach",
@@ -173,12 +190,8 @@
                                 "templateFile": "foreach\\pipeline.json",
                                 "parameters": [
                                     {
-                                        "type": "inputdataset",
-                                        "value": "SalesforceDataset-ForEach"
-                                    },
-                                    {
-                                        "type": "outputdataset",
-                                        "value": "ADLSDataSetSF-ForEach"
+                                        "type": "referenceName",
+                                        "value": "ADLSLookupDataset"
                                     }
                                 ]
                             }
@@ -191,26 +204,27 @@
                                 "parameters": [
                                     {
                                         "type": "startTime",
-                                        "value": "2018-07-02T05:00:00Z"
+                                        "value": "2018-07-02T16:00:00Z"
+                                    },
+                                    {
+                                        "type": "interval",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "type": "outputFolderPath",
+                                        "value": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')"
                                     },
                                     {
                                         "type": "pipelineName",
                                         "value": "SalesforcePipeline-ForEach"
                                     },
                                     {
-                                        "type": "configtables",
-                                        "value": [
-                                            {
-                                                "query": "SELECT Id, Name, Type, BillingCountry AccountNumber FROM Account",
-                                                "outputFolderPath": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')",
-                                                "outputFilePath": "account-fe.csv"
-                                            },
-                                            {
-                                                "query": "SELECT Id, AccountId, FirstName, LastName FROM Contact",
-                                                "outputFolderPath": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')",
-                                                "outputFilePath": "contact-fe.csv"
-                                            }
-                                        ]
+                                        "type": "inputFolderPath",
+                                        "value": "/stage/lookup/"
+                                    },
+                                    {
+                                        "type": "inputFileName",
+                                        "value": "sourcetable.json"
                                     }
                                 ]
                             }

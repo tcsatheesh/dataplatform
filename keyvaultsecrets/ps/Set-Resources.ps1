@@ -102,6 +102,7 @@ function Set-Resource {
     }
     elseif ($resource.type -eq "value") {
         $secureSecretValue = ConvertTo-SecureString -AsPlainText $resource.secretValue -Force
+        $resource.secretValue = ""
     }
 
     $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType

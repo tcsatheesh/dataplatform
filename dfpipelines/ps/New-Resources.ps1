@@ -60,22 +60,6 @@ function Get-SalesforcePipeline {
     return $pipeline
 }
 
-function Get-ForEachPipeline {
-    param (
-        [object]$service,
-        [object]$pipeline
-    )
-    $pipeline.name = $service.name
-    
-    # $inputdataset = $service.parameters | Where-Object {$_.type -eq "inputdataset"}
-    # $pipeline.properties.activities.typeProperties.activities.inputs[0].referenceName = $inputdataset.value
-
-    # $outputdataset = $service.parameters | Where-Object {$_.type -eq "outputdataset"}
-    # $pipeline.properties.activities.typeProperties.activities.outputs[0].referenceName = $outputdataset.value
-
-    return $pipeline
-}
-
 function Get-SalesforceLinkedService {
     param (
         [object]$service,
@@ -125,6 +109,32 @@ function Get-SalesForceTumbleTrigger {
     return $trigger
 }
 
+function Get-ForEachInputDataSet {
+    param (
+        [object]$service,
+        [object]$inputdataset
+    )
+    $inputdataset.name = $service.name
+
+    $referenceName = Get-ValueFromResourceRef -parameters $service.parameters -type "referenceName"
+    $inputdataset.properties.linkedServiceName.referenceName = $referenceName
+
+    return $inputdataset
+}
+
+function Get-ForEachPipeline {
+    param (
+        [object]$service,
+        [object]$pipeline
+    )
+    $pipeline.name = $service.name
+
+    $referenceName = $service.parameters | Where-Object {$_.type -eq "referenceName"}
+    $pipeline.properties.activities[0].typeProperties.dataset.referenceName = $referenceName.value
+    
+    return $pipeline
+}
+
 function Get-ForEachTumbleTrigger {
     param (
         [object]$service,
@@ -136,11 +146,21 @@ function Get-ForEachTumbleTrigger {
     $startTime = $service.parameters | Where-Object {$_.type -eq "startTime"}
     $trigger.properties.typeProperties.startTime = $startTime.value
 
+    $interval = $service.parameters | Where-Object {$_.type -eq "interval"}
+    $trigger.properties.typeProperties.interval = $interval.value
+
     $pipelineName = $service.parameters | Where-Object {$_.type -eq "pipelineName"}
     $trigger.properties.pipeline.pipelineReference.referenceName = $pipelineName.value
 
-    $configtables = $service.parameters | Where-Object {$_.type -eq "configtables"}
-    $trigger.properties.pipeline.parameters.configtables = $configtables.value
+    $outputFolderPath = $service.parameters | Where-Object {$_.type -eq "outputFolderPath"}
+    $trigger.properties.pipeline.parameters.outputFolderPath = $outputFolderPath.value
+
+    $inputFolderPath = $service.parameters | Where-Object {$_.type -eq "inputFolderPath"}
+    $trigger.properties.pipeline.parameters.inputFolderPath = $inputFolderPath.value
+
+    $inputFileName = $service.parameters | Where-Object {$_.type -eq "inputFileName"}
+    $trigger.properties.pipeline.parameters.inputFileName = $inputFileName.value
+
 
     return $trigger
 }
@@ -181,6 +201,9 @@ function New-Resource {
             if ($service.type -eq "salesforce") {
                 $inputdataset = Get-SalesforceInputDataSet -service $service -inputdataset $inputdataset
             }
+            elseif ($service.type -eq "foreach") {
+                $inputdataset = Get-ForEachInputDataSet -service $service -inputdataset $inputdataset
+            }            
             else {
                 throw "the type $($service.type) of input dataset is not supported yet"
             }

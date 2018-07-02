@@ -5,8 +5,8 @@
     "properties": {
       "type": "TumblingWindowTrigger",
       "typeProperties": {
-        "frequency": "Minute",
-        "interval": "15",
+        "frequency": "Hour",
+        "interval": "[parameters('triggerIntervals')]",
         "startTime": "[parameters('triggerStartTime')]",
         "delay": "00:00:10",
         "retryPolicy": {
@@ -21,7 +21,9 @@
           "referenceName": "[parameters('pipelineName')]"
         },
         "parameters": {
-          "configtables": "[parameters('configtables')]",
+          "outputFolderPath": "[parameters('outputFolderPath')]",
+          "inputFolderPath": "[parameters('inputFolderPath')]",
+          "inputFileName": "[parameters('inputFileName')]",          
           "windowStart": "@trigger().outputs.windowStartTime",
           "windowEnd": "@trigger().outputs.windowEndTime"
         }
