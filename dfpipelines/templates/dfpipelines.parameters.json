@@ -168,7 +168,7 @@
                                     },
                                     {
                                         "type": "inputFileName",
-                                        "value": "sourcetable.json"
+                                        "value": "dimtables.json"
                                     }
                                 ]
                             }
