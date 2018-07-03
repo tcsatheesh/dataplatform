@@ -27,7 +27,7 @@
                             {
                                 "name": "Salesforce",
                                 "type": "salesforce",
-                                "templateFile": "foreach\\linkedservice.json",
+                                "templateFile": "salesforce\\linkedservice.json",
                                 "parameters": [
                                     {
                                         "type": "usernameSecretName",
@@ -71,7 +71,7 @@
                             {
                                 "name": "SalesforceDataset",
                                 "type": "salesforce",
-                                "templateFile": "foreach\\input1.json",
+                                "templateFile": "salesforce\\input1.json",
                                 "parameters": [
                                     {
                                         "type": "referenceName",
@@ -82,7 +82,7 @@
                             {
                                 "name": "ADLSLookupDataset",
                                 "type": "foreach",
-                                "templateFile": "foreach\\input2.json",
+                                "templateFile": "salesforce\\input2.json",
                                 "parameters": [
                                     {
                                         "type": "referenceName",
@@ -99,7 +99,7 @@
                             {
                                 "name": "ADLSDataSetSF",
                                 "type": "salesforce",
-                                "templateFile": "foreach\\output.json",
+                                "templateFile": "salesforce\\output.json",
                                 "parameters": [
                                     {
                                         "type": "referenceName",
@@ -116,7 +116,7 @@
                             {
                                 "name": "SalesforcePipeline",
                                 "type": "salesforce",
-                                "templateFile": "foreach\\pipeline1.json",
+                                "templateFile": "salesforce\\pipeline1.json",
                                 "parameters": [
                                     {
                                         "type": "inputdataset",
@@ -131,7 +131,7 @@
                             {
                                 "name": "SalesforcePipeline-ForEach",
                                 "type": "foreach",
-                                "templateFile": "foreach\\pipeline2.json",
+                                "templateFile": "salesforce\\pipeline2.json",
                                 "parameters": [
                                     {
                                         "type": "referenceName",
@@ -144,7 +144,7 @@
                             {
                                 "name": "SalesForceTrigger-ForEach",
                                 "type": "foreach",
-                                "templateFile": "foreach\\trigger.json",
+                                "templateFile": "salesforce\\trigger.json",
                                 "parameters": [
                                     {
                                         "type": "startTime",
