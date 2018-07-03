@@ -7,6 +7,9 @@
         "referenceName": "[parameters('inputLinkedServiceName')]",
         "type": "LinkedServiceReference"
       },
-      "type": "SalesforceObject"
+      "type": "SalesforceObject",
+      "folder": {
+        "name": "[parameters('dffolderName')]"
+      }
     }
   }

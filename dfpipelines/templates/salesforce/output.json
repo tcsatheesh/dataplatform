@@ -31,6 +31,9 @@
         "outputFilePath": {
           "type": "String"
         }
+      },
+      "folder": {
+        "name": "[parameters('dffolderName')]"
       }
     }
   }

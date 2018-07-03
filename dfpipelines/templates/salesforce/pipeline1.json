@@ -64,6 +64,9 @@
       "windowEnd": {
         "type": "dateTime"
       }
+    },
+    "folder": {
+      "name": "[parameters('dffolderName')]"
     }
   }
 }

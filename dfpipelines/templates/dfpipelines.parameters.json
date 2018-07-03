@@ -125,6 +125,10 @@
                                     {
                                         "type": "outputdataset",
                                         "value": "ADLSDataSetSF"
+                                    },
+                                    {
+                                        "type": "dffolderName",
+                                        "value": "Salesforce"
                                     }
                                 ]
                             },
@@ -136,6 +140,10 @@
                                     {
                                         "type": "referenceName",
                                         "value": "ADLSLookupDataset"
+                                    },
+                                    {
+                                        "type": "dffolderName",
+                                        "value": "Salesforce"
                                     }
                                 ]
                             }                            

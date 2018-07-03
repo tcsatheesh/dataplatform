@@ -29,6 +29,9 @@ function Get-SalesforceInputDataSet {
     $referenceName = $service.parameters | Where-Object {$_.type -eq "referenceName"}
     $inputdataset.properties.linkedServiceName.referenceName = $referenceName.value
 
+    $dffolderName = $service.parameters | Where-Object {$_.type -eq "dffolderName"}
+    $inputdataset.properties.folder.name = $dffolderName.value
+
     return $inputdataset
 }
 function Get-SalesforceOutputDataSet {
@@ -40,6 +43,9 @@ function Get-SalesforceOutputDataSet {
 
     $referenceName = Get-ValueFromResourceRef -parameters $service.parameters -type "referenceName"
     $outputdataset.properties.linkedServiceName.referenceName = $referenceName
+
+    $dffolderName = $service.parameters | Where-Object {$_.type -eq "dffolderName"}
+    $outputdataset.properties.folder.name = $dffolderName.value
 
     return $outputdataset
 }
@@ -56,6 +62,9 @@ function Get-SalesforcePipeline {
 
     $outputdataset = $service.parameters | Where-Object {$_.type -eq "outputdataset"}
     $pipeline.properties.activities.typeProperties.ifTrueActivities[0].outputs[0].referenceName = $outputdataset.value
+
+    $dffolderName = $service.parameters | Where-Object {$_.type -eq "dffolderName"}
+    $pipeline.properties.folder.name = $dffolderName.value
 
     return $pipeline
 }
@@ -93,6 +102,9 @@ function Get-ForEachInputDataSet {
     $referenceName = Get-ValueFromResourceRef -parameters $service.parameters -type "referenceName"
     $inputdataset.properties.linkedServiceName.referenceName = $referenceName
 
+    $dffolderName = $service.parameters | Where-Object {$_.type -eq "dffolderName"}
+    $inputdataset.properties.folder.name = $dffolderName.value
+
     return $inputdataset
 }
 
@@ -105,6 +117,9 @@ function Get-ForEachPipeline {
 
     $referenceName = $service.parameters | Where-Object {$_.type -eq "referenceName"}
     $pipeline.properties.activities[0].typeProperties.dataset.referenceName = $referenceName.value
+        
+    $dffolderName = $service.parameters | Where-Object {$_.type -eq "dffolderName"}
+    $pipeline.properties.folder.name = $dffolderName.value
     
     return $pipeline
 }
