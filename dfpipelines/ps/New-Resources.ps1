@@ -11,7 +11,7 @@ function Write-OutputFile {
         [string]$filePath
     )
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $destinationPath = "$projectFolder\dfpipelines"
+    $destinationPath = "$projectFolder\$resourceType"
     $path = New-Item -Path $destinationPath -ItemType Directory -Force
     $destinationFile = "$destinationPath\$filePath"
     $path = New-Item -Path $destinationFile -ItemType File -Force
@@ -44,6 +44,7 @@ function Get-SalesforceOutputDataSet {
     return $outputdataset
 }
 
+
 function Get-SalesforcePipeline {
     param (
         [object]$service,
@@ -52,10 +53,10 @@ function Get-SalesforcePipeline {
     $pipeline.name = $service.name
     
     $inputdataset = $service.parameters | Where-Object {$_.type -eq "inputdataset"}
-    $pipeline.properties.activities.inputs[0].referenceName = $inputdataset.value
+    $pipeline.properties.activities.typeProperties.ifTrueActivities[0].inputs[0].referenceName = $inputdataset.value
 
     $outputdataset = $service.parameters | Where-Object {$_.type -eq "outputdataset"}
-    $pipeline.properties.activities.outputs[0].referenceName = $outputdataset.value
+    $pipeline.properties.activities.typeProperties.ifTrueActivities[0].outputs[0].referenceName = $outputdataset.value
 
     return $pipeline
 }
@@ -81,32 +82,6 @@ function Get-SalesforceLinkedService {
     $linkedService.properties.typeProperties.securityToken.secretName = $securityTokenSecretName
     
     return $linkedService
-}
-
-function Get-SalesForceTumbleTrigger {
-    param (
-        [object]$service,
-        [object]$trigger
-    )
-
-    $trigger.name = $service.name
-
-    $startTime = $service.parameters | Where-Object {$_.type -eq "startTime"}
-    $trigger.properties.typeProperties.startTime = $startTime.value
-
-    $pipelineName = $service.parameters | Where-Object {$_.type -eq "pipelineName"}
-    $trigger.properties.pipeline.pipelineReference.referenceName = $pipelineName.value
-
-    $outputFolderPath = $service.parameters | Where-Object {$_.type -eq "outputFolderPath"}
-    $trigger.properties.pipeline.parameters.outputFolderPath = $outputFolderPath.value
-
-    $outputFilePath = $service.parameters | Where-Object {$_.type -eq "outputFilePath"}
-    $trigger.properties.pipeline.parameters.outputFilePath = $outputFilePath.value
-
-    $query = $service.parameters | Where-Object {$_.type -eq "query"}
-    $trigger.properties.pipeline.parameters.query = $query.value
-
-    return $trigger
 }
 
 function Get-ForEachInputDataSet {

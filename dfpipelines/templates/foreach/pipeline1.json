@@ -1,0 +1,69 @@
+{
+  "type": "pipelines",
+  "name": "[parameters('pipelineName')]",
+  "apiVersion": "2017-09-01-preview",
+  "properties": {
+    "activities": [
+      {
+        "name": "RunIfEnabled",
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression":  {
+            "value":  "@bool(pipeline().parameters.configItem.enabled)", 
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "CopySalesforceToADLS",
+              "type": "Copy",
+              "inputs": [
+                {
+                  "referenceName": "[parameters('inputDataSetName')]",
+                  "type": "DatasetReference"
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "[parameters('outputDataSetName')]",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "outputFolderPath": "@pipeline().parameters.outputFolderPath",
+                    "outputFilePath": "@pipeline().parameters.configItem.outputFilePath"
+                  }
+                }
+              ],
+              "typeProperties": {
+                "source": {
+                  "type": "SalesforceSource",
+                  "query": {
+                    "value": "@pipeline().parameters.configItem.query",
+                    "type": "Expression"
+                  }
+                },
+                "sink": {
+                  "type": "AzureDataLakeStoreSink"
+                },
+                "enableStaging": false,
+                "cloudDataMovementUnits": 0
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "parameters": {
+      "outputFolderPath": {
+        "type": "string"
+      },
+      "configItem": {
+        "type": "object"
+      },
+      "windowStart": {
+        "type": "dateTime"
+      },
+      "windowEnd": {
+        "type": "dateTime"
+      }
+    }
+  }
+}

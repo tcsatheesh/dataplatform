@@ -358,20 +358,6 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "type": "it-dblt4-d",
-                    "parent": "it-dblt3-d",
-                    "resources": [                        
-                        {
-                            "resourceType": "dfpipelines",
-                            "resources": [
-                                {
-                                    "type": "foreach"
-                                }
-                            ]
-                        }
-                    ]
                 }
             ]
         }

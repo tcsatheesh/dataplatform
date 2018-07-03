@@ -10,14 +10,13 @@ function Set-Resource {
     )
     
     $dataFactoryResourceGroupName = $resource.datafactoryResourceGroup.name
-    $dataFactoryName = $resource.datafactory.name
+    $dataFactoryName = $resource.datafactory.name    
 
     foreach ($innerResource in $resource.resources) {
         foreach ($service in $innerResource.linkedservices) {
             Write-Verbose "Processing linked service $($service.templateFile)"
             $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-            $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"
-
+            $configFile = "$projectFolder\$resourceType\$($service.templateFile)"
             $depl = Set-AzureRmDataFactoryV2LinkedService `
                 -ResourceGroupName  $dataFactoryResourceGroupName `
                 -DataFactoryName $dataFactoryName `
@@ -27,7 +26,7 @@ function Set-Resource {
         foreach ($service in $innerResource.inputdatasets) {
             Write-Verbose "Processing dataset $($service.templateFile)"
             $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-            $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"
+            $configFile = "$projectFolder\$resourceType\$($service.templateFile)"
             $depl = Set-AzureRmDataFactoryV2Dataset `
                 -ResourceGroupName  $dataFactoryResourceGroupName `
                 -DataFactoryName $dataFactoryName `
@@ -37,7 +36,7 @@ function Set-Resource {
         foreach ($service in $innerResource.outputdatasets) {
             Write-Verbose "Processing dataset $($service.templateFile)"
             $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-            $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"
+            $configFile = "$projectFolder\$resourceType\$($service.templateFile)"
             $depl = Set-AzureRmDataFactoryV2Dataset `
                 -ResourceGroupName  $dataFactoryResourceGroupName `
                 -DataFactoryName $dataFactoryName `
@@ -47,7 +46,7 @@ function Set-Resource {
         foreach ($service in $innerResource.pipelines) {
             Write-Verbose "Processing pipeline $($service.templateFile)"
             $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-            $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"
+            $configFile = "$projectFolder\$resourceType\$($service.templateFile)"
             $depl = Set-AzureRmDataFactoryV2Pipeline `
                 -ResourceGroupName  $dataFactoryResourceGroupName `
                 -DataFactoryName $dataFactoryName `
@@ -57,7 +56,7 @@ function Set-Resource {
         foreach ($service in $innerResource.triggers) {
             Write-Verbose "Processing trigger $($service.templateFile)"
             $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-            $configFile = "$projectFolder\dfpipelines\$($service.templateFile)"
+            $configFile = "$projectFolder\$resourceType\$($service.templateFile)"
             $depl = Set-AzureRmDataFactoryV2Trigger `
                 -ResourceGroupName  $dataFactoryResourceGroupName `
                 -DataFactoryName $dataFactoryName `

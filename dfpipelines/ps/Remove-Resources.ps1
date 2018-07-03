@@ -19,7 +19,9 @@ function Remove-Resource {
                 -DataFactoryName $dataFactoryName `
                 -Name $service.name -Force
         }
-        foreach ($service in $innerResource.pipelines) {
+        $count = $innerResource.pipelines.Count
+        for ($index = 0; $index -lt $count ; $index++) {
+            $service = $innerResource.pipelines[$count - $index - 1]
             Write-Verbose "Processing pipeline $($service.templateFile)"
             $depl = Remove-AzureRmDataFactoryV2Pipeline `
                 -ResourceGroupName  $dataFactoryResourceGroupName `

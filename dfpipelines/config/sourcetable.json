@@ -1,14 +1,20 @@
 [
     {
+        "name": "Account",
         "query": "SELECT Id, Name, Type, BillingCountry AccountNumber FROM Account",
-        "outputFilePath": "account-fe.csv"
+        "outputFilePath": "account-fe.csv",
+        "enabled": true
     },
     {
+        "name": "Contact",
         "query": "SELECT Id, AccountId, FirstName, LastName FROM Contact",
-        "outputFilePath": "contact-fe.csv"
+        "outputFilePath": "contact-fe.csv",
+        "enabled": true
     },
     {
+        "name": "Product",
         "query": "SELECT Id, Name, Family, ProductCode FROM Product2",
-        "outputFilePath": "product-fe.csv"
+        "outputFilePath": "product-fe.csv",
+        "enabled": false
     }
 ]
