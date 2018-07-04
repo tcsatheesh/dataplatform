@@ -9,21 +9,23 @@ param
     [Parameter(Mandatory = $True, HelpMessage = 'The environment for this project.')]
     [String]$environment,
 
-    [Parameter(Mandatory = $True, HelpMessage = 'The environment for this project.')]
+    [Parameter(ParameterSetName='parent', Mandatory = $True, HelpMessage = 'The environment for this project.')]
     [String]$tenant,
 
-    [Parameter(Mandatory = $True, HelpMessage = 'The vsts account name.')]
+    [Parameter(ParameterSetName='parent', Mandatory = $True, HelpMessage = 'The vsts account name.')]
     [String]$vstsaccountname,
 
-    [Parameter(Mandatory = $True, HelpMessage = 'The vsts account branch.')]
+    [Parameter(ParameterSetName='parent', Mandatory = $True, HelpMessage = 'The vsts account branch.')]
     [String]$branch,
 
-    [Parameter(Mandatory = $False, HelpMessage = 'Should we create AD Groups in Azure AD.')]
+    [Parameter(ParameterSetName='parent', Mandatory = $False, HelpMessage = 'Should we create AD Groups in Azure AD.')]
     [bool]$createADGroups = $false,
 
-    [Parameter(Mandatory = $False, HelpMessage = 'The project folder')]
-    [string]$projectFolder = $null
+    [Parameter(ParameterSetName='parent', Mandatory = $False, HelpMessage = 'The project folder')]
+    [string]$projectFolder = $null,
 
+    [Parameter(ParameterSetName='child', Mandatory = $True, HelpMessage = 'The project folder')]
+    [string]$parentProject
 )
 
 $envtype = "{0}-{1}-{2}" -f $department, $projectName, $environment
@@ -125,22 +127,42 @@ function New-Resources2 {
     $resource = $resources | Where-Object {$_.type -eq "environment"}
     $resource.name = $environment
 
-    $resource = $resources | Where-Object {$_.type -eq "createADGroups"}
-    $resource.status = $createADGroups
+    if ([string]::IsNullOrEmpty($parentProject)) {
+        $resource = $resources | Where-Object {$_.type -eq "createADGroups"}
+        $resource.status = $createADGroups
+    
+        $subdetails = Get-SubscriptionDetails 
+        $resource = $resources | Where-Object {$_.type -eq "tenant"}
+        $resource.name = $tenant
+        $resource.id = $subdetails.tenantId
+    
+        $resource = $resources | Where-Object {$_.type -eq "subscription"}
+        $resource.name = $subdetails.subscriptionName
+        $resource.id = $subdetails.subscriptionId
+    
+        $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
+        $resource.name = $vstsaccountname
+        $resource.branch = $branch    
+    }else{
+        $projectRootFolder = "$PSScriptRoot\..\.."
+        $parentProjectParameters = Get-Content -Path "$projectRootFolder\projects\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
+        $parentProjectResources = $parentProjectParameters.parameters.resources.value
+        $resource = $resources | Where-Object {$_.type -eq "createADGroups"}
+        $resource.status = ($parentProjectResources | Where-Object {$_.type -eq "createADGroups"}).status
+    
+        $resource = $resources | Where-Object {$_.type -eq "tenant"}
+        $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "tenant"}).name
+        $resource.id = ($parentProjectResources | Where-Object {$_.type -eq "tenant"}).id
+    
+        $resource = $resources | Where-Object {$_.type -eq "subscription"}
+        $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "subscription"}).name
+        $resource.id = ($parentProjectResources | Where-Object {$_.type -eq "subscription"}).id
+    
+        $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
+        $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "vstsaccount"}).name
+        $resource.branch = ($parentProjectResources | Where-Object {$_.type -eq "vstsaccount"}).branch
+    }
 
-    $subdetails = Get-SubscriptionDetails 
-    $resource = $resources | Where-Object {$_.type -eq "tenant"}
-    $resource.name = $tenant
-    $resource.id = $subdetails.tenantId
-
-    $resource = $resources | Where-Object {$_.type -eq "subscription"}
-    $resource.name = $subdetails.subscriptionName
-    $resource.id = $subdetails.subscriptionId
-
-    $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
-    Write-Verbose $resource
-    $resource.name = $vstsaccountname
-    $resource.branch = $branch
 
     $resource = $resources | Where-Object {$_.type -eq $envtype}
     if ($resource -eq $null) {
