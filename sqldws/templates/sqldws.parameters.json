@@ -7,7 +7,7 @@
                 {
                     "type" : "appdw",                    
                     "resourceType": "sqldws",
-                    "resourceGroupTypeRef": "data",
+                    "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}sqldw01",
                     "location": "North Europe",
                     "templateFileName": "sqldw.json",
@@ -29,7 +29,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName" : "{0}{1}{2}sqlsvr03-sqladmin-password"
+                                "secretName" : "{0}{1}{2}sqlsvr03-sqldwadmin-password"
                             }
                         },
                         {
@@ -37,7 +37,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "managers",
+                                "typeFilter": "dbadmins",
                                 "property" : "name"
                             }
                         },
@@ -46,7 +46,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "adgroups",
-                                "typeFilter": "managers",
+                                "typeFilter": "dbadmins",
                                 "property" : "id"
                             }
                         },
@@ -73,7 +73,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "resourcegroups",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "app",
                                 "property": "name"
                             }
                         },
@@ -82,7 +82,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "storageaccounts",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "diagnostics",
                                 "property" : "name"
                             }
                         },

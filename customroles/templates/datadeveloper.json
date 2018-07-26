@@ -15,7 +15,12 @@
 		"Microsoft.Storage/storageAccounts/listkeys/action",
 		"Microsoft.Storage/storageAccounts/blobServices/containers/delete",
 		"Microsoft.Storage/storageAccounts/blobServices/containers/read",
-		"Microsoft.Storage/storageAccounts/blobServices/containers/write"
+		"Microsoft.Storage/storageAccounts/blobServices/containers/write",
+		"Microsoft.AnalysisServices/servers/resume/action",
+		"Microsoft.AnalysisServices/servers/suspend/action",
+		"Microsoft.Sql/servers/databases/pause/action",
+		"Microsoft.Sql/servers/databases/resume/action",
+		"Microsoft.Sql/servers/databases/write"
 	],
 	"NotActions": [
 		"Microsoft.DataLakeAnalytics/accounts/Delete",

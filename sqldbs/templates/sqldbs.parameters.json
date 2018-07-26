@@ -7,7 +7,7 @@
                 {
                     "type" : "appdb",        
                     "resourceType": "sqldbs",
-                    "resourceGroupTypeRef": "web",
+                    "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}sqldb01",
                     "location": "North Europe",
                     "templateFileName": "sqldb.json",
@@ -82,7 +82,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "resourcegroups",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "app",
                                 "property": "name"
                             }
                         },
@@ -91,7 +91,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "storageaccounts",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "diagnostics",
                                 "property" : "name"
                             }
                         },

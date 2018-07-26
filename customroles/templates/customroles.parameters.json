@@ -15,6 +15,12 @@
                     "path": "datalakestoresuperuser.json",
                     "update": true,
                     "name": "Data Lake Store Super User"
+                },
+                {
+                    "type": "serviceteam",
+                    "path": "serviceteam.json",
+                    "update": true,
+                    "name": "Data and AI Service Team"
                 }
             ]
         }

@@ -142,8 +142,13 @@ function New-Resources2 {
     
         $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
         $resource.name = $vstsaccountname
-        $resource.branch = $branch    
+        $resource.branch = $branch
     }else{
+        $resource = $resources | Where-Object {$_.type -eq $envtype}
+        if ($resource.parent -ne $parentProject) {
+            throw "the parent projects do not match provided $parentProject found $($resource.parent)"
+        }
+
         $projectRootFolder = "$PSScriptRoot\..\.."
         $parentProjectParameters = Get-Content -Path "$projectRootFolder\projects\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
         $parentProjectResources = $parentProjectParameters.parameters.resources.value
