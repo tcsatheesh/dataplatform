@@ -27,7 +27,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "resourcegroups",
-                                "typeFilter": "storage",
+                                "typeFilter": "app",
                                 "property" : "name"
                             }                            
                         },
@@ -43,7 +43,7 @@
                                 "resourceType": "adgroups",
                                 "typeFilter": "analysisadmin",
                                 "property" : "id"
-                            }                            
+                            }              
                         },
                         {
                             "name": "modelManagementAccountName",
