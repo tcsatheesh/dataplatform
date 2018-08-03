@@ -64,28 +64,6 @@
                             "List"
                         ]
                     }
-                },
-                {
-                    "objectId": "",
-                    "tenantId": "",
-                    "permissions": {
-                        "secrets": [
-                            "Set",
-                            "Get",
-                            "List"
-                        ]
-                    }
-                },
-                {
-                    "objectId": "",
-                    "tenantId": "",
-                    "permissions": {
-                        "secrets": [
-                            "Set",
-                            "Get",
-                            "List"
-                        ]
-                    }
                 }
             ]
         },

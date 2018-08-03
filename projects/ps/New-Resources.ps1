@@ -93,7 +93,7 @@ function Get-OutputFile {
     $parameterFileName = "projects.parameters.json"
     $projectFolderName = "{0}-{1}-{2}" -f $department, $projectName, $environment
     $selectedProjectFolder = $projectFolder
-    if ([string]::IsNullOrEmpty($selectedProjectFolder)) {    
+    if ([string]::IsNullOrEmpty($selectedProjectFolder)) {
         $selectedProjectFolder = "$PSScriptRoot\..\..\projects\$projectFolderName"
     }
     $projectFolder = New-Item -Path $selectedProjectFolder -ItemType Directory -Force
@@ -118,16 +118,16 @@ function New-Resources2 {
     )
     $resources = $parameters.parameters.resources.value
 
-    $resource = $resources | Where-Object {$_.type -eq "department"}
-    $resource.name = $department
-
-    $resource = $resources | Where-Object {$_.type -eq "projectName"}
-    $resource.name = $projectName
-
-    $resource = $resources | Where-Object {$_.type -eq "environment"}
-    $resource.name = $environment
-
     if ([string]::IsNullOrEmpty($parentProject)) {
+        $resource = $resources | Where-Object {$_.type -eq "department"}
+        $resource.name = $department
+    
+        $resource = $resources | Where-Object {$_.type -eq "projectName"}
+        $resource.name = $projectName
+    
+        $resource = $resources | Where-Object {$_.type -eq "environment"}
+        $resource.name = $environment
+
         $resource = $resources | Where-Object {$_.type -eq "createADGroups"}
         $resource.status = $createADGroups
     
@@ -152,6 +152,16 @@ function New-Resources2 {
         $projectRootFolder = "$PSScriptRoot\..\.."
         $parentProjectParameters = Get-Content -Path "$projectRootFolder\projects\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
         $parentProjectResources = $parentProjectParameters.parameters.resources.value
+
+        $resource = $resources | Where-Object {$_.type -eq "department"}
+        $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "department"}).name
+
+        $resource = $resources | Where-Object {$_.type -eq "projectname"}
+        $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "projectname"}).name
+    
+        $resource = $resources | Where-Object {$_.type -eq "environment"}
+        $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "environment"}).name
+
         $resource = $resources | Where-Object {$_.type -eq "createADGroups"}
         $resource.status = ($parentProjectResources | Where-Object {$_.type -eq "createADGroups"}).status
     

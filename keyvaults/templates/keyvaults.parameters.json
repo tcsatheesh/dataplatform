@@ -66,50 +66,7 @@
                                 "property": "id",
                                 "typeFilter": "tenant"
                             }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "objectId",
-                            "index": 2,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "adgroups",
-                                "property": "id",
-                                "typeFilter": "buildadmins"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "tenantId",
-                            "index": 2,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "projects",
-                                "property": "id",
-                                "typeFilter": "tenant"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "objectId",
-                            "index": 3,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "adgroups",
-                                "property": "id",
-                                "typeFilter": "managers"
-                            }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "tenantId",
-                            "index": 3,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "projects",
-                                "property": "id",
-                                "typeFilter": "tenant"
-                            }
+                        
                         }
                     ]
                 },

@@ -46,6 +46,9 @@
                                 },
                                 {
                                     "type": "datalakestoresuperuser"
+                                },
+                                {
+                                    "type": "serviceteam"
                                 }
                             ]
                         }
@@ -354,6 +357,195 @@
                             "resources": [
                                 {
                                     "type": "salesforce"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt4-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "dbadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "sqldwadmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldws",
+                            "resources": [
+                                {
+                                    "type": "appdw"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt5-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "dbadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "sqladmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldbs",
+                            "resources": [
+                                {
+                                    "type": "appdb"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "logicapps",
+                            "resources": [
+                                {
+                                    "type": "logicapp"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-mlst-d",
+                    "resources": [
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "storageaccounts",
+                            "resources": [
+                                {
+                                    "type": "mlstorage"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "mlstudios",
+                            "resources": [
+                                {
+                                    "type": "mlstudio"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-aks-d",
+                    "resources": [
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "vnet"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "vnets",
+                            "resources": [
+                                {
+                                    "type": "aks"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "deploymentPrincipal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-aks2-d",
+                    "parent": "it-aks-d",
+                    "resources": [
+
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "keyvaultadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "appkeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "clientsecrets",
+                            "resources": [
+                                {
+                                    "type": "password",
+                                    "subtype": "deploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "aks",
+                            "resources": [
+                                {
+                                    "type": "aks"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-base2-d",
+                    "resources": [
+                        {
+                            "resourceType": "azurepolicies",
+                            "resources": [
+                                {
+                                    "type": "mvp"
                                 }
                             ]
                         }

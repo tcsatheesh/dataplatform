@@ -7,21 +7,6 @@ param
     [String]$resourceType
 )
 
-function Copy-TemplateFile {
-    param(
-        [string]$resourceType,
-        [string]$templateFileName
-    )
-    $sourcePath = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\templates\$templateFileName").FullName
-    Write-Verbose "Source Path is $sourcePath"
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $destinationPath = "$projectFolder\$resourceType"
-    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
-    $destinationPath = "$destinationPath\$templateFileName"
-    Write-Verbose "Destination Path is $destinationPath"
-    Copy-Item -Path $sourcePath -Destination $destinationPath -Force
-}
-
 function Get-KeyVaultId {
     param (
         [object]$resourceType,
@@ -131,6 +116,28 @@ function Get-KeyEncryptionKeyUrl {
     return $keyEncryptionKeyUrl
 }
 
+function Get-SubnetID {
+    param (
+        [object]$subnetRef
+    )
+    $VNetName = Get-ValueFromResource -resourceType $subnetRef.resourceType `
+        -property $subnetRef.property -typeFilter $subnetRef.typeFilter
+    
+    $vnet = Get-AzureRmVirtualNetwork | Where-Object {$_.Name -eq $VnetName}
+    $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetRef.subnetName}
+    return $subnet.Id
+}
+
+function Get-ResourceId {
+    param (
+        [object]$ref
+    )
+
+    $res = Get-AzureRmResource -ResourceGroupName $ref.resourceGroupName -Name $ref.name
+    if ($res -eq $null) {throw "Resource with name $($ref.name) in resource group $($ref.resourcegroupname) not found"}
+    return $res.Id
+}
+
 function Set-AdditionalParameters {
     param (
         [object]$resource,
@@ -187,6 +194,12 @@ function Set-AdditionalParameters {
             elseif ($resourceparam.type -eq "container") {
                 $val = Get-BlobContainerUri -blobRef $resourceparam.ref -containername $resourceName
             }
+            elseif ($resourceparam.type -eq "subnetid") {
+                $val = Get-SubnetID -subnetRef $resourceparam.ref
+            }
+            elseif ($resourceparam.type -eq "resourceid") {
+                $val = Get-ResourceId -ref $resourceparam.ref
+            }
             elseif (($resourceparam.type -eq "iotHubConnectionString") -or
                     ($resourceparam.type -eq "iotHubResourceId") -or 
                     ($resourceparam.type -eq "iotHubSharedAccessKey")
@@ -203,12 +216,14 @@ function Set-AdditionalParameters {
             else {
                 throw "you are missing the resource type $($resourceparam.type)"
             }
+            
             $subparametertoedit = $resourceparam.subname
-            Write-Verbose "resourceTypeToLoad $resourceTypeToLoad with projectyToExtract $propertyToExtract with typeFilter $typeFilter and subFilter $subFilter has value $val"
             if ($subparametertoedit -eq $null) {
+                Write-Verbose "Parameter to edit is: $parametertoedit with value: $val"
                 $resourceParameters.parameters.$parametertoedit.value = $val
             }
             else {
+                Write-Verbose "Parameter to edit is: $parametertoedit and sub parameter to edit $subparametertoedit with value: $val"
                 $resourceParameters.parameters.$parametertoedit.value[$index].$subparametertoedit = $val
             }
         }

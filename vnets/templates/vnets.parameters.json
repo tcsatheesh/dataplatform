@@ -55,6 +55,34 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "aks",
+                    "resourceType": "vnets",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}vnet01",
+                    "location": "North Europe",
+                    "templateFileName": "vnet.json",
+                    "parameterFileName": "vnet.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "addressPrefix",
+                            "type": "value",
+                            "value": "10.55.0.0/16"
+                        },
+                        {
+                            "name": "subnets",
+                            "type": "value",
+                            "value": [
+                                {
+                                    "name": "kubernetes",
+                                    "properties": {
+                                        "addressPrefix": "10.55.1.0/24"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

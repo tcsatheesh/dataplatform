@@ -1,0 +1,106 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "aks",
+                    "resourceType": "aks",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}aks01",
+                    "location": "North Europe",
+                    "templateFileName": "ak.json",
+                    "parameterFileName": "ak.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "dnsPrefix",
+                            "type": "format",
+                            "value": "{0}{1}{2}aks01"
+                        },
+                        {
+                            "name": "servicePrincipalClientId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "deploymentPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "principalId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "deploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "name": "servicePrincipalClientSecret",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}-{1}-{2}-dep-prn-password"
+                            }
+                        },
+                        {
+                            "name": "vnetSubnetID",
+                            "type": "subnetid",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "aks",
+                                "property": "name",
+                                "subnetName" : "kubernetes"
+                            }
+                        },
+                        {
+                            "name": "scope",
+                            "type": "subnetid",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "aks",
+                                "property": "name",
+                                "subnetName" : "kubernetes"
+                            }
+                        },
+                        {
+                            "name": "serviceCidr",
+                            "type": "value",
+                            "value": "10.0.0.0/16"
+                        },
+                        {
+                            "name": "dnsServiceIP",
+                            "type": "value",
+                            "value": "10.0.0.10"
+                        },
+                        {
+                            "name": "dockerBridgeCidr",
+                            "type": "value",
+                            "value": "172.17.0.1/16"
+                        },
+                        {
+                            "name": "workspaceName",
+                            "type": "value",
+                            "value": "itomsp"
+                        },
+                        {
+                            "name": "omsWorkspaceId",
+                            "type": "resourceid",
+                            "ref": {
+                                "name" : "itomsp",
+                                "resourceGroupName": "itomsp-mgmt-rg"
+                            }
+                        },
+                        {
+                            "name": "workspaceRegion",
+                            "type": "value",
+                            "value": "westeurope"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

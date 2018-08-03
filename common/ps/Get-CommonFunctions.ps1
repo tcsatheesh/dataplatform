@@ -277,6 +277,21 @@ function Get-ResourcesFromResourceType {
     
 }
 
+function Copy-TemplateFile {
+    param(
+        [string]$resourceType,
+        [string]$templateFileName
+    )
+    $sourcePath = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\templates\$templateFileName").FullName
+    Write-Verbose "Source Path is $sourcePath"
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    $destinationPath = "$projectFolder\$resourceType"
+    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
+    $destinationPath = "$destinationPath\$templateFileName"
+    Write-Verbose "Destination Path is $destinationPath"
+    Copy-Item -Path $sourcePath -Destination $destinationPath -Force
+}
+
 function Set-ParametersToFile { 
     param (
         [string]$resourceType,
