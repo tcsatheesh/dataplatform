@@ -112,6 +112,45 @@
                             }
                         }
                     ]
+                },
+                {
+                    "type": "masterkeyvault",
+                    "resourceType": "keyvaults",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}nekvltacc",
+                    "location": "North Europe",
+                    "expiryTerm": 4,
+                    "templateFileName": "keyvault.json",
+                    "parameterFileName": "keyvault-nosp.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "tenant",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType" : "projects",
+                                "property": "id",
+                                "typeFilter": "tenant"
+                            }
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "objectId",
+                            "index": 0,
+                            "type": "value",
+                            "value": "b0a82873-b2f5-4b77-8b70-0b5cec511871"
+                        },
+                        {
+                            "name": "accessPolicies",
+                            "subname": "tenantId",
+                            "index": 0,
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "property": "id",
+                                "typeFilter": "tenant"
+                            }
+                        }
+                    ]
                 }
             ]
         }

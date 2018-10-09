@@ -4,6 +4,25 @@ param
     [String]$projectsParameterFile
 )
 
+function Remove-RoleAssignment3 {
+    param
+    (
+        [string]$objectId,
+        [string]$roleName
+    )
+    Write-Verbose "Removing role assignment for role $roleName with id $objectId for subscription"
+    $res1 = $null
+    if (-not [string]::IsNullOrEmpty($objectId)) {
+        $res1 = Get-AzureRmRoleAssignment -ObjectId $objectId -RoleDefinitionName $roleName -ErrorAction SilentlyContinue
+    }
+    if ($res1 -eq $null -and (-not [string]::IsNullOrEmpty($objectId))) {
+        $res1 = Remove-AzureRmRoleAssignment -ObjectId $objectId -RoleDefinitionName $roleName
+        Write-Verbose "Role $roleName removed for objectid $objectId in subscription"
+    }
+    else {
+        Write-Verbose "Role $roleName does not exist for objectid $objectId exists in subscription"
+    }
+}
 function Remove-RoleAssignment2 {
     param
     (
@@ -66,7 +85,9 @@ function Remove-ResourceAcls {
                         else {        
                             $app = Get-AzureRmADServicePrincipal -ObjectId $objectId -ErrorAction SilentlyContinue
                             if ($app -ne $null) {
-                                if ([string]::IsNullOrEmpty($resource.resourcename)) {
+                                if ([string]::IsNullOrEmpty($resource.resourcename) -and [string]::IsNullOrEmpty($resource.resourceGroupName)) {
+                                    Remove-RoleAssignment3 -objectId $objectId -roleName $roleName
+                                }elseif ([string]::IsNullOrEmpty($resource.resourcename)) {
                                     Remove-RoleAssignment2 -resourceGroupName $resource.resourceGroupName -objectId $objectId -roleName $roleName
                                 }else {
                                     Remove-RoleAssignment -resourceGroupName $resource.resourceGroupName -resourceName $resource.resourceName -resourceType $resource.azureResourceType -objectId $objectId -roleName $roleName

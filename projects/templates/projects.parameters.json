@@ -36,6 +36,101 @@
                     "branch": ""
                 },
                 {
+                    "type": "it-master-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "managers"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "masterkeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "clientsecrets",
+                            "resources": [
+                                {
+                                    "type": "password",
+                                    "subtype": "platformDeploymentPrincipal"
+                                },
+                                {
+                                    "type": "certificate",
+                                    "subtype": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "accesspolicies",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "grantpermissions",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultaccess",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-prjapp-d",
+                    "resources": [                        
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "applicationPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "grantpermissions",
+                            "resources": [
+                                {
+                                    "type": "applicationPrincipal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "type": "it-base-d",
                     "resources": [
                         {
@@ -575,6 +670,20 @@
                             "resources": [
                                 {
                                     "type": "mlexp"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt6-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "grantpermissions",
+                            "resources": [
+                                {
+                                    "type": "grantpermission"
                                 }
                             ]
                         }

@@ -5,6 +5,24 @@
         "resources": {
             "value": [
                 {
+                    "type": "platformDeploymentPrincipal",
+                    "application": {
+                        "name": "{0}-master-{2}-dep-prn",
+                        "uri": "https://{0}-master-{2}-dep-prn",
+                        "clientId": "",
+                        "passwordSecretName" : "",
+                        "certificateSecretName" : "",
+                        "certificatePasswordSecretName": ""
+                    },
+                    "servicePrincipal": {
+                        "name": "{0}-plt-{2}-dep-prn",
+                        "id": ""
+                    },
+                    "metadata": {
+                        "description": "The Azure Active Directory Application to be used for applications."
+                    }
+                },
+                {
                     "type": "deploymentPrincipal",
                     "application": {
                         "name": "{0}-{1}-{2}-dep-prn",

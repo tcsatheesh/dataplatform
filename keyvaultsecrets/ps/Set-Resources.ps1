@@ -108,7 +108,7 @@ function Set-Resource {
     $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
     $secretExpiryTerm = $resource.expiryTerm
     $secretExpiry = (Get-Date -Date $resource.startdate).AddYears($secretExpiryTerm)
-    $secretCredential = New-Object System.Management.Automation.PSCredential ($resource.name, $secureSecretValue)   
+    $secretCredential = New-Object System.Management.Automation.PSCredential ($resource.name, $secureSecretValue)
     $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -ErrorAction SilentlyContinue
     if ( $secret -eq $null) {
         $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -SecretValue $secretCredential.Password -Expires $secretExpiry -ErrorAction SilentlyContinue

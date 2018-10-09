@@ -12,6 +12,27 @@ function New-ResourceGroup {
     $rg1 = New-AzureRmResourceGroup -Name $Name -Location $Location -Force
 }
 
+function Set-RoleAssignment3 {
+    param
+    (
+        [string]$objectId,
+        [string]$roleName
+    )
+    Write-Verbose "Role assignment for role $roleName with id $objectId for subscription"
+    $res1 = $null
+    if (-not [string]::IsNullOrEmpty($objectId)) {
+        $res1 = Get-AzureRmRoleAssignment -ObjectId $objectId -RoleDefinitionName $roleName -ErrorAction SilentlyContinue
+    }
+    if ($res1 -eq $null -and (-not [string]::IsNullOrEmpty($objectId))) {
+        $subid = Get-SubscriptionId
+        $res1 = New-AzureRmRoleAssignment -ObjectId $objectId -RoleDefinitionName $roleName -Scope "/subscriptions/$subid"
+        Write-Verbose "Role $roleName assigned to objectid $objectId in subscription"
+    }
+    else {
+        Write-Verbose "Role $roleName assignment for objectid $objectId exists in subscription"
+    }
+}
+
 function Set-RoleAssignment2 {
     param
     (
@@ -29,7 +50,7 @@ function Set-RoleAssignment2 {
         Write-Verbose "Role $roleName assigned to objectid $objectId in resource group $resourceGroupName"
     }
     else {
-        Write-Verbose "Role $roleName assignment for to objectid $objectId exists in resource group $resourceGroupName"
+        Write-Verbose "Role $roleName assignment for objectid $objectId exists in resource group $resourceGroupName"
     }
 }
 
@@ -76,7 +97,9 @@ function Set-ResourceAcls {
                         else {        
                             $app = Get-AzureRmADServicePrincipal -ObjectId $objectId -ErrorAction SilentlyContinue
                             if ($app -ne $null) {
-                                if ([string]::IsNullOrEmpty($resource.resourcename)) {
+                                if ([string]::IsNullOrEmpty($resource.resourcename) -and [string]::IsNullOrEmpty($resource.resourceGroupName)) {
+                                    Set-RoleAssignment3 -objectId $objectId -roleName $roleName
+                                }elseif ([string]::IsNullOrEmpty($resource.resourcename)) {
                                     Set-RoleAssignment2 -resourceGroupName $resource.resourceGroupName -objectId $objectId -roleName $roleName
                                 }else {
                                     Set-RoleAssignment -resourceGroupName $resource.resourceGroupName -resourceName $resource.resourceName -resourceType $resource.azureResourceType -objectId $objectId -roleName $roleName

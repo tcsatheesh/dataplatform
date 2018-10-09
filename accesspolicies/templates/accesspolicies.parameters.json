@@ -5,6 +5,23 @@
         "resources": {
             "value": [
                 {
+                    "type": "platformDeploymentPrincipal",
+                    "resourceType": "projects",
+                    "accesspolicies": [
+                        {
+                            "type": "Owner",
+                            "policies": [
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "platformDeploymentPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "type": "sharedStorage",
                     "resourceType": "resourcegroups",
                     "accesspolicies": [
