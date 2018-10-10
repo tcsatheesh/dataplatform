@@ -49,12 +49,7 @@
                             "name": "accessPolicies",
                             "subname": "objectId",
                             "index": 1,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "property": "servicePrincipal.id",
-                                "typeFilter": "deploymentPrincipal"
-                            }
+                            "type": "currentLogin"
                         },
                         {
                             "name": "accessPolicies",

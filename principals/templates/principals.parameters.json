@@ -7,15 +7,15 @@
                 {
                     "type": "platformDeploymentPrincipal",
                     "application": {
-                        "name": "{0}-master-{2}-dep-prn",
-                        "uri": "https://{0}-master-{2}-dep-prn",
+                        "name": "{0}-pltfrm-{2}-dep-prn",
+                        "uri": "https://{0}-pltfrm-{2}-dep-prn",
                         "clientId": "",
-                        "passwordSecretName" : "",
-                        "certificateSecretName" : "",
+                        "passwordSecretName": "",
+                        "certificateSecretName": "",
                         "certificatePasswordSecretName": ""
                     },
                     "servicePrincipal": {
-                        "name": "{0}-plt-{2}-dep-prn",
+                        "name": "{0}-pltfrm-{2}-dep-prn",
                         "id": ""
                     },
                     "metadata": {
@@ -28,8 +28,8 @@
                         "name": "{0}-{1}-{2}-dep-prn",
                         "uri": "https://{0}-{1}-{2}-dep-prn",
                         "clientId": "",
-                        "passwordSecretName" : "",
-                        "certificateSecretName" : "",
+                        "passwordSecretName": "",
+                        "certificateSecretName": "",
                         "certificatePasswordSecretName": ""
                     },
                     "servicePrincipal": {
@@ -46,8 +46,8 @@
                         "name": "{0}-{1}-{2}-app-prn",
                         "uri": "https://{0}-{1}-{2}-app-prn",
                         "clientId": "",
-                        "passwordSecretName" : "",
-                        "certificateSecretName" : "",
+                        "passwordSecretName": "",
+                        "certificateSecretName": "",
                         "certificatePasswordSecretName": ""
                     },
                     "servicePrincipal": {
@@ -64,8 +64,8 @@
                         "name": "{0}-{1}-{2}-dsk-prn",
                         "uri": "https://{0}-{1}-{2}-dsk-prn",
                         "clientId": "",
-                        "passwordSecretName" : "",
-                        "certificateSecretName" : "",
+                        "passwordSecretName": "",
+                        "certificateSecretName": "",
                         "certificatePasswordSecretName": ""
                     },
                     "servicePrincipal": {
@@ -77,16 +77,18 @@
                     }
                 },
                 {
-                    "type" : "wepAppAuthenticationPrincipal",
+                    "type": "wepAppAuthenticationPrincipal",
                     "application": {
                         "name": "{0}-{1}-{2}-web-prn",
                         "uri": "https://{0}{1}{2}app01.azurewebsites.net",
                         "clientId": "",
-                        "passwordSecretName" : "",
-                        "certificateSecretName" : "",
+                        "passwordSecretName": "",
+                        "certificateSecretName": "",
                         "certificatePasswordSecretName": "",
-                        "replyUrl" : "https://{0}{1}{2}app01.azurewebsites.net/.auth/login/add/callback",
-                        "homepage" : "https://{0}{1}{2}app01.azurewebsites.net"
+                        "replyUrls": [
+                            "https://{0}{1}{2}app01.azurewebsites.net/.auth/login/aad/callback"
+                        ],
+                        "homepage": "https://{0}{1}{2}app01.azurewebsites.net"
                     },
                     "servicePrincipal": {
                         "name": "{0}-{1}-{2}-web-prn",
@@ -94,6 +96,31 @@
                     },
                     "metadata": {
                         "description": "The Azure Active Directory Application to be used for web applications."
+                    }
+                },
+                {
+                    "type": "graphAccessPrincipal",
+                    "application": {
+                        "name": "{0}-{1}-{2}-gph-prn",
+                        "uri": "https://localhost:44321/",
+                        "clientId": "",
+                        "passwordSecretName": "",
+                        "certificateSecretName": "",
+                        "certificatePasswordSecretName": "",
+                        "replyUrls": [
+                            "https://localhost:44321/Account/AADTenantConnected", 
+                            "https://localhost:44321/"
+                        ],
+                        "homepage": [
+                            "https://localhost:44321/"
+                        ]
+                    },
+                    "servicePrincipal": {
+                        "name": "{0}-{1}-{2}-gph-prn",
+                        "id": ""
+                    },
+                    "metadata": {
+                        "description": "The Azure Active Directory Application to be used to access Microsoft Graph."
                     }
                 }
             ]

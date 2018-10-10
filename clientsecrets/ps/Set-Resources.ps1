@@ -55,6 +55,9 @@ function Set-PrincipalCertificate {
             Write-Verbose "Certificate does not exist in the local cert store"
             $certStartDate = (Get-Date).Date
             $certEndDate = $certStartDate.AddYears($certificateDuration)    
+            Write-Verbose "Certificate startdate $certStartDate"
+            Write-Verbose "Certificate duration $certificateDuration"
+            Write-Verbose "Certificate enddate $certEndDate"
             $cert = New-SelfSignedCertificate -DnsName $certName -CertStoreLocation $certStoreLocation `
                 -Provider "Microsoft Enhanced RSA and AES Cryptographic Provider" `
                 -KeySpec KeyExchange -NotAfter $certEndDate -NotBefore $certStartDate
@@ -100,7 +103,12 @@ function Set-SecretValueInKeyVault {
         [object]$startdate,
         [int]$expriryTerm
     )
-    $secretExpiry = (Get-Date -Date $startdate).AddYears($expiryTerm)
+    if ($startdate -eq "today") {
+        $secretExpiry = (Get-Date).AddYears($expiryTerm)
+    }else {
+        $secretExpiry = (Get-Date -Date $startdate).AddYears($expiryTerm)    
+    }
+    
     $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName -ErrorAction SilentlyContinue
     if ($secret -eq $null) {
         Write-Verbose "Setting secret $secretName to the key vault $keyVaultName"
@@ -169,7 +177,7 @@ function Set-Principal {
              
         $principalCertificate = Set-PrincipalCertificate `
             -applicationName $principal.application.name `
-            -certificateDuration $resource.certificate.duration `
+            -certificateDuration $resource.duration `
             -certificateSecretValueText $certificateSecretValueText `
             -certificatePassword $certificatePasswordSecretValue
         $resource.thumbprint = $principalCertificate.Thumbprint
