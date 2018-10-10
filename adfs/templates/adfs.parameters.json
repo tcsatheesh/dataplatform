@@ -1,0 +1,39 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "adf", 
+                    "resourceType": "adfs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "North Europe",
+                    "templateFileName": "adf.json",
+                    "parameterFileName": "adf.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "loggingStorageAccountName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "diagnostics",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "loggingStorageAccountResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "app",
+                                "property" : "name"
+                            }                            
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

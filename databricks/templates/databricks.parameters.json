@@ -1,0 +1,31 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "databrick", 
+                    "resourceType": "databricks",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}dbs01",
+                    "location": "northeurope",
+                    "templateFileName": "databrick.json",
+                    "parameterFileName": "databrick.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "vnetAddressPrefix",
+                            "type": "value",
+                            "value": "10.100"             
+                        },
+                        {
+                            "name": "pricingTier",
+                            "type": "value",
+                            "value": "premium"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

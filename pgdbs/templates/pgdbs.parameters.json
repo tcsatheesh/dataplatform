@@ -1,0 +1,35 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "appdb",        
+                    "resourceType": "pgdbs",
+                    "resourceGroupTypeRef": "data",
+                    "name" : "{0}{1}{2}pgsvr01",
+                    "location": "North Europe",
+                    "templateFileName": "pgdb.json",
+                    "parameterFileName": "pgdb.parameters.json",                
+                    "parameters": [
+                        {
+                            "name": "administratorLogin",
+                            "type": "value",
+                            "value": "pgadmin"
+                        },
+                        {
+                            "name": "administratorLoginPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}pgsvr01-pgadmin-password"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

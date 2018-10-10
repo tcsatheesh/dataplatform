@@ -1,0 +1,18 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "name": "{0}-{1}-{2}-vm-key-encryption-key",
+                    "keyVaultType": "appkeyvault",
+                    "type": "diskKeyEncryptionKey",
+                    "expiryTerm": 4,
+                    "startdate": "2018-04-22",
+                    "destination": "Software"
+                }
+            ]
+        }
+    }
+}

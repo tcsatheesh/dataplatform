@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "administratorLogin": {
+            "value": ""
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": "northeurope"
+        },
+        "skuName": {
+            "value": "B_Gen4_1"
+        },
+        "skuTier": {
+            "value": "Basic"
+        },
+        "skuCapacity": {
+            "value": 1
+        },
+        "skuFamily": {
+            "value": "Gen4"
+        },
+        "skuSizeMB": {
+            "value": 32768
+        },
+        "version": {
+            "value": "9.6"
+        },
+        "backupRetentionDays": {
+            "value": 8
+        },
+        "geoRedundantBackup": {
+            "value": "Disabled"
+        }
+    }
+}

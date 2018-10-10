@@ -1,0 +1,71 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "encryptvm", 
+                    "resourceType": "encryptvms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm01",
+                    "location": "North Europe",
+                    "templateFileName": "encryptvm.json",
+                    "parameterFileName": "encryptvm.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "aadClientID",
+                            "type": "reference",
+                            "ref" : {
+                                "resourceType": "principals",
+                                "typeFilter": "diskEncryptionPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "aadClientSecret",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}-{1}-{2}-dep-prn-password"
+                            }
+                        },
+                        {
+                            "name": "keyEncryptionKeyURL",
+                            "type": "kekurl",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "keyName": "{0}-{1}-{2}-vm-key-encryption-key"
+                            }
+                        },
+                        {
+                            "name": "keyvaultName",
+                            "type": "reference",
+                            "ref" : {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",                                
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "keyVaultResourceGroup",
+                            "type": "reference",
+                            "ref" : {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "app",                                
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "extensionVersion",
+                            "type": "value",
+                            "value": "0.1"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

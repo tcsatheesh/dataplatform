@@ -1,0 +1,240 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "appgw",
+                    "resourceType": "appgws",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}appgw01",
+                    "location": "North Europe",
+                    "templateFileName": "appgw.json",
+                    "parameterFileName": "appgw.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "vNetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "property": "name",
+                                "typeFilter": "vnet"
+                            }
+                        },
+                        {
+                            "name": "vNetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "property": "name",
+                                "typeFilter": "dplt"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "appgw"
+                        },
+                        {
+                            "name": "publicIpAddressName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "domainNameLabel",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "appSSLCertName",
+                            "type": "value",
+                            "value": "<app certificate name>"
+                        },
+                        {
+                            "name": "appSSLCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate"
+                            }
+                        },
+                        {
+                            "name": "appSSLCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "appAuthCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate-public"
+                            }
+                        },
+                        {
+                            "name": "appHostName",
+                            "type": "format",
+                            "value": "{0}{1}{2}app01.azurewebsites.net"
+                        },
+                        {
+                            "name": "appHostNamePath",
+                            "type": "value",
+                            "value": "/"
+                        }                    
+                    ]
+                },
+                {
+                    "type": "appgwd",
+                    "resourceType": "appgws",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}appgw01",
+                    "location": "North Europe",
+                    "templateFileName": "appgwd.json",
+                    "parameterFileName": "appgwd.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "vNetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "property": "name",
+                                "typeFilter": "vnet"
+                            }
+                        },
+                        {
+                            "name": "vNetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "property": "name",
+                                "typeFilter": "dplt"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "appgw"
+                        },
+                        {
+                            "name": "publicIpAddressName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "domainNameLabel",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "pubips",
+                                "property": "name",
+                                "typeFilter": "appgw"
+                            }
+                        },
+                        {
+                            "name": "appSSLCertName",
+                            "type": "value",
+                            "value": "<app certificate name>"
+                        },
+                        {
+                            "name": "appSSLCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate"
+                            }
+                        },
+                        {
+                            "name": "appSSLCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "appAuthCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate-public"
+                            }
+                        },
+                        {
+                            "name": "appHostName",
+                            "type": "format",
+                            "value": "{0}{1}{2}api01.azurewebsites.net"
+                        },
+                        {
+                            "name": "appHostNamePath",
+                            "type": "value",
+                            "value": "/api/probe"
+                        },
+                        {
+                            "name": "portalSSLCertName",
+                            "type": "value",
+                            "value": "<portal certificate name>"
+                        },
+                        {
+                            "name": "portalSSLCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<portal certificate name replace dot with dash>-certificate"
+                            }
+                        },
+                        {
+                            "name": "portalSSLCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<portal certificate name replace dot with dash>-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "portalAuthCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<portal certificate name replace dot with dash>-certificate-public"
+                            }
+                        },
+                        {
+                            "name": "portalHostName",
+                            "type": "format",
+                            "value": "{0}{1}{2}ptl01.azurewebsites.net"
+                        },
+                        {
+                            "name": "portalHostNamePath",
+                            "type": "value",
+                            "value": "/"
+                        }                     
+                    ]
+                }
+            ]
+        }
+    }
+}

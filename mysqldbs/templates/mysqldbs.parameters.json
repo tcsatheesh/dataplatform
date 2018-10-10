@@ -1,0 +1,35 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "appdb",        
+                    "resourceType": "mysqldbs",
+                    "resourceGroupTypeRef": "data",
+                    "name" : "{0}{1}{2}mysqlsvr01",
+                    "location": "North Europe",
+                    "templateFileName": "mysqldb.json",
+                    "parameterFileName": "mysqldb.parameters.json",                
+                    "parameters": [
+                        {
+                            "name": "administratorLogin",
+                            "type": "value",
+                            "value": "mysqladmin"
+                        },
+                        {
+                            "name": "administratorLoginPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}mysqlsvr01-mysqladmin-password"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

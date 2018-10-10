@@ -1,0 +1,21 @@
+{
+    "name": "AzureDataLakeStore",
+    "properties": {
+        "type": "AzureDataLakeStore",
+        "typeProperties": {
+            "dataLakeStoreUri": "",
+            "servicePrincipalId": "",
+            "servicePrincipalKey": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "",
+                "store":{
+                    "referenceName": "",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            "tenant": "",
+            "subscriptionId": "",
+            "resourceGroupName": ""
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "adlstore",
+                    "resourceType": "adlstores",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}neadlsstore",
+                    "location": "North Europe",
+                    "templateFileName": "adlstore.json",
+                    "parameterFileName": "adlstore.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "startIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "endIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "firewallRuleName",
+                            "type": "value",
+                            "value": "for_deployment_only"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "Name":  "DataBolt Support",
+    "IsCustom":  true,
+    "Description":  "Lets a user or group to do databolt support.",
+    "Actions":  [
+                    "*/read",
+                    "Microsoft.Authorization/*/read",
+                    "Microsoft.Insights/alertRules/*",
+                    "Microsoft.DataFactory/factories/*",
+                    "Microsoft.ResourceHealth/availabilityStatuses/read",
+                    "Microsoft.Resources/deployments/*",
+                    "Microsoft.Resources/subscriptions/resourceGroups/read",
+                    "Microsoft.Support/*",
+                    "Microsoft.DataLakeAnalytics/accounts/*",
+					"Microsoft.Storage/storageAccounts/blobServices/containers/delete",
+					"Microsoft.Storage/storageAccounts/blobServices/containers/read",
+					"Microsoft.Storage/storageAccounts/blobServices/containers/write",
+					"Microsoft.Storage/storageAccounts/listkeys/action",
+					"Microsoft.Storage/storageAccounts/regeneratekey/action",
+					"Microsoft.AnalysisServices/servers/resume/action",
+					"Microsoft.AnalysisServices/servers/suspend/action",
+					"Microsoft.Sql/servers/databases/pause/action",
+                    "Microsoft.Sql/servers/databases/resume/action",
+                    "Microsoft.AlertsManagement/alerts/*",
+                    "Microsoft.AlertsManagement/alertsSummary/*",
+                    "Microsoft.Insights/AlertRules/*",
+                    "Microsoft.Insights/diagnosticSettings/*",
+                    "Microsoft.Insights/eventtypes/*",
+                    "Microsoft.Insights/LogDefinitions/*",
+                    "Microsoft.Insights/MetricDefinitions/*",
+                    "Microsoft.Insights/Metrics/*",
+                    "Microsoft.Insights/actiongroups/*",
+                    "Microsoft.Insights/metricalerts/*",
+                    "Microsoft.Insights/scheduledqueryrules/*",
+                    "Microsoft.OperationalInsights/workspaces/savedSearches/*",
+                    "Microsoft.OperationalInsights/workspaces/search/action",
+                    "Microsoft.OperationalInsights/workspaces/storageinsightconfigs/*"
+                ],
+    "NotActions":  [
+					"Microsoft.DataLakeAnalytics/accounts/Delete",
+                    "Microsoft.DataLakeAnalytics/accounts/TakeOwnership/action",
+                    "Microsoft.DataLakeAnalytics/accounts/Write",
+                    "Microsoft.DataLakeAnalytics/accounts/dataLakeStoreAccounts/Write",
+                    "Microsoft.DataLakeAnalytics/accounts/dataLakeStoreAccounts/Delete",
+                    "Microsoft.DataLakeAnalytics/accounts/storageAccounts/Write",
+                    "Microsoft.DataLakeAnalytics/accounts/storageAccounts/Delete",
+                    "Microsoft.DataLakeAnalytics/accounts/firewallRules/Write",
+                    "Microsoft.DataLakeAnalytics/accounts/firewallRules/Delete",
+                    "Microsoft.DataLakeAnalytics/accounts/computePolicies/Write",
+                    "Microsoft.DataLakeAnalytics/accounts/computePolicies/Delete"
+                   ],
+    "DataActions":  [
+					"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
+					"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
+					"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write"
+                    ],
+    "NotDataActions":  [
+
+                       ],
+    "AssignableScopes":  [
+                         ]
+}

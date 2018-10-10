@@ -1,0 +1,16 @@
+{
+    "name": "Storage",
+    "properties": {
+        "type": "AzureStorage",
+        "typeProperties": {
+            "connectionString": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "",
+                "store":{
+                    "referenceName": "",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        }
+    }
+}

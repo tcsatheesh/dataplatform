@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "hostingPlanName": {
+            "value": ""
+        },
+        "appinsightsname": {
+            "value": ""
+        },
+        "hostingEnvironment": {
+            "value": ""
+        },
+        "sku": {
+            "value": ""
+        },
+        "skuCode": {
+            "value": ""
+        },
+        "workerSize": {
+            "value": ""
+        },
+        "serverFarmResourceGroup": {
+            "value": ""
+        },
+        "subscriptionId": {
+            "value": ""
+        },
+        "sslCertName": {
+            "value": ""
+        },
+        "sslCertData": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "sslCertPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "sslCertHostName" :{ 
+            "value": ""
+        },
+        "sslCertThumbprint" : {
+            "value": ""
+        }
+    }
+}

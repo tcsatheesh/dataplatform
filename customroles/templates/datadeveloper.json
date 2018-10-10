@@ -1,0 +1,45 @@
+{
+	"Name": "Data and AI Developer",
+	"IsCustom": true,
+	"Description": "Lets a user or group be a developer. This is a combination of Data Lake Analytics, Data Factory, Storage Account Key Operator Service Role and Storage Blob Data Contributor roles",
+	"Actions": [
+		"*/read",	
+		"Microsoft.Authorization/*/read",
+		"Microsoft.Insights/alertRules/*",
+		"Microsoft.DataFactory/factories/*",
+		"Microsoft.ResourceHealth/availabilityStatuses/read",
+		"Microsoft.Resources/deployments/*",
+		"Microsoft.Resources/subscriptions/resourceGroups/read",
+		"Microsoft.Support/*",
+		"Microsoft.DataLakeAnalytics/accounts/*",
+		"Microsoft.Storage/storageAccounts/listkeys/action",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/delete",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/read",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/write",
+		"Microsoft.AnalysisServices/servers/resume/action",
+		"Microsoft.AnalysisServices/servers/suspend/action",
+		"Microsoft.Sql/servers/databases/pause/action",
+		"Microsoft.Sql/servers/databases/resume/action",
+		"Microsoft.Sql/servers/databases/write"
+	],
+	"NotActions": [
+		"Microsoft.DataLakeAnalytics/accounts/Delete",
+		"Microsoft.DataLakeAnalytics/accounts/TakeOwnership/action",
+		"Microsoft.DataLakeAnalytics/accounts/Write",
+		"Microsoft.DataLakeAnalytics/accounts/dataLakeStoreAccounts/Write",
+		"Microsoft.DataLakeAnalytics/accounts/dataLakeStoreAccounts/Delete",
+		"Microsoft.DataLakeAnalytics/accounts/storageAccounts/Write",
+		"Microsoft.DataLakeAnalytics/accounts/storageAccounts/Delete",
+		"Microsoft.DataLakeAnalytics/accounts/firewallRules/Write",
+		"Microsoft.DataLakeAnalytics/accounts/firewallRules/Delete",
+		"Microsoft.DataLakeAnalytics/accounts/computePolicies/Write",
+		"Microsoft.DataLakeAnalytics/accounts/computePolicies/Delete"
+	],
+	"DataActions": [
+		"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
+		"Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write"
+	],
+	"NotDataActions": [],
+	"AssignableScopes": []
+}

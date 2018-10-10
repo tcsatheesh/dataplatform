@@ -1,0 +1,21 @@
+{
+    "name": "AzureDataLakeAnalyticsLinkedService",
+    "properties": {
+        "type": "AzureDataLakeAnalytics",
+        "typeProperties": {
+            "accountName": "",
+            "servicePrincipalId": "",
+            "servicePrincipalKey": {
+                "type": "AzureKeyVaultSecret",
+                "secretName": "",
+                "store":{
+                    "referenceName": "",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            "tenant": "",
+            "subscriptionId": "",
+            "resourceGroupName": ""
+        }
+    }
+}

@@ -1,0 +1,157 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "luis", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgluis",
+                    "location": "North Europe",
+                    "templateFileName": "cogsvc.json",
+                    "parameterFileName": "cogsvc.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiType",
+                            "type": "value",
+                            "value": "LUIS"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                },
+                {
+                    "type" : "textanalytics", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgtxt",
+                    "location": "North Europe",
+                    "templateFileName": "cogsvc.json",
+                    "parameterFileName": "cogsvc.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiType",
+                            "type": "value",
+                            "value": "TextAnalytics"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                },
+                {
+                    "type" : "vision", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgvsn",
+                    "location": "North Europe",
+                    "templateFileName": "cogsvc.json",
+                    "parameterFileName": "cogsvc.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiType",
+                            "type": "value",
+                            "value": "ComputerVision"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                },
+                {
+                    "type" : "face", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgface",
+                    "location": "North Europe",
+                    "templateFileName": "cogsvc.json",
+                    "parameterFileName": "cogsvc.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiType",
+                            "type": "value",
+                            "value": "Face"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                },
+                {
+                    "type" : "speech", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgspch",
+                    "location": "North Europe",
+                    "templateFileName": "cogsvc.json",
+                    "parameterFileName": "cogsvc.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiType",
+                            "type": "value",
+                            "value": "Bing.Speech"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                },
+                {
+                    "type" : "speechtranslation", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgsptr",
+                    "location": "global",
+                    "templateFileName": "cogsvc.json",
+                    "parameterFileName": "cogsvc.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiType",
+                            "type": "value",
+                            "value": "SpeechTranslation"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                },
+                {
+                    "type" : "search", 
+                    "resourceType": "cogsvcs",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}cgsrch",
+                    "location": "global",
+                    "templateFileName": "cogsvc2.json",
+                    "parameterFileName": "cogsvc2.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "apiKind",
+                            "type": "value",
+                            "value": "Bing.Search.v7"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "F0"
+                        }
+                    ]
+                }
+            ]            
+        }
+    }
+}

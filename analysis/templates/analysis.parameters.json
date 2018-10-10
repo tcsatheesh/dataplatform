@@ -1,0 +1,54 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "as", 
+                    "resourceType": "analysis",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}as01",
+                    "location": "North Europe",
+                    "templateFileName": "as.json",
+                    "parameterFileName": "as.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "backupBlobContainerUri",
+                            "type": "container",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "sharedStorage",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "admin",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "analysisadmin",
+                                "property" : "email"
+                            }
+                        },
+                        {
+                            "name": "startIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "endIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "firewallRuleName",
+                            "type": "value",
+                            "value": "for_deployment_only"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

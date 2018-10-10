@@ -1,0 +1,67 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "keyvaultadmins",
+                    "name": "Key Vault Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "managers",
+                    "name": "Platform Management",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "dbadmins",
+                    "name": "Database Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "datacontrollers",
+                    "name": "Data Controllers",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "buildadmins",
+                    "name": "Build Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "developers",
+                    "name": "Application Developers",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "dataanalysts",
+                    "name": "Data Analysts",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "appsupport",
+                    "name": "Application Supporters",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "endusers",
+                    "name": "End Users",
+                    "id": "",
+                    "email": ""
+                }
+            ],
+            "metadata": {
+                "description": "The Azure AD groups used in this project."
+            }
+        }
+    }
+}

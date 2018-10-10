@@ -1,0 +1,38 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "apiKind": {
+            "type": "string"
+        },
+        "sku": {
+            "type": "string"
+        },
+        "statisticsEnabled": {
+            "type": "bool"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-02-01-preview",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "kind": "Bing.Search.v7",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "properties": {
+                "apiProperties": {
+                    "statisticsEnabled": "[parameters('statisticsEnabled')]"
+                }
+            }
+        }
+    ]
+}

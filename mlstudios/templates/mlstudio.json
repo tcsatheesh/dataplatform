@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string",
+            "allowedValues": [
+                "South Central Us",
+                "West Europe",
+                "South East Asia",
+                "Japan East",
+                "West Central Us"
+            ]
+        },
+        "storageAccountResourceGroupName": {
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
+        },
+        "planName": {
+            "type": "string"
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "DevTest"
+        },
+        "skuTier": {
+            "type": "string",
+            "defaultValue": "Standard"
+        },
+        "skuCapacity": {
+            "type": "int",
+            "defaultValue": 1
+        },
+        "workspaceApiVersion": {
+            "type": "string",
+            "defaultValue": "2016-04-01"
+        },
+        "commitmentPlanApiVersion": {
+            "type": "string",
+            "defaultValue": "2016-05-01-preview"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "[parameters('workspaceApiVersion')]",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.MachineLearning/workspaces",
+            "properties": {
+                "userStorageAccountId": "[resourceId(parameters('storageAccountResourceGroupName'),'Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]"
+            }
+        },
+        {
+            "apiVersion": "[parameters('commitmentPlanApiVersion')]",
+            "name": "[parameters('planName')]",
+            "type": "Microsoft.MachineLearning/commitmentPlans",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('skuTier')]",
+                "capacity": "[parameters('skuCapacity')]"
+            },
+            "properties": {}
+        }
+    ]
+}

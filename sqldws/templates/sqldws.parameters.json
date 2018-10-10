@@ -1,0 +1,109 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "appdw",                    
+                    "resourceType": "sqldws",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}sqldw01",
+                    "location": "North Europe",
+                    "templateFileName": "sqldw.json",
+                    "parameterFileName": "sqldw.parameters.json",                
+                    "parameters": [                        
+                        {
+                            "name": "serverName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr03"
+                        },
+                        {
+                            "name": "administratorLogin",
+                            "type": "value",
+                            "value": "sqladmin"
+                        },
+                        {
+                            "name": "administratorLoginPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}sqlsvr03-sqldwadmin-password"
+                            }
+                        },
+                        {
+                            "name": "aadAdminGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "dbadmins",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "aadAdminGroupObjectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "dbadmins",
+                                "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "aadTenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "auditStorageAccountSubscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property" : "id"
+                            }
+                        },
+                        {
+                            "name": "auditStorageAccountResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "app",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "auditStorageAccountName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "diagnostics",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "startIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "endIpAddress",
+                            "type": "ipaddress",
+                            "value": ""
+                        },
+                        {
+                            "name": "firewallRuleName",
+                            "type": "value",
+                            "value": "for_deployment_only"
+                        }                                            
+                    ]
+                }
+            ]
+        }
+    }
+}

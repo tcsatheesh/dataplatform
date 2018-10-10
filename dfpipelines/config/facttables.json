@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Case",
+        "query": "SELECT Id, AccountId, CaseNumber, ContactId FROM Case",
+        "outputFilePath": "case-ft.csv",
+        "transformationScript": "/stage/case.usql",
+        "enabled": true
+    },
+    {
+        "name": "Task",
+        "query": "SELECT Id, AccountId, ActivityDate, CallType, Status FROM Task",
+        "outputFilePath": "task-ft.csv",
+        "transformationScript": "/stage/task.usql",
+        "enabled": true
+    }
+]

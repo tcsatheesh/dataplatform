@@ -1,0 +1,66 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "0.9.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
+        },
+        "newTier": {
+            "type": "string"
+        },
+        "startIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The start ip address for the firewall rules."
+            }
+        },
+        "endIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The end ip address for the firewall rules."
+            }
+        },
+        "firewallRuleName": {
+            "type": "string",
+            "metadata": {
+                "description": "firewall rule name"
+            }
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-11-01",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.DataLakeAnalytics/accounts",
+            "properties": {
+                "firewallState": "Enabled",
+                "firewallAllowAzureIps": "Enabled",        
+                "firewallRules": [
+                    {
+                        "properties": {
+                            "startIpAddress": "[parameters('startIpAddress')]",
+                            "endIpAddress": "[parameters('endIpAddress')]"
+                        },
+                        "name": "[parameters('firewallRuleName')]"
+                    }
+                ],
+                "defaultDataLakeStoreAccount": "[parameters('storageAccountName')]",
+                "dataLakeStoreAccounts": [
+                    {
+                        "name": "[parameters('storageAccountName')]"
+                    }
+                ],
+                "newTier": "[parameters('newTier')]"
+            }
+        }
+    ]
+}

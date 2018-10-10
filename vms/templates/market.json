@@ -1,0 +1,161 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourcename": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual machine"
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the location"
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual network to place the virtual machine"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the subnet to place the virtual machine"
+      }
+    },
+    "virtualNetworkResourceGroup": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource group of the virtual network to place the virtual machine"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Size of the virtual machine instance"
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin username"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin Password"
+      }
+    },
+    "osPublisher": {
+      "type": "string",
+      "metadata": {
+        "description": "Publisher of the marketplace image"
+      }
+    },
+    "osOffer": {
+      "type": "string",
+      "metadata": {
+        "description": "Offer of the marketplace image"
+      }
+    },
+    "osSku": {
+      "type": "string",
+      "metadata": {
+        "description": "SKU of the marketplace image"
+      }
+    },
+    "osVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Version of the marketplace image"
+      }
+    }
+  },
+  "variables": {
+    "vnetId": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(parameters('resourcename'),'-nic')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2017-03-30",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('resourcename')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', toLower(concat(parameters('resourcename'),'-nic')))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('resourcename')]",
+          "adminUsername": "[parameters('adminUserName')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('osPublisher')]",
+            "offer": "[parameters('osOffer')]",
+            "sku": "[parameters('osSku')]",
+            "version": "[parameters('osVersion')]"
+          },
+          "osDisk": {
+            "name": "[concat(parameters('resourcename'),'-os')]",
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Premium_LRS"
+            }
+          },
+          "dataDisks": [
+            {
+              "lun": 0,
+              "name": "[concat(parameters('resourcename'),'-lun0')]",
+              "createOption": "FromImage",
+              "diskSizeGB": 100,
+              "managedDisk": {
+                "storageAccountType": "Premium_LRS"
+              }
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces/', toLower(concat(parameters('resourcename'),'-nic')))]"
+            }
+          ]
+        }
+      },
+      "plan": {
+        "name": "[parameters('osSku')]",
+        "publisher": "[parameters('osPublisher')]",
+        "product": "[parameters('osOffer')]"
+      }
+    }
+  ],
+  "outputs": {}
+}

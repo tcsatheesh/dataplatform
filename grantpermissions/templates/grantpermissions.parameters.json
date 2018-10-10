@@ -1,0 +1,92 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "applicationPrincipal",
+                    "resourceType": "grantpermissions",                    
+                    "name": "application service principal",
+                    "location": "North Europe",
+                    "parameters": [
+                        {
+                            "name": "objectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "name": "Windows Azure Active Directory",
+                            "type": "appRole",
+                            "value": [
+                                "Directory.ReadWrite.All",
+                                "Application.ReadWrite.All"
+                            ]
+                        },
+                        {
+                            "name": "tenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "Microsoft Graph",
+                            "type": "OAuth2Permissions",
+                            "value": "Group.Read.All User.ReadBasic.All offline_access openid email profile"
+                        },
+                        {
+                            "name": "masterClientId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "platformDeploymentPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "masterClientIdPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "masterkeyVault",
+                                "secretName" : "{0}-{1}-{2}-dep-prn-password"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "platformDeploymentPrincipal",
+                    "resourceType": "grantpermissions",
+                    "name": "master service principal",
+                    "location": "North Europe",
+                    "parameters": [
+                        {
+                            "name": "objectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "platformDeploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "name": "Windows Azure Active Directory",
+                            "type": "appRole",
+                            "value": [
+                                "Directory.ReadWrite.All",
+                                "Application.ReadWrite.All"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,108 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the EventHub namespace"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the EventHub namespace"
+            }
+        },
+        "eventHubName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Event Hub"
+            }
+        },
+        "consumerGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Consumer Group"
+            }
+        },
+        "sendKeyName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the send key"
+            }
+        },
+        "listenKeyName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the listen key"
+            }
+        }
+    },
+    "variables": {
+        "defaultSASKeyName": "RootManageSharedAccessKey",
+        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('resourcename'), variables('defaultSASKeyName'))]",
+        "ehVersion": "2017-04-01"
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-04-01",
+            "name": "[parameters('resourcename')]",
+            "type": "Microsoft.EventHub/Namespaces",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Basic"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2017-04-01",
+                    "name": "[parameters('eventHubName')]",
+                    "type": "EventHubs",
+                    "dependsOn": [
+                        "[concat('Microsoft.EventHub/namespaces/', parameters('resourcename'))]"
+                    ],
+                    "properties": {
+                        "messageRetentionInDays": "1",
+                        "partitionCount": "4"
+                    }
+                },
+                {
+                    "apiVersion": "2017-04-01",
+                    "name": "[parameters('sendKeyName')]",
+                    "type": "AuthorizationRules",
+                    "dependsOn": [
+                        "[concat('Microsoft.EventHub/namespaces/', parameters('resourcename'))]"
+                    ],
+                    "properties": {
+                        "rights": [
+                            "Send"
+                        ]
+                    }
+                },
+                {
+                    "apiVersion": "2017-04-01",
+                    "name": "[parameters('listenKeyName')]",
+                    "type": "AuthorizationRules",
+                    "dependsOn": [
+                        "[concat('Microsoft.EventHub/namespaces/', parameters('resourcename'))]"
+                    ],
+                    "properties": {
+                        "rights": [
+                            "Listen"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "NamespaceConnectionString": {
+            "type": "string",
+            "value": "[listkeys(variables('authRuleResourceId'), variables('ehVersion')).primaryConnectionString]"
+        },
+        "SharedAccessPolicyPrimaryKey": {
+            "type": "string",
+            "value": "[listkeys(variables('authRuleResourceId'), variables('ehVersion')).primaryKey]"
+        }
+    }
+}

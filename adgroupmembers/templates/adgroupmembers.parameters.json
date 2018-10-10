@@ -1,0 +1,38 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "keyvaultadmins",
+                    "adgrouptyperef": "keyvaultadmins",
+                    "membersupn": [
+                        "current"
+                    ]
+                },
+                {
+                    "type": "managers",
+                    "adgrouptyperef": "managers",
+                    "membersupn": [
+                        "current"
+                    ]
+                },
+                {
+                    "type": "dbadmins",
+                    "adgrouptyperef": "dbadmins",
+                    "membersupn": [
+                        "current"
+                    ]
+                },
+                {
+                    "type": "developers",
+                    "adgrouptyperef": "developers",
+                    "membersupn": [
+                        
+                    ]
+                }
+            ]
+        }
+    }
+}

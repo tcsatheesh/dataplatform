@@ -1,0 +1,67 @@
+{
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+      "resourcename": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the data factory. Must be globally unique."
+        }
+      },
+      "location": {
+        "type": "string",
+        "allowedValues": [
+          "East US",
+          "East US 2",
+          "North Europe",
+          "West Europe"
+        ],
+        "defaultValue": "East US",
+        "metadata": {
+          "description": "Location of the data factory. Currently, only East US and East US 2 are supported. "
+        }
+      },
+      "loggingStorageAccountName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the Azure storage account that contains the input/output data."
+        }
+      },
+      "loggingStorageAccountResourceGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "logging storage account resource group."
+        }
+      },
+      "storageApiVersion": {
+        "type": "string",
+        "defaultValue": "2016-01-01",
+        "metadata": {
+          "description": "The version of the API to use for storage"
+        }
+      },
+      "apiVersion": {
+        "type": "string",
+        "defaultValue": "2017-09-01-preview",
+        "metadata": {
+          "description": "The api version"
+        }
+      }
+    },
+    "variables": {},
+    "resources": [
+      {
+        "name": "[parameters('resourcename')]",
+        "apiVersion": "[parameters('apiVersion')]",
+        "type": "Microsoft.DataFactory/factories",
+        "location": "[parameters('location')]",
+        "properties": {
+          "loggingStorageAccountName": "[parameters('loggingStorageAccountName')]",
+          "loggingStorageAccountKey": "[listKeys(resourceId(parameters('loggingStorageAccountResourceGroupName'),'Microsoft.Storage/storageAccounts', parameters('loggingStorageAccountName')), parameters('storageApiVersion')).keys[0].value]"
+        },
+        "identity": {
+          "type": "SystemAssigned"
+        }
+      }
+    ]
+  }

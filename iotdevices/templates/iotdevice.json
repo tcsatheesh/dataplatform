@@ -1,0 +1,80 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Data Lake Analytics account to create."
+            }
+        },
+        "iotHubName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Data Lake Store account."
+            }
+        },
+        "iotHubConnectionString": {
+            "type": "string",
+            "metadata": {
+                "description": "The iot hub for the connection string"
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "S1",
+            "metadata": {
+                "description": "The sku name"
+            }
+        },
+        "skuTier": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "metadata": {
+                "description": "The sku tier"
+            }
+        },
+        "skuCapacity": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "The sku capacity"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the Data Lake Analytics account to create."
+            }
+        },
+        "apiVersion": {
+            "type": "string",
+            "defaultValue": "2017-11-15",
+            "metadata": {
+                "description": "The version of the api to provision data lake analytics."
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "apiVersion": "[parameters('apiVersion')]",
+            "properties": {
+                "iotHubs": [
+                    {
+                        "name": "[parameters('iotHubName')]",
+                        "connectionString": "[parameters('iotHubConnectionString')]",
+                        "location": "[parameters('location')]"
+                    }
+                ]
+            },
+            "type": "Microsoft.Devices/provisioningServices",
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('skuTier')]",
+                "capacity": "[parameters('skuCapacity')]"
+            }
+        }
+    ]
+}

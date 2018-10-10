@@ -1,0 +1,54 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "mlstudio", 
+                    "resourceType": "mlstudios",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}mls01",
+                    "location": "West Europe",
+                    "templateFileName": "mlstudio.json",
+                    "parameterFileName": "mlstudio.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "storageAccountResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "app",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "storageAccountName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "mlstorage",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "planName",
+                            "type": "format",
+                            "value": "{0}{1}{2}mlspln01"                            
+                        },
+                        {
+                            "name": "skuName",
+                            "type": "value",
+                            "value": "DevTest"
+                        },
+                        {
+                            "name": "skuTier",
+                            "type": "value",
+                            "value": "Standard"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

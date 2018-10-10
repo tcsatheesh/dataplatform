@@ -1,0 +1,237 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "rhel", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm01",
+                    "location": "North Europe",
+                    "templateFileName": "rhel.json",
+                    "parameterFileName": "rhel.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUsername",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}vm01-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "osDiskSize",
+                            "type": "value",
+                            "value": 128
+                        },
+                        {
+                            "name": "lun0DiskSize",
+                            "type": "value",
+                            "value": 20
+                        },
+                        {
+                            "name": "vmType",
+                            "type": "value",
+                            "value": "Standard_D2_v3"
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Standard_LRS"
+                        },
+                        {
+                            "name": "networkRGName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "vnetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "dsvm"                            
+                        },
+                        {
+                            "name": "customScriptUri",
+                            "type": "format",
+                            "value": "https://{0}{1}{2}nestgacc.blob.core.windows.net/customextension/emptynodesetup.sh"
+                        },
+                        {
+                            "name": "customScriptStorageAccountName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "storage",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "customScriptStorageAccountResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "storage",
+                                "property": "name"
+                            }
+                        }
+                    ]
+                },            
+                {
+                    "type" : "ubuntudsvm", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm03",
+                    "location": "North Europe",
+                    "templateFileName": "market.json",
+                    "parameterFileName": "market.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUserName",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}vm01-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "vmSize",
+                            "type": "value",
+                            "value": "Standard_DS2_v2"
+                        },
+                        {
+                            "name": "virtualNetworkResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "virtualNetworkName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "dsvm"                            
+                        },
+                        {
+                            "name": "osPublisher",
+                            "type": "value",
+                            "value": "microsoft-ads"                            
+                        },
+                        {
+                            "name": "osOffer",
+                            "type": "value",
+                            "value": "linux-data-science-vm-ubuntu"                            
+                        },
+                        {
+                            "name": "osSku",
+                            "type": "value",
+                            "value": "linuxdsvmubuntu"                            
+                        },
+                        {
+                            "name": "osVersion",
+                            "type": "value",
+                            "value": "latest"                            
+                        }
+                    ]
+                },                
+                {
+                    "type" : "ubuntu1804", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm03",
+                    "location": "North Europe",
+                    "templateFileName": "ubuntu1804.json",
+                    "parameterFileName": "ubuntu1804.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUserName",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "vmskeyvault",
+                                "secretName" : "{0}{1}{2}vm01-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "virtualMachineSize",
+                            "type": "value",
+                            "value": "Standard_F16s"
+                        },
+                        {
+                            "name": "virtualNetworkResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "virtualNetworkName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "kubernetes"                            
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Premium_LRS"
+                        },
+                        {
+                            "name": "diskSizeGB",
+                            "type": "value",
+                            "value": "64"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

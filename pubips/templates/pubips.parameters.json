@@ -1,0 +1,42 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "pubip", 
+                    "resourceType": "pubips",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}pip01",
+                    "location": "North Europe",
+                    "templateFileName": "pubip.json",
+                    "parameterFileName": "pubip.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "domainNameLabel",
+                            "type": "format",
+                            "value": "{0}{1}{2}pip01"                            
+                        }
+                    ]
+                },
+                {
+                    "type" : "appgw", 
+                    "resourceType": "pubips",
+                    "resourceGroupTypeRef": "vnet",
+                    "name" : "{0}{1}{2}appgwpip01",
+                    "location": "North Europe",
+                    "templateFileName": "pubip.json",
+                    "parameterFileName": "pubip.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "domainNameLabel",
+                            "type": "format",
+                            "value": "{0}{1}{2}appgw01"                            
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

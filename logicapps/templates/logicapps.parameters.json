@@ -1,0 +1,21 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "logicapp", 
+                    "resourceType": "logicapps",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}lgapp01",
+                    "location": "North Europe",
+                    "templateFileName": "logicapp.json",
+                    "parameterFileName": "logicapp.parameters.json",
+                    "parameters" : [
+                    ]
+                }
+            ]
+        }
+    }
+}

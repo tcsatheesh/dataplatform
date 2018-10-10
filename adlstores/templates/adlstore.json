@@ -1,0 +1,70 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Data Lake Store account to create."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location for the data factory. This must be complaint with the organization approved locations."
+            }
+        },
+        "apiVersion": {
+            "type": "string",
+            "defaultValue": "2016-11-01",
+            "metadata": {
+                "description": "The api version to deploy the data lake store."
+            }
+        },
+        "startIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The start ip address for the firewall rules."
+            }
+        },
+        "endIpAddress": {
+            "type": "string",
+            "defaultValue": "0.0.0.0",
+            "metadata": {
+                "description": "The end ip address for the firewall rules."
+            }
+        },
+        "firewallRuleName": {
+            "type": "string",
+            "metadata": {
+                "description": "firewall rule name"
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('resourcename')]",
+            "type": "Microsoft.DataLakeStore/accounts",
+            "location": "[parameters('location')]",
+            "apiVersion": "[parameters('apiVersion')]",
+            "properties": {
+                "firewallState": "Enabled",
+                "firewallAllowAzureIps": "Enabled",        
+                "firewallRules": [
+                    {
+                        "properties": {
+                            "startIpAddress": "[parameters('startIpAddress')]",
+                            "endIpAddress": "[parameters('endIpAddress')]"
+                        },
+                        "name": "[parameters('firewallRuleName')]"
+                    }
+                ],
+                "encryptionState": "Enabled",
+                "encryptionConfig": {
+                    "type": "ServiceManaged"
+                }
+            }
+        }
+    ]
+}

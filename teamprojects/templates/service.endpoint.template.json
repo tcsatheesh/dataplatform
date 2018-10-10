@@ -1,0 +1,18 @@
+{
+  "name": "",
+  "type": "azurerm",
+  "url": "https://management.azure.com/",
+  "data": {
+      "subscriptionId": "",
+      "subscriptionName": "",
+      "creationMode": "Manual"
+  },
+  "authorization": {
+    "scheme": "ServicePrincipal",
+    "parameters": {
+      "serviceprincipalid" : "",
+      "serviceprincipalkey" : "",
+      "tenantid" : ""
+    }
+  }
+}

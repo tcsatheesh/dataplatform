@@ -1,0 +1,58 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "mlexp", 
+                    "resourceType": "mlexps",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}mlexp01",
+                    "location": "West Europe",
+                    "templateFileName": "mlexp.json",
+                    "parameterFileName": "mlexp.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "storageAccountName",
+                            "type" :"reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "mlstorage",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "storageAccountResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "app",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "workspaceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}mlexpws"              
+                        },
+                        {
+                            "name": "workspaceUserObjectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adgroups",
+                                "typeFilter": "analysisadmin",
+                                "property" : "id"
+                            }              
+                        },
+                        {
+                            "name": "modelManagementAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}mlmmacc"              
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

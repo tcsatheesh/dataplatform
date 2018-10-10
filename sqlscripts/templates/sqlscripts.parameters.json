@@ -1,0 +1,124 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "sqldwpolybase",
+                    "resourceType": "sqlscripts",
+                    "name": "{0}{1}{2}sqldw01",
+                    "parameters": [
+                        {
+                            "name": "keyvault",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "masterkeyName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldw01-masterkey-password"
+                        },
+                        {
+                            "name": "tenant",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "applicationPrincipalName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "application.name"
+                            }
+                        },
+                        {
+                            "name": "servicePrincipalId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "name": "applicationPrincipalSecretName",
+                            "type": "format",
+                            "value": "{0}-{1}-{2}-app-prn-password"
+                        },
+                        {
+                            "name": "dataLakeStoreName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "adlstores",
+                                "typeFilter": "adlstore",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "fileFormatName",
+                            "type": "format",
+                            "value": "{0}{1}{2}adl01_DELIMITEDTEXT"
+                        },
+                        {
+                            "name": "storageaccountresourcegroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "storage",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "storageaccount",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "storage",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "containername",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldw01"
+                        },
+                        {
+                            "name": "sqlServerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr03"
+                        },
+                        {
+                            "name": "databaseName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "sqldws",
+                                "typeFilter": "appdw",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "sqladmin",
+                            "type": "value",
+                            "value": "sqladmin"
+                        },
+                        {
+                            "name": "sqladminpassword",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr03-sqladmin-password"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

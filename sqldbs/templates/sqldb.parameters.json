@@ -1,0 +1,56 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "administratorLogin": {
+            "value": "sqladmin"
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "serverName": {
+            "value": ""
+        },
+        "aadAdminGroupName" : {
+            "value": ""
+        },
+        "aadAdminGroupObjectId" :{
+            "value": ""
+        },
+        "aadTenantId" : {
+            "value": ""
+        },
+        "auditStorageAccountResourceGroupName" : {
+            "value": ""
+        },
+        "auditStorageAccountName" : {
+            "value": ""
+        },
+        "auditStorageAccountSubscriptionId" : {
+            "value": ""
+        },
+        "emailAddress": {
+            "value": ""
+        },
+        "startIpAddress": {
+            "value": ""
+        },
+        "endIpAddress": {
+            "value": ""
+        },
+        "firewallRuleName" : {
+            "value": ""
+        }
+    }
+}

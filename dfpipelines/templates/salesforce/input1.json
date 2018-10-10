@@ -1,0 +1,15 @@
+{
+    "name": "[parameters('inputDataSetName')]",
+    "type": "datasets",
+    "apiVersion": "2017-09-01-preview",
+    "properties": {
+      "linkedServiceName": {
+        "referenceName": "[parameters('inputLinkedServiceName')]",
+        "type": "LinkedServiceReference"
+      },
+      "type": "SalesforceObject",
+      "folder": {
+        "name": "[parameters('dffolderName')]"
+      }
+    }
+  }

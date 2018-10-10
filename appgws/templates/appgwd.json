@@ -1,0 +1,347 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "resourcename": {
+            "type": "string"
+        },
+        "tier": {
+            "type": "string"
+        },
+        "skuSize": {
+            "type": "string"
+        },
+        "capacity": {
+            "type": "int",
+            "allowedValues": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+            ],
+            "defaultValue": 2
+        },
+        "frontEndPort": {
+            "type": "int"
+        },
+        "vNetResourceGroupName" :{
+            "type": "string"
+        },
+        "vNetName" :{
+            "type": "string"
+        },
+        "subnetName": {
+            "type": "string"
+        },
+        "publicIpAddressName": {
+            "type": "string"
+        },
+        "idleTimeoutInMinutes": {
+            "type": "int"
+        },
+        "domainNameLabel": {
+            "type": "string"
+        },
+        "appSSLCertName": {
+            "type": "string"
+        },
+        "appSSLCertData": {
+            "type": "securestring"
+        },
+        "appSSLCertPassword": {
+            "type": "securestring"
+        },
+        "appAuthCertData" :{
+            "type": "string"
+        },
+        "appHostName" : {
+            "type": "string"
+        },
+        "appHostNamePath" : {
+            "type": "string"
+        },
+        "portalSSLCertName": {
+            "type": "string"
+        },
+        "portalSSLCertData": {
+            "type": "securestring"
+        },
+        "portalSSLCertPassword": {
+            "type": "securestring"
+        },
+        "portalAuthCertData" :{
+            "type": "string"
+        },
+        "portalHostName" : {
+            "type": "string"
+        },
+        "portalHostNamePath" : {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "vnetId": "[resourceId(parameters('vNetResourceGroupName'),'Microsoft.Network/virtualNetworks',parameters('vNetName'))]",
+        "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways', parameters('resourcename'))]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('resourcename')]",
+            "type": "Microsoft.Network/applicationGateways",
+            "apiVersion": "2017-10-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]"
+            ],
+            "properties": {
+                "sku": {
+                    "name": "[parameters('skuSize')]",
+                    "tier": "[parameters('tier')]",
+                    "capacity": "[parameters('capacity')]"
+                },
+                "gatewayIPConfigurations": [
+                    {
+                        "name": "appGatewayIpConfig",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            }
+                        }
+                    }
+                ],
+                "frontendIPConfigurations": [
+                    {
+                        "name": "appGatewayFrontendIP",
+                        "properties": {
+                            "PublicIPAddress": {
+                                "id": "[variables('publicIPRef')]"
+                            }
+                        }
+                    }
+                ],
+                "frontendPorts": [
+                    {
+                        "name": "appGatewayFrontendPort",
+                        "properties": {
+                            "Port": "[parameters('frontEndPort')]"
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "appGatewayBackendPool",
+                        "properties": {
+                            "backendAddresses": [
+                                {
+                                    "fqdn": "[parameters('appHostName')]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "portalGatewayBackendPool",
+                        "properties": {
+                            "backendAddresses": [
+                                {
+                                    "fqdn": "[parameters('portalHostName')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "backendHttpSettingsCollection": [
+                    {
+                        "name": "appGatewayBackendHttpSettings",
+                        "properties": {
+                            "Port": 443,
+                            "Protocol": "Https",
+                            "CookieBasedAffinity": "Disabled",
+                            "requestTimeout": 30,
+                            "probe": {
+                                "id": "[concat(variables('applicationGatewayID'), '/probes/appCustomAppProbe')]"
+                            },
+                            "authenticationCertificates": [
+                                {
+                                    "id": "[concat(variables('applicationGatewayID'), '/authenticationCertificates/', parameters('appSSLCertName'))]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "portalGatewayBackendHttpSettings",
+                        "properties": {
+                            "Port": 443,
+                            "Protocol": "Https",
+                            "CookieBasedAffinity": "Disabled",
+                            "requestTimeout": 30,
+                            "probe": {
+                                "id": "[concat(variables('applicationGatewayID'), '/probes/portalCustomAppProbe')]"
+                            },
+                            "authenticationCertificates": [
+                                {
+                                    "id": "[concat(variables('applicationGatewayID'), '/authenticationCertificates/', parameters('portalSSLCertName'))]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "httpListeners": [
+                    {
+                        "name": "appGatewayHttpListener",
+                        "properties": {
+                            "FrontendIPConfiguration": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+                            },
+                            "FrontendPort": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
+                            },
+                            "Protocol": "Https",
+                            "HostName": "[parameters('appSSLCertName')]",
+                            "RequireServerNameIndication": "true",
+                            "SslCertificate": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/sslCertificates/', parameters('appSSLCertName'))]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "portalGatewayHttpListener",
+                        "properties": {
+                            "FrontendIPConfiguration": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+                            },
+                            "FrontendPort": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/frontendPorts/appGatewayFrontendPort')]"
+                            },
+                            "Protocol": "Https",
+                            "HostName": "[parameters('portalSSLCertName')]",
+                            "RequireServerNameIndication": "true",
+                            "SslCertificate": {
+                                "Id": "[concat(variables('applicationGatewayID'), '/sslCertificates/', parameters('portalSSLCertName'))]"
+                            }
+                        }
+                    }
+                ],
+                "requestRoutingRules": [
+                    {
+                        "Name": "appServiceRule",
+                        "properties": {
+                            "RuleType": "Basic",
+                            "httpListener": {
+                                "id": "[concat(variables('applicationGatewayID'), '/httpListeners/appGatewayHttpListener')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/appGatewayBackendPool')]"
+                            },
+                            "backendHttpSettings": {
+                                "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/appGatewayBackendHttpSettings')]"
+                            }
+                        }
+                    },
+                    {
+                        "Name": "portalServiceRule",
+                        "properties": {
+                            "RuleType": "Basic",
+                            "httpListener": {
+                                "id": "[concat(variables('applicationGatewayID'), '/httpListeners/portalGatewayHttpListener')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/portalGatewayBackendPool')]"
+                            },
+                            "backendHttpSettings": {
+                                "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/portalGatewayBackendHttpSettings')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "appCustomAppProbe",
+                        "properties": {
+                            "protocol": "Https",
+                            "host": "[parameters('appHostName')]",
+                            "path": "[parameters('appHostNamePath')]",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": false
+                        }
+                    },
+                    {
+                        "name": "portalCustomAppProbe",
+                        "properties": {
+                            "protocol": "Https",
+                            "host": "[parameters('portalHostName')]",
+                            "path": "[parameters('portalHostNamePath')]",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": false
+                        }
+                    }
+                ],
+                "sslCertificates": [
+                    {
+                        "name": "[parameters('appSSLCertName')]",
+                        "properties": {
+                            "data": "[parameters('appSSLCertData')]",
+                            "password": "[parameters('appSSLCertPassword')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('portalSSLCertName')]",
+                        "properties": {
+                            "data": "[parameters('portalSSLCertData')]",
+                            "password": "[parameters('portalSSLCertPassword')]"
+                        }
+                    }
+                ],
+                "authenticationCertificates": [
+                    {
+                        "name": "[parameters('appSSLCertName')]",
+                        "properties": {
+                            "data": "[parameters('appAuthCertData')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('portalSSLCertName')]",
+                        "properties": {
+                            "data": "[parameters('portalAuthCertData')]"
+                        }
+                    }
+                ],
+                "webApplicationFirewallConfiguration": {
+                    "enabled": true,
+                    "firewallMode": "Detection",
+                    "ruleSetType": "OWASP",
+                    "ruleSetVersion": "3.0"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-08-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIpAddressName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Basic"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": "[parameters('idleTimeoutInMinutes')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('domainNameLabel')]"
+                }
+            }
+        }
+    ]
+}

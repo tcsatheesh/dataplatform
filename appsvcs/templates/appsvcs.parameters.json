@@ -1,0 +1,302 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "appsvcwinnossl",
+                    "resourceType": "appsvcs",
+                    "resourceGroupTypeRef": "web",
+                    "name": "{0}{1}{2}app01",
+                    "location": "North Europe",
+                    "templateFileName": "appsvcwinnossl.json",
+                    "parameterFileName": "appsvcwinnossl.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "hostingPlanName",
+                            "type": "format",
+                            "value": "{0}{1}{2}pln01"
+                        },
+                        {
+                            "name": "appinsightsname",
+                            "type": "format",
+                            "value": "{0}{1}{2}ain01"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "Standard"
+                        },
+                        {
+                            "name": "skuCode",
+                            "type": "value",
+                            "value": "S1"
+                        },
+                        {
+                            "name": "workerSize",
+                            "type": "value",
+                            "value": "0"
+                        },
+                        {
+                            "name": "serverFarmResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "web",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "appsvclin",
+                    "resourceType": "appsvcs",
+                    "resourceGroupTypeRef": "web",
+                    "name": "{0}{1}{2}app02",
+                    "location": "West Europe",
+                    "templateFileName": "appsvclin.json",
+                    "parameterFileName": "appsvclin.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "hostingPlanName",
+                            "type": "format",
+                            "value": "{0}{1}{2}pln02"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "Standard"
+                        },
+                        {
+                            "name": "skuCode",
+                            "type": "value",
+                            "value": "S1"
+                        },
+                        {
+                            "name": "workerSize",
+                            "type": "value",
+                            "value": "0"
+                        },
+                        {
+                            "name": "linuxFxVersion",
+                            "type": "value",
+                            "value": "ruby|2.3"
+                        },
+                        {
+                            "name": "serverFarmResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "web",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "portal",
+                    "resourceType": "appsvcs",
+                    "resourceGroupTypeRef": "web",
+                    "name": "{0}{1}{2}ptl01",
+                    "location": "North Europe",
+                    "templateFileName": "appsvcwin.json",
+                    "parameterFileName": "appsvcwin.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "hostingPlanName",
+                            "type": "format",
+                            "value": "{0}{1}{2}pln01"
+                        },
+                        {
+                            "name": "appinsightsname",
+                            "type": "format",
+                            "value": "{0}{1}{2}ain01"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "Standard"
+                        },
+                        {
+                            "name": "skuCode",
+                            "type": "value",
+                            "value": "S1"
+                        },
+                        {
+                            "name": "workerSize",
+                            "type": "value",
+                            "value": "0"
+                        },
+                        {
+                            "name": "serverFarmResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "web",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "sslCertName",
+                            "type": "value",
+                            "value": "<portal certificate name>"
+                        },
+                        {
+                            "name": "sslCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<portal certificate name replace dot with dash>-certificate"
+                            }
+                        },
+                        {
+                            "name": "sslCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<portal certificate name replace dot with dash>-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "sslCertHostName",
+                            "type": "value",
+                            "value": "<portal certificate name>"
+                        },
+                        {
+                            "name": "sslCertThumbprint",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "certificate",
+                                "subtypeFilter": "portalappcertificate",
+                                "property": "certificateThumbprint"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "api",
+                    "resourceType": "appsvcs",
+                    "resourceGroupTypeRef": "web",
+                    "name": "{0}{1}{2}api01",
+                    "location": "North Europe",
+                    "templateFileName": "appsvcwin.json",
+                    "parameterFileName": "appsvcwin.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "hostingPlanName",
+                            "type": "format",
+                            "value": "{0}{1}{2}pln01"
+                        },
+                        {
+                            "name": "appinsightsname",
+                            "type": "format",
+                            "value": "{0}{1}{2}ain01"
+                        },
+                        {
+                            "name": "sku",
+                            "type": "value",
+                            "value": "Standard"
+                        },
+                        {
+                            "name": "skuCode",
+                            "type": "value",
+                            "value": "S1"
+                        },
+                        {
+                            "name": "workerSize",
+                            "type": "value",
+                            "value": "0"
+                        },
+                        {
+                            "name": "serverFarmResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "web",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "sslCertName",
+                            "type": "value",
+                            "value": "<certificate name>"
+                        },
+                        {
+                            "name": "sslCertData",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate"
+                            }
+                        },
+                        {
+                            "name": "sslCertPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "<app certificate name replace dot with dash>-certificate-password"
+                            }
+                        },
+                        {
+                            "name": "sslCertHostName",
+                            "type": "value",
+                            "value": "<certificate name>"
+                        },
+                        {
+                            "name": "sslCertThumbprint",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "certificate",
+                                "subtypeFilter": "apiappcertificate",
+                                "property": "certificateThumbprint"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

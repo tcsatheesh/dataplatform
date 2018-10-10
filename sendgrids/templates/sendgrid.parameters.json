@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "plan_name": {
+            "value": "free"
+        },
+        "plan_publisher": {
+            "value": "Sendgrid"
+        },
+        "plan_product": {
+            "value": "sendgrid_azure"
+        },
+        "plan_promotion_code": {
+            "value": ""
+        },
+        "password": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "email": {
+            "value": "tc.satheesh@microsoft.com"
+        },
+        "firstName": {
+            "value": "Satheesh"
+        },
+        "lastName": {
+            "value": "TC"
+        },
+        "company": {
+            "value": "Microsoft Ltd."
+        },
+        "website": {
+            "value": ""
+        },
+        "acceptMarketingEmails": {
+            "value": "1"
+        }
+    }
+}

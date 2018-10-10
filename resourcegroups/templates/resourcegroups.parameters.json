@@ -1,0 +1,53 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "sharedStorage",
+                    "name": "{0}-shd-stg-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "storage",
+                    "name": "{0}-{1}-{2}-stg-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "data",
+                    "name": "{0}-{1}-{2}-data-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "app",
+                    "name": "{0}-{1}-{2}-app-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "databricks",
+                    "name": "{0}-{1}-{2}-db-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "vnet",
+                    "name": "{0}-{1}-{2}-vnet-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "vms",
+                    "name": "{0}-{1}-{2}-vms-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "web",
+                    "name": "{0}-{1}-{2}-web-rg",
+                    "location": "North Europe"
+                }
+            ],
+            "metadata": {
+                "description": "The Resources groups used in this project."
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "sku": {
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ]
+        },
+        "publicIPAllocationMethod": {
+            "type": "string",
+            "allowedValues": [
+                "Dynamic",
+                "Static"
+            ]
+        },
+        "idleTimeoutInMinutes": {
+            "type": "int"
+        },
+        "domainNameLabel": {
+            "type": "string"
+        },
+        "publicIpAddressVersion": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-08-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('resourcename')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
+                "idleTimeoutInMinutes": "[parameters('idleTimeoutInMinutes')]",
+                "publicIpAddressVersion": "[parameters('publicIpAddressVersion')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('domainNameLabel')]"
+                }
+            }
+        }
+    ]
+}

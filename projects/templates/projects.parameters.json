@@ -1,0 +1,695 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "department",
+                    "name": ""
+                },
+                {
+                    "type": "projectName",
+                    "name": ""
+                },
+                {
+                    "type": "environment",
+                    "name": ""
+                },
+                {
+                    "type": "tenant",
+                    "name": "",
+                    "id": ""
+                },
+                {
+                    "type": "subscription",
+                    "name": "",
+                    "id": ""
+                },
+                {
+                    "type": "createADGroups",
+                    "status": false
+                },
+                {
+                    "type": "vstsaccount",
+                    "name": "",
+                    "branch": ""
+                },
+                {
+                    "type": "it-master-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "managers"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "masterkeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "clientsecrets",
+                            "resources": [
+                                {
+                                    "type": "password",
+                                    "subtype": "platformDeploymentPrincipal"
+                                },
+                                {
+                                    "type": "certificate",
+                                    "subtype": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "accesspolicies",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "grantpermissions",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultaccess",
+                            "resources": [
+                                {
+                                    "type": "platformDeploymentPrincipal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-prjapp-d",
+                    "resources": [                        
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "applicationPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "grantpermissions",
+                            "resources": [
+                                {
+                                    "type": "applicationPrincipal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-base-d",
+                    "resources": [
+                        {
+                            "resourceType": "customroles",
+                            "resources": [
+                                {
+                                    "type": "dataandaideveloper"
+                                },
+                                {
+                                    "type": "datalakestoresuperuser"
+                                },
+                                {
+                                    "type": "dataserviceteam"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-webapp-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "developers"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "web"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldbs",
+                            "resources": [
+                                {
+                                    "type": "appdb"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "appsvcs",
+                            "resources": [
+                                {
+                                    "type": "appsvcwinnossl"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "accesspolicies",
+                            "resources": [
+                                {
+                                    "type": "web"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dsvm-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "keyvaultadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "vnet"
+                                },
+                                {
+                                    "type": "vms"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "vmskeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "vmadmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "vnets",
+                            "resources": [
+                                {
+                                    "type": "dplt"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "pubips",
+                            "resources": [
+                                {
+                                    "type": "pubip"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "vms",
+                            "resources": [
+                                {
+                                    "type": "ubuntudsvm"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "deploymentPrincipal"
+                                },
+                                {
+                                    "type": "applicationPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "managers"
+                                },
+                                {
+                                    "type": "buildadmins"
+                                },
+                                {
+                                    "type": "datacontrollers"
+                                },
+                                {
+                                    "type": "keyvaultadmins"
+                                },
+                                {
+                                    "type": "developers"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "storageaccounts",
+                            "resources": [
+                                {
+                                    "type": "diagnostics"
+                                },
+                                {
+                                    "type": "storage"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "appkeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "clientsecrets",
+                            "resources": [
+                                {
+                                    "type": "password",
+                                    "subtype": "deploymentPrincipal"
+                                },
+                                {
+                                    "type": "password",
+                                    "subtype": "applicationPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "storageconnectionstring"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adlstores",
+                            "resources": [
+                                {
+                                    "type": "adlstore"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adlsfolders",
+                            "resources": [
+                                {
+                                    "type": "default"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adlas",
+                            "resources": [
+                                {
+                                    "type": "adla"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "adfs",
+                            "resources": [
+                                {
+                                    "type": "adf"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "linkedservices",
+                            "resources": [
+                                {
+                                    "type": "keyvault"
+                                },
+                                {
+                                    "type": "storage"
+                                },
+                                {
+                                    "type": "adlstore"
+                                },
+                                {
+                                    "type": "adla"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "diagnostics",
+                            "resources": [
+                                {
+                                    "type": "appkeyvault"
+                                },
+                                {
+                                    "type": "adlstore"
+                                },
+                                {
+                                    "type": "adla"
+                                },
+                                {
+                                    "type": "adf"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "accesspolicies",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                },
+                                {
+                                    "type": "adlstore"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt2-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "value",
+                                    "subtype": "salesforce.com.username"
+                                },
+                                {
+                                    "type": "value",
+                                    "subtype": "salesforce.com.password"
+                                },
+                                {
+                                    "type": "value",
+                                    "subtype": "salesforce.com.securitytoken"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt3-d",
+                    "parent": "it-dblt2-d",
+                    "resources": [
+                        {
+                            "resourceType": "dfpipelines",
+                            "resources": [
+                                {
+                                    "type": "salesforce"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt4-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "dbadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "sqldwadmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldws",
+                            "resources": [
+                                {
+                                    "type": "appdw"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt5-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "dbadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaultsecrets",
+                            "resources": [
+                                {
+                                    "type": "login",
+                                    "subtype": "sqladmin"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "sqldbs",
+                            "resources": [
+                                {
+                                    "type": "appdb"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "logicapps",
+                            "resources": [
+                                {
+                                    "type": "logicapp"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-mlst-d",
+                    "resources": [
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "storageaccounts",
+                            "resources": [
+                                {
+                                    "type": "mlstorage"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "mlstudios",
+                            "resources": [
+                                {
+                                    "type": "mlstudio"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-aks-d",
+                    "resources": [
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "vnet"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "vnets",
+                            "resources": [
+                                {
+                                    "type": "aks"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "deploymentPrincipal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-aks2-d",
+                    "parent": "it-aks-d",
+                    "resources": [
+
+                        {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "keyvaultadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "appkeyvault"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "clientsecrets",
+                            "resources": [
+                                {
+                                    "type": "password",
+                                    "subtype": "deploymentPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "aks",
+                            "resources": [
+                                {
+                                    "type": "aks"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-base2-d",
+                    "resources": [
+                        {
+                            "resourceType": "azurepolicies",
+                            "resources": [
+                                {
+                                    "type": "mvp"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-mlexp-d",
+                    "resources": [
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "storageaccounts",
+                            "resources": [
+                                {
+                                    "type": "mlstorage"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "mlexps",
+                            "resources": [
+                                {
+                                    "type": "mlexp"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-dblt6-d",
+                    "parent": "it-dblt1-d",
+                    "resources": [
+                        {
+                            "resourceType": "grantpermissions",
+                            "resources": [
+                                {
+                                    "type": "grantpermission"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

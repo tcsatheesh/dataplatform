@@ -1,0 +1,41 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type" : "cosmosdb", 
+                    "resourceType": "cosmosdbs",
+                    "resourceGroupTypeRef": "data",
+                    "name" : "{0}{1}{2}cmdb01",
+                    "location": "North Europe",
+                    "templateFileName": "cosmosdb.json",
+                    "parameterFileName": "cosmosdb.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "locationName",
+                            "type": "value",
+                            "value": "North Europe"             
+                        },
+                        {
+                            "name": "pairedLocation",
+                            "type": "value",
+                            "value": "West Europe"             
+                        },
+                        {
+                            "name": "pairedLocationName",
+                            "type": "value",
+                            "value": "West Europe"                            
+                        },
+                        {
+                            "name": "defaultExperience",
+                            "type": "value",
+                            "value": "DocumentDB"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
