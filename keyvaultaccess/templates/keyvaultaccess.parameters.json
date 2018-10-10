@@ -1,0 +1,30 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "name": "{0}-{1}-{2}-accesspolicy",
+                    "type": "platformDeploymentPrincipal",
+                    "keyVaultType": "masterkeyvault",
+                    "resourceGroupTypeRef": "app",
+                    "parameters": [
+                        {
+                            "secrets": [
+                                "get",
+                                "list"
+                            ],
+                            "type": "objectId",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "platformDeploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

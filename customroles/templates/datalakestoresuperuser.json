@@ -1,0 +1,22 @@
+{
+    "Name":  "Data Lake Store Super User",
+    "IsCustom":  true,
+    "Description":  "Lets a user or group be super user in Data Lake Store.",
+    "Actions":  [
+                    "*/read",
+                    "Microsoft.DataLakeStore/accounts/Superuser/action",
+                    "Microsoft.Authorization/roleAssignments/write"
+                ],
+    "NotActions":  [
+
+                   ],
+    "DataActions":  [
+
+                    ],
+    "NotDataActions":  [
+
+                       ],
+    "AssignableScopes":  [
+                             
+                         ]
+}

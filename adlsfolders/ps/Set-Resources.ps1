@@ -4,7 +4,7 @@ param
     [String]$projectsParameterFile
 )
 
-function Set-Resource {
+function Set-FolderPermissions {
     param
     (
         [string]$adlStoreName,
@@ -18,38 +18,42 @@ function Set-Resource {
         $permission = $objP.Permission
         $aceType = $objP.AceType
 
-        Write-Verbose "Granting $aceType $aadName with Id $objectId permissions $permission to folder $folderName"
-        if ($objP.Default -eq "true") {
-            Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission -Default
+        if ([string]::IsNullOrEmpty($objectId)) {
+            Write-Verbose "AceType $($objP.AceType) has no object Id"
         }
         else {
-            Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission
-        }        
+            Write-Verbose "Granting $aceType $aadName with Id $objectId permissions $permission to folder $folderName"
+            if ($objP.Default -eq "true") {
+                Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission -Default
+            }
+            else {
+                Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $folderName -AceType $aceType -Id $objectId -Permissions $permission
+            }        
+        }
     }
 }
 
-function Set-Resources {
-    $adlStoreName = $parameters.parameters.resources.value.adlStoreName
-
-    foreach ($obj in $parameters.parameters.resources.value.folders) {
+function Set-Resource {
+    param (
+        [object]$resource
+    )
+    $adlStoreName = $resource.adlStoreName
+    foreach ($obj in $resource.folders) {
         if (-not ("/".Equals($obj.folderName))) {
             Try {
                 # Create the folder so long as it doesn't already exist.
                 if (!(Get-AzureRmDataLakeStoreItem -AccountName $adlStoreName -Path $obj.folderName -ErrorAction Ignore)) {
-                    New-AzureRmDataLakeStoreItem -Folder -AccountName $adlStoreName -Path $obj.folderName
+                    $null = New-AzureRmDataLakeStoreItem -Folder -AccountName $adlStoreName -Path $obj.folderName
                 }            
             }
             Catch {
                 Write-Error $_.Exception.Message
             }
         }
-        Set-Resource -adlStoreName $adlStoreName -folders $obj
+        Set-FolderPermissions -adlStoreName $adlStoreName -folders $obj
     }
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Resources}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

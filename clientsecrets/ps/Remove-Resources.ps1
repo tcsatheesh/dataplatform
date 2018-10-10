@@ -30,23 +30,22 @@ function Get-Principal {
     )
     $parameterFileName = "principals.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal" -and $_.subtype -eq $principalref}
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $principalref}
     Write-Verbose "Got principal $($resource.application.name) for principalref $principalref"
     return $resource
 }
 
-function Remove-ClientSecrets {
-    $resources = $parameters.parameters.resources.value 
-    foreach ($resource in $resources) {
-        $principalref = $resource.principalref
-        $principal = Get-Principal -principalref $principalref    
-        Remove-ClientSecret -applicationName $principal.application.name
-    }
+function Remove-Resource {
+    param (
+        [object]$resource
+    )
+    $principalref = $resource.principalref
+    $principal = Get-Principal -principalref $principalref    
+    Remove-ClientSecret -applicationName $principal.application.name
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-ClientSecrets}
+    -parameterFileName $parameterFileName

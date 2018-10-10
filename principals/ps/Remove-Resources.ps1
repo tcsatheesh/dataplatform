@@ -4,7 +4,7 @@ param
     [String]$projectsParameterFile
 )
 
-function Remove-Resource {
+function Remove-Application {
     param (
         [string]$applicationName
     )
@@ -30,28 +30,13 @@ function Remove-Resource {
     }
 }
 
-function Remove-Resources {
-    $resources = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal"} 
-    foreach ($resource in $resources) {
-        $enabled = $resource.enabled
-        if ($enabled -ne $null) {            
-            $enabled = [System.Convert]::ToBoolean($resource.enabled)   
-        }else{
-            $enabled = $true
-        }
-        if ( $enabled ) {
-            Write-Verbose "Removing resource: $($resource.name)"
-            Remove-Resource -applicationName $resource.application.name
-        }else {
-            Write-Verbose "Skipping removing resource: $($resource.name)"
-        }
-        
-    }
+function Remove-Resource {
+    param (
+        [object]$resource
+    )
+    Remove-Application -applicationName $resource.application.name
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-Resources}
+& "$commonPSFolder\Invoke-RemoveProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

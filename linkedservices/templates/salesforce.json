@@ -6,7 +6,7 @@
             "environmentUrl": "https://login.salesforce.com",
             "username": {
                 "type": "AzureKeyVaultSecret",
-                "secretName": "SalesforceUsername",
+                "secretName": "salesforce-com-username",
                 "store":{
                     "referenceName": "KeyVault",
                     "type": "LinkedServiceReference"
@@ -14,7 +14,7 @@
             },
             "password": {
                 "type": "AzureKeyVaultSecret",
-                "secretName": "SalesforcePassword",
+                "secretName": "salesforce-com-password",
                 "store":{
                     "referenceName": "KeyVault",
                     "type": "LinkedServiceReference"
@@ -22,7 +22,7 @@
             },
             "securityToken": {
                 "type": "AzureKeyVaultSecret",
-                "secretName": "SalesforceSecurityToken",
+                "secretName": "salesforce-com-securitytoken",
                 "store":{
                     "referenceName": "KeyVault",
                     "type": "LinkedServiceReference"

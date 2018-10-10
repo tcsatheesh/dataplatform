@@ -1,0 +1,84 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "teamproject",
+                    "vstsAccountName": "",
+                    "vstsTeamProjectName": "{0}-{1}-{2}-vstp",
+                    "vstsProjectTemplateType": "Scrum",
+                    "vstsSourceControlType": "Git",
+                    "vstsSourceControlDevBranch": "develop",
+                    "vstsTeamProjectCIBuildDefinitionName": "CI_Build_Environment",
+                    "vstsTeamProjectScheduledBuildDefinitionName": "Nightly_Build_Environment",
+                    "vstsTeamProjectCIReleaseDefinitionName": "CI_Deploy_Environment",
+                    "vstsTeamProjectScheduledReleaseDefinitionName": "Nightly_Deploy_Environment",
+                    "vstsProjectARMServiceEndPointName": "{0}-{1}-{2}-ARMServiceEndPoint",
+                    "vstsHostedAgentName": "Hosted VS2017",
+                    "vstsTargetAzurePs": "LatestVersion",
+                    "vstsCustomTargetAzurePs": "5.0.0",
+                    "parameters" : [
+                        {
+                            "type": "applicationId",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "type": "servicePrincipalId",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "type": "subscriptionName",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "subscriptionId",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "subscription",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "type": "tenantId",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "secretName",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "application.passwordSecretName"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

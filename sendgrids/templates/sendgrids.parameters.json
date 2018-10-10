@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type" : "customeremail",        
-                    "enabled": true,            
                     "resourceType": "sendgrids",
                     "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}sgrd01",

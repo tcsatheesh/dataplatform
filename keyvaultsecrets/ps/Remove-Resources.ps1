@@ -4,7 +4,7 @@ param
     [String]$projectsParameterFile
 )
 
-function Remove-Resource {
+function Remove-Secret {
     param (
         [string]$keyVaultName,
         [string]$secretName
@@ -21,17 +21,15 @@ function Remove-Resource {
     }
 }
 
-function Remove-AllSecrets {
-    foreach ($resource in $parameters.parameters.resources.value) {
+function Remove-Resource {
+    param (
+        [object]$resource
+    )
         $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
-        Write-Verbose "Removing resource $($resource.secretName) from $keyVaultName"
-        Remove-Resource -keyVaultName $keyVaultName -secretName $resource.secretName
-    }
+        Write-Verbose "Removing resource $($resource.name) from $keyVaultName"
+        Remove-Secret -keyVaultName $keyVaultName -secretName $resource.name
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-AllSecrets}
+& "$commonPSFolder\Invoke-RemoveProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

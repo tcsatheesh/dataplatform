@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type": "appgw",
-                    "enabled": false,
                     "resourceType": "appgws",
                     "resourceGroupTypeRef": "vnet",
                     "name": "{0}{1}{2}appgw01",
@@ -58,7 +57,7 @@
                         {
                             "name": "appSSLCertName",
                             "type": "value",
-                            "value": "app.rubycom.info"
+                            "value": "<app certificate name>"
                         },
                         {
                             "name": "appSSLCertData",
@@ -66,7 +65,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate"
+                                "secretName": "<app certificate name replace dot with dash>-certificate"
                             }
                         },
                         {
@@ -75,7 +74,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate-password"
+                                "secretName": "<app certificate name replace dot with dash>-certificate-password"
                             }
                         },
                         {
@@ -84,7 +83,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate-public"
+                                "secretName": "<app certificate name replace dot with dash>-certificate-public"
                             }
                         },
                         {
@@ -101,7 +100,6 @@
                 },
                 {
                     "type": "appgwd",
-                    "enabled": true,
                     "resourceType": "appgws",
                     "resourceGroupTypeRef": "vnet",
                     "name": "{0}{1}{2}appgw01",
@@ -153,7 +151,7 @@
                         {
                             "name": "appSSLCertName",
                             "type": "value",
-                            "value": "app.rubycom.info"
+                            "value": "<app certificate name>"
                         },
                         {
                             "name": "appSSLCertData",
@@ -161,7 +159,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate"
+                                "secretName": "<app certificate name replace dot with dash>-certificate"
                             }
                         },
                         {
@@ -170,7 +168,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate-password"
+                                "secretName": "<app certificate name replace dot with dash>-certificate-password"
                             }
                         },
                         {
@@ -179,7 +177,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "app-rubycom-info-certificate-public"
+                                "secretName": "<app certificate name replace dot with dash>-certificate-public"
                             }
                         },
                         {
@@ -195,7 +193,7 @@
                         {
                             "name": "portalSSLCertName",
                             "type": "value",
-                            "value": "portal.rubycom.info"
+                            "value": "<portal certificate name>"
                         },
                         {
                             "name": "portalSSLCertData",
@@ -203,7 +201,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "portal-rubycom-info-certificate"
+                                "secretName": "<portal certificate name replace dot with dash>-certificate"
                             }
                         },
                         {
@@ -212,7 +210,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "portal-rubycom-info-certificate-password"
+                                "secretName": "<portal certificate name replace dot with dash>-certificate-password"
                             }
                         },
                         {
@@ -221,7 +219,7 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName": "portal-rubycom-info-certificate-public"
+                                "secretName": "<portal certificate name replace dot with dash>-certificate-public"
                             }
                         },
                         {

@@ -16,17 +16,14 @@ function Get-ADGroupObjectId {
 }
 
 function Get-CurrentUserUpn {
-    $parameterFileName = "projects.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-
-    $subscriptionId = ($parameters.parameters.resources.value | Where-Object {$_.type -eq "subscription"}).id
+    $subscriptionId = Get-SubscriptionId
     $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId
     $upn = $sub.Account.Id
     Write-Verbose "Current user upn is : $upn"
     return $upn
 }
 
-function Remove-Resource {
+function Remove-GroupMember {
     param (
         [string]$groupObjectId,
         [string]$userPrincipalName
@@ -50,23 +47,23 @@ function Remove-Resource {
 }
 
 
-function Remove-Resources {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        $adGroupObjectId = Get-ADGroupObjectId -adGroupType $resource.adgrouptyperef
-        foreach ($membersupn in $resource.membersupn) {
-            Write-Verbose "Removing user $membersupn to ad group $($resource.adgrouptyperef)"
-            $upn = $membersupn
-            if ($upn -eq "current") {
-                $upn = Get-CurrentUserUpn
-            }
-            Remove-Resource -groupObjectId $adGroupObjectId -userPrincipalName $upn
+function Remove-Resource {
+    param (
+        [object]$resource
+    )
+    $adGroupObjectId = Get-ADGroupObjectId -adGroupType $resource.adgrouptyperef
+    foreach ($membersupn in $resource.membersupn) {
+        Write-Verbose "Removing user $membersupn to ad group $($resource.adgrouptyperef)"
+        $upn = $membersupn
+        if ($upn -eq "current") {
+            $upn = Get-CurrentUserUpn
         }
-    }
+        Remove-Resource -groupObjectId $adGroupObjectId -userPrincipalName $upn
+    }    
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 $null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
     -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-Resources}
+    -parameterFileName $parameterFileName

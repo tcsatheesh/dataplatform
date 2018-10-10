@@ -4,3 +4,4 @@ param
     [String]$projectsParameterFile
 )
 
+#intentionally blank

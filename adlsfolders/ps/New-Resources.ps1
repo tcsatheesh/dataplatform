@@ -6,11 +6,11 @@ param
 
 function Get-Principal {
     param (
-        [string]$subtype
+        [string]$type
     )
     $parameterFileName = "principals.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.subtype -eq $subtype}
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
     return $resource.servicePrincipal
 }
 function Get-ADGroup {
@@ -19,43 +19,61 @@ function Get-ADGroup {
     )
     $parameterFileName = "adgroups.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
-    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}  
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
     return $resource 
 }
 
-function New-Resources {
-    $folderParameters = $parameters.parameters.resources.value
+function New-Resource {    
+    param(
+        [object]$resource
+    )
+    $resource.adlStoreName = Get-FormatedText $resource.adlStoreName
 
-    $folderParameters.adlStoreName = Get-FormatedText $folderParameters.adlStoreName
-
-    foreach ($folder in $folderParameters.folders) {
+    foreach ($folder in $resource.folders) {        
         $folderName = $folder.folderName
         Write-Verbose "Processing $folderName"
+        $permissionsToSet = @()
         foreach ($permission in $folder.permissions) {
             $aadName = $permission.AADName
             $aadType = $permission.AADType
+            $objectid = $null
             Write-Verbose "Permission in $folderName for $aadName"
             if ($aadType -eq "SPN") {
-                $resource = Get-Principal -subtype $aadName
-                $aadName = $resource.name
-                $objectid = $resource.id
+                $principal = Get-Principal -type $aadName
+                if ([string]::IsNullOrEmpty($principal)) {
+                    Write-Verbose "Principal $aadName not defined"
+                }
+                else {
+                    $aadName = $principal.name
+                    $objectid = $principal.id
+                }
             } 
             else {
-                $resource = Get-ADGroup -type $aadName
-                $aadName = $resource.name
-                $objectid = $resource.id
+                $group = Get-ADGroup -type $aadName
+                if ([string]::IsNullOrEmpty($group)) {
+                    Write-Verbose "Group $aadName not defined"
+                }
+                else {
+                    $aadName = $group.name
+                    $objectid = $group.id
+                }
             }
             Write-Verbose "Processing folder $folderName for aad user $aadName"
-            $permission.AADName = $aadName
-            $permission.Id = $objectid        
+            if (-not [string]::IsNullOrEmpty($objectid)) {
+                $permission.AADName = $aadName
+                $permission.Id = $objectid
+                $permissionsToSet += $permission
+                Write-Verbose "Permission to add $($permission)"
+            }
+            else
+            {
+                Write-Verbose "Permission not added $aadName"
+            }
         }
+        Write-Verbose "Permissions Count = $($permissionsToSet.Count)"
+        $folder.permissions = $permissionsToSet
     }
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-
-& "$commonPSFolder\Invoke-NewProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
-    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-Resources}
+& "$commonPSFolder\Invoke-NewProcess.ps1" -projectsParameterFile $projectsParameterFile -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"

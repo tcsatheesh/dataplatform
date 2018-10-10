@@ -37,8 +37,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "application.name"
                             }
                         },
@@ -47,8 +46,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "servicePrincipal.id"
                             }
                         },

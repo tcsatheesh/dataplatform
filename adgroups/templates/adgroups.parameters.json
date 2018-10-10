@@ -5,46 +5,58 @@
         "resources": {
             "value": [
                 {
-                    "type": "managers",
-                    "name": "{0}-{1}-{2}-managers",
-                    "id": "",
-                    "email": "{0}-{1}-{2}-managers@{3}"
-                },
-                {
                     "type": "keyvaultadmins",
-                    "name": "{0}-{1}-{2}-keyvaultadmins",
+                    "name": "Key Vault Administrators",
                     "id": "",
-                    "email": "{0}-{1}-{2}-keyvaultadmins@{3}"
+                    "email": ""
                 },
                 {
-                    "type": "sqladmins",
-                    "name": "{0}-{1}-{2}-sqladmins",
+                    "type": "managers",
+                    "name": "Platform Management",
                     "id": "",
-                    "email": "{0}-{1}-{2}-sqladmins@{3}"
+                    "email": ""
+                },
+                {
+                    "type": "dbadmins",
+                    "name": "Database Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "datacontrollers",
+                    "name": "Data Controllers",
+                    "id": "",
+                    "email": ""
+                },
+                {
+                    "type": "buildadmins",
+                    "name": "Build Administrators",
+                    "id": "",
+                    "email": ""
                 },
                 {
                     "type": "developers",
-                    "name": "{0}-{1}-{2}-developers",
+                    "name": "Application Developers",
                     "id": "",
-                    "email": "{0}-{1}-{2}-developers@{3}"
+                    "email": ""
                 },
                 {
-                    "type": "testers",
-                    "name": "{0}-{1}-{2}-testers",
+                    "type": "dataanalysts",
+                    "name": "Data Analysts",
                     "id": "",
-                    "email": "{0}-{1}-{2}-testers@{3}"
+                    "email": ""
+                },
+                {
+                    "type": "appsupport",
+                    "name": "Application Supporters",
+                    "id": "",
+                    "email": ""
                 },
                 {
                     "type": "endusers",
-                    "name": "{0}-{1}-{2}-endusers",
+                    "name": "End Users",
                     "id": "",
-                    "email": "{0}-{1}-{2}-endusers@{3}"
-                },
-                {
-                    "type": "analysisadmin",
-                    "name": "Developers",
-                    "id": "",
-                    "email": "developers@rubycom.info"
+                    "email": ""
                 }
             ],
             "metadata": {

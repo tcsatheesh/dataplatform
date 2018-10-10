@@ -37,7 +37,7 @@ function Get-SqlConnectionString {
     return $secretValue    
 }
 
-function Set-Secret {
+function Set-Resource {
     param (
         [object]$resource
     )
@@ -102,16 +102,22 @@ function Set-Secret {
     }
     elseif ($resource.type -eq "value") {
         $secureSecretValue = ConvertTo-SecureString -AsPlainText $resource.secretValue -Force
+        $resource.secretValue = ""
     }
 
     $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
     $secretExpiryTerm = $resource.expiryTerm
     $secretExpiry = (Get-Date -Date $resource.startdate).AddYears($secretExpiryTerm)
-    $secretCredential = New-Object System.Management.Automation.PSCredential ($resource.name, $secureSecretValue)   
+    $secretCredential = New-Object System.Management.Automation.PSCredential ($resource.name, $secureSecretValue)
     $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -ErrorAction SilentlyContinue
     if ( $secret -eq $null) {
-        $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -SecretValue $secretCredential.Password -Expires $secretExpiry
-        Write-Verbose "Secret $($secretCredential.UserName) added to the key vault $keyVaultName"
+        $kyvlt = Set-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretCredential.UserName -SecretValue $secretCredential.Password -Expires $secretExpiry -ErrorAction SilentlyContinue
+        if ($kyvlt -eq $null){
+            Write-Verbose "Secret $($secretCredential.UserName) not added to the key vault $keyVaultName. $kyvlt"
+        }
+        else {
+            Write-Verbose "Secret $($secretCredential.UserName) added to the key vault $keyVaultName"
+        }
     }
     elseif ($resource.updateSecret) {
         Write-Verbose "Update specified for the secret $($secretCredential.UserName) in the key vault $keyVaultName"
@@ -123,16 +129,6 @@ function Set-Secret {
     }
 }
 
-function Set-Secrets {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        Write-Verbose "Processing secret $($resource.name)"
-        Set-Secret -resource $resource
-    }
-}
-
-$parameterFileName = "keyvaultsecrets.parameters.json"
+$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Secrets}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

@@ -1,0 +1,35 @@
+{
+    "name": "[parameters('lookupDataSetName')]",
+    "properties": {
+        "type": "AzureDataLakeStoreFile",
+        "typeProperties": {
+            "folderPath": {
+                "value": "@dataset().inputFolderPath",
+                "type": "Expression"
+            },
+            "fileName": {
+                "value": "@dataset().inputFileName",
+                "type": "Expression"
+            },
+            "format": {
+                "type": "JsonFormat",
+                "filePattern": "arrayOfObjects"
+            }
+        },
+        "linkedServiceName": {
+            "referenceName": "[parameters('lookupDataSetLinkedServiceName')]",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "inputFolderPath": {
+                "type": "string"
+            },
+            "inputFileName": {
+                "type": "String"
+            }
+        },
+        "folder": {
+          "name": "[parameters('dffolderName')]"
+        }
+    }
+}

@@ -7,45 +7,19 @@ param
     [String]$resourceType
 )
 
-function Store-ParametersToFile { 
-    param (
-        [string]$resourceName,
-        [object]$parameters,
-        [string]$parameterFileName
-    )
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $destinationPath = "$projectFolder\$resourceName"
-    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
-    $destinationPath = "$destinationPath\$parameterFileName"
-    Write-Verbose "Destination Path is $destinationPath"
-    $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $destinationPath -Force -Encoding utf8
-    Write-Verbose "Project parameter file created at: $destinationPath"
-}
-
-function Copy-TemplateFile {
-    param(
-        [string]$resourceName,
-        [string]$templateFileName
-    )
-    $sourcePath = (Get-Item -Path "$PSScriptRoot\..\..\$resourceName\templates\$templateFileName").FullName
-    Write-Verbose "Source Path is $sourcePath"
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $destinationPath = "$projectFolder\$resourceName"
-    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
-    $destinationPath = "$destinationPath\$templateFileName"
-    Write-Verbose "Destination Path is $destinationPath"
-    Copy-Item -Path $sourcePath -Destination $destinationPath -Force
-}
-
 function Get-KeyVaultId {
     param (
         [object]$resourceType,
         [string]$typeFilter,
         [string]$secretName
     )
+    $keyVaultResourceGroupTypeRefName = Get-ValueFromResource `
+        -resourceType $resourceType `
+        -typeFilter $typeFilter `
+        -property "resourceGroupTypeRef"
     $resourceGroupName = Get-ValueFromResource `
         -resourceType "resourcegroups" `
-        -typeFilter "app" `
+        -typeFilter $keyVaultResourceGroupTypeRefName `
         -property "name"
     $keyVaultName = Get-ValueFromResource `
         -resourceType $resourceType `
@@ -142,6 +116,28 @@ function Get-KeyEncryptionKeyUrl {
     return $keyEncryptionKeyUrl
 }
 
+function Get-SubnetID {
+    param (
+        [object]$subnetRef
+    )
+    $VNetName = Get-ValueFromResource -resourceType $subnetRef.resourceType `
+        -property $subnetRef.property -typeFilter $subnetRef.typeFilter
+    
+    $vnet = Get-AzureRmVirtualNetwork | Where-Object {$_.Name -eq $VnetName}
+    $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetRef.subnetName}
+    return $subnet.Id
+}
+
+function Get-ResourceId {
+    param (
+        [object]$ref
+    )
+
+    $res = Get-AzureRmResource -ResourceGroupName $ref.resourceGroupName -Name $ref.name
+    if ($res -eq $null) {throw "Resource with name $($ref.name) in resource group $($ref.resourcegroupname) not found"}
+    return $res.Id
+}
+
 function Set-AdditionalParameters {
     param (
         [object]$resource,
@@ -184,8 +180,9 @@ function Set-AdditionalParameters {
                 -keyName $keyName
             }
             elseif ($resourceparam.type -eq "ipaddress") {
-                $commonPSFolder = "$PSScriptRoot\..\..\common\ps"
-                $val = Get-CurrentIPAddress                   
+                $commonPSFolder = "$PSScriptRoot\..\..\common\ps"                
+                $val = Get-CurrentIPAddress
+                $resourceparam.value = $val
             }
             elseif ($resourceparam.type -eq "value") {
                 $val = $resourceparam.value
@@ -196,6 +193,12 @@ function Set-AdditionalParameters {
             }
             elseif ($resourceparam.type -eq "container") {
                 $val = Get-BlobContainerUri -blobRef $resourceparam.ref -containername $resourceName
+            }
+            elseif ($resourceparam.type -eq "subnetid") {
+                $val = Get-SubnetID -subnetRef $resourceparam.ref
+            }
+            elseif ($resourceparam.type -eq "resourceid") {
+                $val = Get-ResourceId -ref $resourceparam.ref
             }
             elseif (($resourceparam.type -eq "iotHubConnectionString") -or
                     ($resourceparam.type -eq "iotHubResourceId") -or 
@@ -213,12 +216,14 @@ function Set-AdditionalParameters {
             else {
                 throw "you are missing the resource type $($resourceparam.type)"
             }
+            
             $subparametertoedit = $resourceparam.subname
-            Write-Verbose "resourceTypeToLoad $resourceTypeToLoad with projectyToExtract $propertyToExtract with typeFilter $typeFilter and subFilter $subFilter has value $val"
             if ($subparametertoedit -eq $null) {
+                Write-Verbose "Parameter to edit is: $parametertoedit with value: $val"
                 $resourceParameters.parameters.$parametertoedit.value = $val
             }
             else {
+                Write-Verbose "Parameter to edit is: $parametertoedit and sub parameter to edit $subparametertoedit with value: $val"
                 $resourceParameters.parameters.$parametertoedit.value[$index].$subparametertoedit = $val
             }
         }
@@ -239,25 +244,20 @@ function New-ParameterFile {
     Set-AdditionalParameters -resource $resource -resourceParameters $resourceParameters
 
     $resourceParameterFileName = "$($resource.type).parameters.json"
-    Store-ParametersToFile -resourceName $resource.resourceType `
+    Set-ParametersToFile -resourceType $resource.resourceType `
         -parameters $resourceParameters `
         -parameterFileName $resourceParameterFileName
     return $resourceParameterFileName   
 }
 
-function New-Parameters {
-    $resources = $parameters.parameters.resources.value
-    foreach ($resource in $resources) {
-        $resource.Name = Get-FormatedText($resource.name)    
-        $resource.parameterFileName = New-ParameterFile -resource $resource
-        Copy-TemplateFile -resourceName $resource.resourceType -templateFileName $resource.templateFileName
-    }
+function New-Resource {
+    param(
+        [object]$resource
+    )
+    $resource.Name = Get-FormatedText($resource.name)    
+    $resource.parameterFileName = New-ParameterFile -resource $resource
+    Copy-TemplateFile -resourceType $resource.resourceType -templateFileName $resource.templateFileName
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-
-& "$commonPSFolder\Invoke-NewProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -resourceType $resourceType `
-    -parameterFileName "$resourceType.parameters.json" `
-    -procToRun {New-Parameters}
+& "$commonPSFolder\Invoke-NewProcess.ps1" -projectsParameterFile $projectsParameterFile -resourceType $resourceType -parameterFileName "$resourceType.parameters.json"

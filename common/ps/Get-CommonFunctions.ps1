@@ -6,9 +6,7 @@ function Get-ValueFromResource {
         [string]$subtypeFilter
     )
     
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $itemPath = "$projectFolder\$resourceType.parameters.json"
-    $parameters = Get-Content -Path $itemPath -Raw | ConvertFrom-Json
+    $parameters = Get-ResourceParameters -parameterFileName "$resourceType.parameters.json"
     
     if ([String]::IsNullOrEmpty($subtypeFilter)) {
         $item = $parameters.parameters.resources.value | Where-Object {$_.type -eq $typeFilter}
@@ -75,22 +73,65 @@ function Get-CurrentIPAddress {
     return $response.ip
 }
 
-function Get-ResourceParameters {
+function Get-ParentProjectParameterFilePath {
     param
     (
         [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
+        [String]$projectsParameterFullFilePath,
+        [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
+        [String]$parameterFileName
+    )
+    $projectParameters = Get-Content -Path $projectsParameterFullFilePath -Raw | ConvertFrom-JSON
+    $envType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq "envType"}
+    Write-Verbose "Env type is $envType"
+    $currentType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $envType.value}
+    Write-Verbose "Current type is $currentType"
+    if ($currentType.parent -ne $null) {
+        Write-Verbose "This is a child project. Parent is $($currentType.parent)"
+        $projectFolder = (Get-Item -Path $projectsParameterFile).FullName
+        Write-Verbose "1. Project Folder is $projectFolder"
+        $projectFolder = (Get-Item -Path $projectFolder).DirectoryName
+        Write-Verbose "2. Project Folder is $projectFolder"                
+        $parentProjectFolder = "$projectFolder\..\$($currentType.parent)"
+        Write-Verbose "1. Project Parent Folder is $parentProjectFolder"
+        $parentProjectFolder = (Get-Item -Path $parentProjectFolder).FullName
+        Write-Verbose "2. Project Parent Folder is $parentProjectFolder"
+        $parameterFullPath = "$parentProjectFolder\$parameterFileName"
+        Write-Verbose "3. Project Parent filepath is $parameterFullPath"
+        if (-not (Test-Path -Path $parameterFullPath)) {
+            Write-Verbose "Parameter file $parameterFileName not found. Check if this is a child project"
+            $lclProjectsParameterFullFilePath = "$parentProjectFolder\projects.parameters.json"
+            $parameterFullPath = Get-ParentProjectParameterFilePath -projectsParameterFullFilePath $lclProjectsParameterFullFilePath -parameterFileName $parameterFileName
+            if ($parameterFullPath -eq $null) {
+                throw "Project parameter file not found in $parameterFullPath"
+            }
+        }    
+        return $parameterFullPath
+    }
+    else {
+        return $null
+    }
+}
+
+function Get-ResourceParameters {
+    param
+    (
+        [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
         [String]$parameterFileName
     )
 
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $projectParameterFullPath = "$projectFolder\$parameterFileName"
-    # Write-Verbose "Project Parameter Full Path: $projectParameterFullPath"
-    if (-not (Test-Path -Path $projectParameterFullPath)) {
-        throw "Project parameter file not found in $projectParameterFullPath"
+    $projectsParameterFullFilePath = "$projectFolder\projects.parameters.json"
+    $parameterFullPath = "$projectFolder\$parameterFileName"
+    if (-not (Test-Path -Path $parameterFullPath)) {
+        Write-Verbose "Parameter file $parameterFileName not found. Check if this is a child project"
+        $parameterFullPath = Get-ParentProjectParameterFilePath -projectsParameterFullFilePath $projectsParameterFullFilePath -parameterFileName $parameterFileName
+        if ($parameterFullPath -eq $null) {
+            throw "Project parameter file not found in $parameterFullPath"
+        }
     }
-    $projectParameterFullPath = (Get-Item -Path $projectParameterFullPath).FullName
-    # Write-Verbose "Project Parameter Full Path: $projectParameterFullPath"
-    $parameters = Get-Content -Path $projectParameterFullPath -Raw | ConvertFrom-JSON
+    $parameterFullPath = (Get-Item -Path $parameterFullPath).FullName    
+    $parameters = Get-Content -Path $parameterFullPath -Raw | ConvertFrom-JSON
     return $parameters 
 }
 
@@ -107,6 +148,29 @@ function Get-TemplateParameters {
     # Write-Verbose "Parameters Template Full Path: $templateParametersFullPath"
     $parameters = Get-Content -Path $templateParametersFullPath -Raw | ConvertFrom-JSON
     return $parameters
+}
+function Get-ApplicationParameter {
+    param (
+        [string]$type
+    )
+    $applicationsParameterFileName = "principals.parameters.json"
+    $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue
+    if ($applicationsParameters -ne $null) {
+        $principal = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $type}
+        return $principal
+    }
+}
+
+function Get-ADGroupFromType {
+    param (
+        [string]$type
+    )
+    $adgroupsParameterFileName = "adgroups.parameters.json"
+    $adgroupsParameters = Get-ResourceParameters -parameterFileName $adgroupsParameterFileName -ErrorAction SilentlyContinue
+    if ($adgroupsParameters -ne $null) {
+        $adgroup = $adgroupsParameters.parameters.resources.value | Where-Object { $_.type -eq $type } 
+        return $adgroup
+    }
 }
 
 function New-Password {
@@ -141,6 +205,18 @@ function New-Password {
     return $props
 }
 
+function Get-ProjectParameter {
+    param (
+        [string]$type
+    )
+    $parameters = Get-Content -Path (Get-Item -Path $projectsParameterFile).FullName -Raw | ConvertFrom-Json
+    $parameter = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
+    if ($parameter -eq $null) {
+        throw "You are missing the vsts account information in the projects.parameter.json"
+    }
+    return $parameter
+}
+
 function Update-ProjectParameters {
     param
     (
@@ -150,21 +226,22 @@ function Update-ProjectParameters {
         [Parameter(Mandatory = $True, HelpMessage = 'The name of the parameter file.')]
         [string]$parameterFileName
     )
-    # Write-Verbose "Projects Parameter File $projectsParameterFile"
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    # Write-Verbose "Projects Folder $projectFolder"
     $projectParameterFullPath = "$projectFolder\$parameterFileName"
-    # Write-Verbose "Project Parameter Full Path: $projectParameterFullPath"
     $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $projectParameterFullPath -Force -Encoding utf8
-    # Write-Verbose "Project parameter file updated at: $projectParameterFullPath"
 }
 
-function Set-Subscription {
+function Get-SubscriptionId {    
     $parameterFileName = "projects.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
 
     $subscriptionId = ($parameters.parameters.resources.value | Where-Object {$_.type -eq "subscription"}).id
-    $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId    
+    return $subscriptionId
+}
+
+function Set-Subscription {
+    $subscriptionId = Get-SubscriptionId
+    $sub = Select-AzureRmSubscription -SubscriptionId $subscriptionId
 }
 
 function Get-KeyVaultName {
@@ -188,4 +265,63 @@ function Get-ResourceGroupName {
     $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
     Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
     return $resourceGroup.name
+}
+
+function Get-ResourcesFromResourceType {
+    param (
+        [string]$resourceType
+    )
+
+    $parameterFileName = "projects.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    
+}
+
+function Copy-TemplateFile {
+    param(
+        [string]$resourceType,
+        [string]$templateFileName
+    )
+    $sourcePath = (Get-Item -Path "$PSScriptRoot\..\..\$resourceType\templates\$templateFileName").FullName
+    Write-Verbose "Source Path is $sourcePath"
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    $destinationPath = "$projectFolder\$resourceType"
+    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
+    $destinationPath = "$destinationPath\$templateFileName"
+    Write-Verbose "Destination Path is $destinationPath"
+    Copy-Item -Path $sourcePath -Destination $destinationPath -Force
+}
+
+function Set-ParametersToFile { 
+    param (
+        [string]$resourceType,
+        [object]$parameters,
+        [string]$parameterFileName
+    )
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    $destinationPath = "$projectFolder\$resourceType"
+    $destinationPath = New-Item -Path $destinationPath -ItemType Directory -Force
+    $destinationPath = "$destinationPath\$parameterFileName"
+    Write-Verbose "Destination Path is $destinationPath"
+    $parameters | ConvertTo-JSON -Depth 10 | Out-File -filepath $destinationPath -Force -Encoding utf8
+    Write-Verbose "Project parameter file created at: $destinationPath"
+}
+
+function Get-ProjectTemplateFilePath {
+    param(
+        [string]$resourceType,
+        [string]$fileName
+    )
+    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
+    return (Get-Item -Path "$projectFolder\$resourceType\$fileName").FullName
+}
+
+function Get-CreateADGroupsStatus {
+    $createADGroups = "createADGroups"
+    $parameterFileName = "projects.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $createADGroups}
+    $createNew = $resource.status
+    Write-Verbose "Create status for AD Groups $createNew"
+    return $createNew
 }

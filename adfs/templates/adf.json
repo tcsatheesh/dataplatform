@@ -12,7 +12,9 @@
         "type": "string",
         "allowedValues": [
           "East US",
-          "East US 2"
+          "East US 2",
+          "North Europe",
+          "West Europe"
         ],
         "defaultValue": "East US",
         "metadata": {

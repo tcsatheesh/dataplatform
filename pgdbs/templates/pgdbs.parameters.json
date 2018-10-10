@@ -6,7 +6,6 @@
             "value": [
                 {
                     "type" : "appdb",        
-                    "enabled": true,            
                     "resourceType": "pgdbs",
                     "resourceGroupTypeRef": "data",
                     "name" : "{0}{1}{2}pgsvr01",

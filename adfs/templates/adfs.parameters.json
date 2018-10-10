@@ -8,8 +8,8 @@
                     "type" : "adf", 
                     "resourceType": "adfs",
                     "resourceGroupTypeRef": "app",
-                    "name" : "t{0}{1}{2}adfv201",
-                    "location": "East US 2",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "North Europe",
                     "templateFileName": "adf.json",
                     "parameterFileName": "adf.parameters.json",
                     "parameters" : [
@@ -18,7 +18,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "storageaccounts",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "diagnostics",
                                 "property" : "name"
                             }                            
                         },
@@ -27,7 +27,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "resourcegroups",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "app",
                                 "property" : "name"
                             }                            
                         }

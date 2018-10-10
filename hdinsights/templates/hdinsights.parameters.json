@@ -46,8 +46,7 @@
                             "type": "reference",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "principal",
-                                "subtypeFilter": "applicationPrincipal",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "application.clientId"
                             }
                         },

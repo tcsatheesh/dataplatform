@@ -4,20 +4,19 @@ param
     [String]$projectsParameterFile
 )
 
-function New-Resources {
-    $adgroups = $parameters.parameters.resources.value
-    foreach ($adgroup in $adgroups) {
-        $adgroup.name = Get-FormatedText -strFormat $adgroup.name
-        $adgroup.email = Get-FormatedText -strFormat $adgroup.email
+function New-Resource {
+    param (
+        [object]$resource
+    )
+    $resource.name = Get-FormatedText -strFormat $resource.name
+    $group = Get-AzureADGroup -SearchString $resource.name -ErrorAction SilentlyContinue
+    if ($group -ne $null) {
+        $resource.id = $group.ObjectId
+        $resource.email = $group.mail    
     }
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-
-& "$commonPSFolder\Invoke-NewProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
-    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json" `
-    -procToRun {New-Resources}
+& "$commonPSFolder\Invoke-NewProcess.ps1" -projectsParameterFile $projectsParameterFile -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 
 

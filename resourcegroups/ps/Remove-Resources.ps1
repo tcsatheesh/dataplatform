@@ -12,15 +12,13 @@ function Remove-ResourceGroup {
     $null = Remove-AzureRmResourceGroup -Name $resourceGroupName -Force -ErrorAction SilentlyContinue
 }
 
-function Remove-AllResourceGroups {
-    foreach ($group in $parameters.parameters.resources.value) {
-        Remove-ResourceGroup -resourceGroupName $group.name
-    }
+function Remove-Resource {
+    param (
+        [object]$resource
+    )
+    Remove-ResourceGroup -resourceGroupName $resource.name
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-RemoveProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Remove-AllResourceGroups}
+& "$commonPSFolder\Invoke-RemoveProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

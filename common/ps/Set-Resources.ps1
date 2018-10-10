@@ -7,15 +7,6 @@ param
     [String]$resourceType
 )
 
-function Get-ProjectTemplateFilePath {
-    param(
-        [string]$resourceType,
-        [string]$fileName
-    )
-    $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    return (Get-Item -Path "$projectFolder\$resourceType\$fileName").FullName
-}
-
 function Set-Resource {
     param(
         [object]$resource
@@ -31,23 +22,6 @@ function Set-Resource {
         -ResourceGroupName $resourceGroupName `
         -TemplateFile $templateFile `
         -TemplateParameterFile $templateParameterFile
-}
-
-function Set-Resources {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        $enabled = $resource.enabled
-        if ($enabled -ne $null) {            
-            $enabled = [System.Convert]::ToBoolean($resource.enabled)   
-        }else{
-            $enabled = $true
-        }
-        if ( $enabled ) {
-            Write-Verbose "Deploying resource: $($resource.name)"
-            Set-Resource -resource $resource
-        }else {
-            Write-Verbose "Skipping deploying resource: $($resource.name)"
-        }
-    }
 }
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName

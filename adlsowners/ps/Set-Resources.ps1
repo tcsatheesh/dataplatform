@@ -25,19 +25,17 @@ function Get-ADGroupObjectId {
     return $adGroup.id
 }
 
-function Set-Resources {
-    foreach ($resource in $parameters.parameters.resources.value) {
-        $groupId = Get-ADGroupObjectId -adGroupType $resource.adGroupType
-        $adlStoreName = Get-ADLStoreName -adlstoreType $resource.adlstoreType
-        $path = $resource.path
-        Set-AzureRmDataLakeStoreItemOwner -Account $adlStoreName -Path $path -Type Group -Id $groupid -ErrorAction SilentlyContinue
-        Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $path -AceType Group -Id $groupid -Permissions All -Default -ErrorAction SilentlyContinue
-    }
+function Set-Resource {
+    param (
+        [object]$resource
+    )
+    $groupId = Get-ADGroupObjectId -adGroupType $resource.adGroupType
+    $adlStoreName = Get-ADLStoreName -adlstoreType $resource.adlstoreType
+    $path = $resource.path
+    Set-AzureRmDataLakeStoreItemOwner -Account $adlStoreName -Path $path -Type Group -Id $groupid -ErrorAction SilentlyContinue
+    Set-AzureRmDataLakeStoreItemAclEntry -Account $adlStoreName -Path $path -AceType Group -Id $groupid -Permissions All -Default -ErrorAction SilentlyContinue
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Resources}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

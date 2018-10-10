@@ -7,7 +7,6 @@
                 {
                     "type": "sqluser",
                     "resourceType": "sqlusers",
-                    "enabled": false,
                     "name": "sqluser",
                     "parameters": [
                         {
@@ -52,7 +51,6 @@
                 {
                     "type": "sqluser",
                     "resourceType": "sqlusers",
-                    "enabled": false,
                     "name": "sqluser",
                     "parameters": [
                         {
@@ -97,7 +95,6 @@
                 {
                     "type": "sqluser",
                     "resourceType": "sqlusers",
-                    "enabled": true,
                     "name": "sqluser",
                     "parameters": [
                         {

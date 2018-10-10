@@ -58,31 +58,21 @@ function Set-Application {
     return $props
 }
 
-function Set-Principal {
+function Set-Resource {
     param (
-        [object]$principal
+        [object]$resource
     )
 
-    $principalIds = Set-Application -applicationName $principal.application.name `
-        -applicationUri $principal.application.uri `
-        -replyUrl $principal.application.replyUrl `
-        -homepage $principal.application.homepage
+    $resourceIds = Set-Application -applicationName $resource.application.name `
+        -applicationUri $resource.application.uri `
+        -replyUrl $resource.application.replyUrl `
+        -homepage $resource.application.homepage
 
-    $principal.application.clientId = $principalIds.applicationId
-    $principal.servicePrincipal.name = $principal.application.name
-    $principal.servicePrincipal.id = $principalIds.servicePrincipalId
-}
-
-function Set-Principals {
-    $principals = $parameters.parameters.resources.value | Where-Object {$_.type -eq "principal"} 
-    foreach ($principal in $principals) {
-        Set-Principal -principal $principal
-    }    
+    $resource.application.clientId = $resourceIds.applicationId
+    $resource.servicePrincipal.name = $resource.application.name
+    $resource.servicePrincipal.id = $resourceIds.servicePrincipalId
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-$null = & "$commonPSFolder\Invoke-SetProcess.ps1" `
-    -projectsParameterFile $projectsParameterFile `
-    -parameterFileName $parameterFileName `
-    -procToRun {Set-Principals}
+& "$commonPSFolder\Invoke-SetProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName

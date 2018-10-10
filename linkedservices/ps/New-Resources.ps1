@@ -29,8 +29,10 @@ function Set-AccessPolicy {
         -typeFilter $resource.dataFactoryNameRef `
         -property "name"
     $servicePrincipal = Get-AzureRmADServicePrincipal -SearchString $dataFactoryName
-    if ($servicePrincipal -eq $null) {
-        throw "servicePrincipal for dataFactory $dataFactoryName is null"
+    while ($servicePrincipal -eq $null) {
+        Write-Verbose "ServicePrincipal for dataFactory $dataFactoryName is null. Waiting 5 seconds..."
+        Start-Sleep -Seconds 5
+        $servicePrincipal = Get-AzureRmADServicePrincipal -SearchString $dataFactoryName
     }
     Set-AzureRmKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $servicePrincipal.Id -PermissionsToSecrets get
 }
@@ -54,10 +56,10 @@ function Get-StorageLinkedService {
         [object]$resource,
         [object]$linkedService
     )
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"    
-    $secretName =  Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName" -subtype "storage"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"    
+    $secretName = Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName" -subtype "storage"
     
-    if ($secretName -eq $null){
+    if ($secretName -eq $null) {
         throw "Secret name for $storageAccountName is null"
     }
 
@@ -78,7 +80,7 @@ function Get-ADLStoreLinkedService {
     $tenantDomainName = Get-ValueFromResourceRef -parameters $resource.parameters -type "tenant"
     $appApplicationId = Get-ValueFromResourceRef -parameters $resource.parameters -type "applicationPrincipal"
     $appServicePrincipalId = Get-ValueFromResourceRef -parameters $resource.parameters -type "servicePrincipal"
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
     $subscriptionId = Get-ValueFromResourceRef -parameters $resource.parameters -type "subscriptionId"
     $secretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "secretName"
 
@@ -100,10 +102,10 @@ function Get-SqlLinkedService {
         [object]$linkedService
     )
 
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
-    $secretName =  Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    $secretName = Get-ValueFromResourceRef  -parameters $resource.parameters -type "connectionStringSecretName"
     
-    if ($secretName -eq $null){
+    if ($secretName -eq $null) {
         throw "Secret name for $storageAccountName is null"
     }
 
@@ -124,7 +126,7 @@ function Get-ADLALinkedService {
     $tenantDomainName = Get-ValueFromResourceRef -parameters $resource.parameters -type "tenant"
     $appApplicationId = Get-ValueFromResourceRef -parameters $resource.parameters -type "applicationPrincipal"
     $appServicePrincipalId = Get-ValueFromResourceRef -parameters $resource.parameters -type "servicePrincipal"
-    $keyVaultName =  Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
     $subscriptionId = Get-ValueFromResourceRef -parameters $resource.parameters -type "subscriptionId"
     $secretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "secretName"
 
@@ -148,14 +150,22 @@ function New-Resource {
     $linkedService = Get-Content -Path $sourcePath -Raw | ConvertFrom-JSON
 
     $type = $resource.type
-    switch ( $type )
-    {
+    switch ( $type ) {
         "keyvault" { $linkedService = Get-KeyVaultLinkedService -resource $resource -linkedService $linkedService}
         "storage" { $linkedService = Get-StorageLinkedService -resource $resource -linkedService $linkedService}
         "adlstore" { $linkedService = Get-ADLStoreLinkedService -resource $resource -linkedService $linkedService}
         "adla" { $linkedService = Get-ADLALinkedService -resource $resource -linkedService $linkedService}
         "sqldb" { $linkedService = Get-SqlLinkedService -resource $resource -linkedService $linkedService}
-        "default" { throw "hmmm... you need to add this type $type"}        
+        "default" { throw "hmmm... you need to add this type $type in the data factory linked services"}        
+    }
+
+    if ($resource.ref -ne $null) {
+        $linkedServiceName = Get-ValueFromResource `
+            -resourceType $resource.name.ref.resourceType `
+            -typeFilter $resource.name.ref.typeFilter `
+            -property $resource.name.ref.property
+     
+        $resource.name = $linkedServiceName
     }
     
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
@@ -167,34 +177,9 @@ function New-Resource {
     Write-Verbose "Created linked service configuration $desitinationFile"
 }
 
-function New-Resources {
-    param (
-        [object]$parameters
-    )
-    $resources = $parameters.parameters.resources.value
-    foreach ($resource in $resources) {
-        if (($resource.enabled -eq $null) -or ($resource.enabled -eq $true)) {
-            Write-Verbose "Processing $($resource.type)"
-            New-Resource -resource $resource
-        }
-        else
-        {
-            Write-Verbose "Skipping deployment of $($resource.name)"
-        }
-    }
-}
-
-
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-. "$commonPSFolder\Get-CommonFunctions.ps1"
 
-$linkedServiceParametersFile = "$PSScriptRoot\..\templates\linkedservices.parameters.json"
-$parameters = Get-Content $linkedServiceParametersFile -Raw | ConvertFrom-Json
-New-Resources -parameters $parameters
-
-$parameterFileName = (Get-Item -Path $linkedServiceParametersFile).Name
-
-Store-ParametersToFile `
- -resourceName (Get-Item -Path $PSScriptRoot).Parent.Name `
- -parameters $parameters `
- -parameterFileName $parameterFileName
+& "$commonPSFolder\Invoke-NewProcess.ps1" `
+    -projectsParameterFile $projectsParameterFile `
+    -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name `
+    -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
