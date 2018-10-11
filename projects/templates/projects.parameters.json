@@ -113,17 +113,6 @@
                     "type": "it-prjapp-d",
                     "resources": [                        
                         {
-                            "resourceType": "principals",
-                            "resources": [
-                                {
-                                    "type": "deploymentPrincipal"
-                                },
-                                {
-                                    "type": "graphAccessPrincipal"
-                                }
-                            ]
-                        },
-                        {
                             "resourceType": "adgroups",
                             "resources": [
                                 {
@@ -149,14 +138,24 @@
                                     "type": "appkeyvault"
                                 }
                             ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-prjapp2-d",
+                    "parent": "it-prjapp-d",
+                    "resources": [                        
+                        {
+                            "resourceType": "principals",
+                            "resources": [
+                                {
+                                    "type": "graphAccessPrincipal"
+                                }
+                            ]
                         },
                         {
                             "resourceType": "clientsecrets",
                             "resources": [
-                                {
-                                    "type": "password",
-                                    "subtype": "deploymentPrincipal"
-                                },
                                 {
                                     "type": "password",
                                     "subtype": "graphAccessPrincipal"
