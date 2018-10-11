@@ -1,0 +1,32 @@
+{
+    "type": "base",
+    "resources": [                        
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "managers"
+                },
+                {
+                    "type": "keyvaultadmins"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaults",
+            "resources": [
+                {
+                    "type": "appkeyvault"
+                }
+            ]
+        }
+    ]
+}

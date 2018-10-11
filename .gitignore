@@ -4,3 +4,4 @@ temp
 .jobCache
 dataplatform_settings.json
 .vscode
+projects/*-*-*
