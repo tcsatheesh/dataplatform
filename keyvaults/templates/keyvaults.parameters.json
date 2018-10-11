@@ -131,8 +131,7 @@
                             "name": "accessPolicies",
                             "subname": "objectId",
                             "index": 0,
-                            "type": "value",
-                            "value": "b0a82873-b2f5-4b77-8b70-0b5cec511871"
+                            "type": "currentLogin"
                         },
                         {
                             "name": "accessPolicies",
