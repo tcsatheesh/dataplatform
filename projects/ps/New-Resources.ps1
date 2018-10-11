@@ -112,11 +112,36 @@ function Update-OutputFile {
     return $projectParameterFullPath    
 }
 
+function Get-EnvironmentParameters {
+    param (
+        [string]$envType,
+        [string]$parentProject
+    )
+    if ([string]::IsNullorEmpty($parentProject)) {
+        $envTemplateFile = (Get-Item -Path "$PSScriptRoot\..\templates\$envtype\$envtype.json").FullName
+    }else{
+        $envTemplateFile = (Get-Item -Path "$PSScriptRoot\..\templates\$parentProject\$envtype.json").FullName
+    }
+    Write-Verbose "Environment Template File is $envTemplateFile"
+    if (-not (Test-Path -Path $envTemplateFile)) {
+        throw "Environment $envtype not defined in the environment templates."
+    }else {
+        $envProps = Get-Content -Path $envTemplateFile -Raw | ConvertFrom-Json
+        if ($envProps.type -ne $envtype) {
+            throw "invalid type in the environment file $envTemplateFile"
+        }else{
+            return $envProps
+        }
+    }    
+}
+
 function New-Resources2 {
     param (
         [object]$parameters
     )
+
     $resources = $parameters.parameters.resources.value
+    $envParameters = Get-EnvironmentParameters -envType $envType -parentProject $parentProject        
 
     if ([string]::IsNullOrEmpty($parentProject)) {
         $resource = $resources | Where-Object {$_.type -eq "department"}
@@ -144,11 +169,10 @@ function New-Resources2 {
         $resource.name = $vstsaccountname
         $resource.branch = $branch
     }else{
-        $resource = $resources | Where-Object {$_.type -eq $envtype}
-        if ($resource.parent -ne $parentProject) {
+        if ($envParameters.parent -ne $parentProject) {
             throw "the parent projects do not match provided $parentProject found $($resource.parent)"
         }
-
+        
         $projectRootFolder = "$PSScriptRoot\..\.."
         $parentProjectParameters = Get-Content -Path "$projectRootFolder\projects\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
         $parentProjectResources = $parentProjectParameters.parameters.resources.value
@@ -178,12 +202,6 @@ function New-Resources2 {
         $resource.branch = ($parentProjectResources | Where-Object {$_.type -eq "vstsaccount"}).branch
     }
 
-
-    $resource = $resources | Where-Object {$_.type -eq $envtype}
-    if ($resource -eq $null) {
-        throw "Environment $envtype not defined in the project template."
-    }
-
     $newarray = @()
     $resources | ForEach-Object {
         $resource = $_;
@@ -204,10 +222,13 @@ function New-Resources2 {
         value = $envtype
     }
     $newarray += $props
+    $newarray += $envParameters
 
     $parameters.parameters.resources.value = $newarray
 }
 
 $parameters = Get-Content -Path (Get-Item -Path "$PSScriptRoot\..\templates\projects.parameters.json").FullName -Raw | ConvertFrom-JSON
+
+
 New-Resources2 -parameters $parameters
 Update-OutputFile -parameters $parameters
