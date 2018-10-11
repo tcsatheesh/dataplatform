@@ -9,20 +9,20 @@ function Set-Application {
     (
         [string]$applicationName,
         [string]$applicationUri,
-        [string]$replyUrl,
+        [object]$replyUrls,
         [string]$homepage
     ) 
 
     $application = Get-AzureRmADApplication -DisplayNameStartWith $applicationName -ErrorAction SilentlyContinue
     if ($application -eq $null) {        
-        if ([string]::IsNullOrEmpty($replyUrl) ) {
+        if ([string]::IsNullOrEmpty($replyUrls) ) {
             Write-Verbose "Creating new Azure AD Application $applicationName"
             $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri
         }
         else {
-            Write-Verbose "Creating new Azure AD Application $applicationName with replyurl $replyUrl and homepage $homepage"            
+            Write-Verbose "Creating new Azure AD Application $applicationName with replyurls $replyUrls and homepage $homepage"            
             $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri `
-                -ReplyUrls $replyUrl -HomePage $homepage
+                -ReplyUrls $replyUrls -HomePage $homepage
         }
         Write-Verbose "Created new Azure AD Application"
     }
@@ -65,7 +65,7 @@ function Set-Resource {
 
     $resourceIds = Set-Application -applicationName $resource.application.name `
         -applicationUri $resource.application.uri `
-        -replyUrl $resource.application.replyUrl `
+        -replyUrl $resource.application.replyUrls `
         -homepage $resource.application.homepage
 
     $resource.application.clientId = $resourceIds.applicationId

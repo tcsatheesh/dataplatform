@@ -36,7 +36,7 @@
                     "branch": ""
                 },
                 {
-                    "type": "it-master-d",
+                    "type": "it-pltfrm-d",
                     "resources": [
                         {
                             "resourceType": "adgroups",
@@ -113,10 +113,52 @@
                     "type": "it-prjapp-d",
                     "resources": [                        
                         {
+                            "resourceType": "adgroups",
+                            "resources": [
+                                {
+                                    "type": "managers"
+                                },
+                                {
+                                    "type": "keyvaultadmins"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "resourcegroups",
+                            "resources": [
+                                {
+                                    "type": "app"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "keyvaults",
+                            "resources": [
+                                {
+                                    "type": "appkeyvault"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "it-prjapp2-d",
+                    "parent": "it-prjapp-d",
+                    "resources": [                        
+                        {
                             "resourceType": "principals",
                             "resources": [
                                 {
-                                    "type": "applicationPrincipal"
+                                    "type": "graphAccessPrincipal"
+                                }
+                            ]
+                        },
+                        {
+                            "resourceType": "clientsecrets",
+                            "resources": [
+                                {
+                                    "type": "password",
+                                    "subtype": "graphAccessPrincipal"
                                 }
                             ]
                         },
@@ -124,7 +166,7 @@
                             "resourceType": "grantpermissions",
                             "resources": [
                                 {
-                                    "type": "applicationPrincipal"
+                                    "type": "graphAccessPrincipal"
                                 }
                             ]
                         }
@@ -670,20 +712,6 @@
                             "resources": [
                                 {
                                     "type": "mlexp"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "it-dblt6-d",
-                    "parent": "it-dblt1-d",
-                    "resources": [
-                        {
-                            "resourceType": "grantpermissions",
-                            "resources": [
-                                {
-                                    "type": "grantpermission"
                                 }
                             ]
                         }

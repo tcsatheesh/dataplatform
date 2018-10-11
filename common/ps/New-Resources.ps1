@@ -138,6 +138,28 @@ function Get-ResourceId {
     return $res.Id
 }
 
+function Get-CurrentLogin {
+    $ctxt = Get-AzureRmContext
+    $account = $ctxt.Account
+    $id = $account.Id
+    if ($account.Type -eq "User") {
+        Write-Verbose "Account type is User"
+        $user = Get-AzureADUser -SearchString $id.Split("@")[0]
+        $val = $user.ObjectId
+    } 
+    elseif ($account.Type -eq "ServicePrincipal") {
+        Write-Verbose "Account type is Service Principal"
+        $app = Get-AzureADApplication | Where-Object {$_.AppId -eq $id}
+        $svp = Get-AzureADServicePrincipal -SearchString $app.DisplayName
+        $val = $svp.ObjectId
+    }
+    else {
+        throw "Account type not recoginized."
+    }
+    Write-Verbose "Object Id is $val"
+    return $val
+}
+
 function Set-AdditionalParameters {
     param (
         [object]$resource,
@@ -212,6 +234,9 @@ function Set-AdditionalParameters {
             }
             elseif ($resourceparam.type -eq "fqdn") {
                 $val = Get-Fqdn -ref $resourceparam.ref
+            }
+            elseif ($resourceparam.type -eq "currentLogin") {
+                $val = Get-CurrentLogin
             }
             else {
                 throw "you are missing the resource type $($resourceparam.type)"

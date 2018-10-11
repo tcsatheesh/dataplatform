@@ -1,10 +1,7 @@
 param
 (
     [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-    [String]$projectsParameterFile,
-
-    [Parameter(Mandatory = $False, HelpMessage = 'The master credential.')]
-    [PSCredential]$masterCredential
+    [String]$projectsParameterFile
 )
 function Set-AppRole {
     param (
@@ -99,7 +96,7 @@ function Set-OAuth2Permission {
         'scope': '',
         'startTime': '0001-01-01T00:00:00',
         'expiryTime': '9000-01-01T00:00:00'
-    }"
+    }" | ConvertFrom-Json
     $grantDefinition.clientId = $clientId
     $grantDefinition.resourceId = $resourceId
     $grantDefinition.scope = $scope
@@ -222,23 +219,25 @@ function Set-Resource {
         Set-AppRoles -objectId $objectId -resourceName $winAADResource.name -scopes $winAADResource.value
     }
 
-    $OAuth2Permissions = $resource.parameters | Where-Object { $_.name -eq "OAuth2Permissions"}
+    $OAuth2Permissions = $resource.parameters | Where-Object { $_.type -eq "OAuth2Permissions"}
     if ($OAuth2Permissions -ne $null) {
         $ref = ($resource.parameters | Where-Object { $_.name -eq "tenantId"}).ref
         $tenantId = Get-ValueFromResource -resourceType $ref.resourceType -property $ref.property -typeFilter $ref.typeFilter
         Write-Verbose "Tenant Id is $tenantId"
 
-        $ref = ($resource.parameters | Where-Object { $_.name -eq "masterClientId"}).ref
-        $masterClientId = Get-ValueFromResource -resourceType $ref.resourceType -property $ref.property -typeFilter $ref.typeFilter
+        $masterClient = $resource.parameters | Where-Object { $_.name -eq "masterClientId"}
+        $masterClientId = (Get-AzureADApplication -SearchString $masterClient.value).AppId
         Write-Verbose "Master Client Id is $masterClientId"
         
-        $ref = ($resource.parameters | Where-Object { $_.name -eq "masterClientIdPassword"}).ref
-        $keyVaultName = = Get-ValueFromResource -resourceType $ref.resourceType -property "name" -typeFilter $ref.typeFilter
-        $masterClientIdPassword = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $ref.secretName
+        $pwdObj = $resource.parameters | Where-Object { $_.name -eq "masterClientIdPassword"}
+        if ($pwdObj -eq $null) {
+            throw "Cannot find any password information"
+        }
+        $masterClientIdPassword = Get-AzureKeyVaultSecret -VaultName $pwdObj.keyVaultName -Name $pwdObj.secretName
 
         $masterCredential = New-Object System.Management.Automation.PSCredential ($masterClientId, $masterClientIdPassword.SecretValue)
         $accessToken = Get-AccessToken -tenantId $tenantId -clientCredential $masterCredential
-
+        Write-Verbose "Object id is $objectId"
         Set-ResourcePermissions -accessToken $accessToken -resourceName $OAuth2Permissions.name -scopes $OAuth2Permissions.value -clientId $objectId 
     }
 }

@@ -17,7 +17,7 @@ function Remove-Resource {
     Write-Verbose "ObjectID is $($objectIdObj.type)"
     $objectId = Get-ValueFromResource -resourceType $objectIdObj.ref.resourceType -property $objectIdObj.ref.property -typeFilter $objectIdObj.ref.typeFilter -subtypeFilter $objectIdObj.ref.subtypeFilter
 
-    Remove-AzureRmKeyVaultAccessPolicy -VaultName $keyVaultName -ResourceGroupName $keyVaultResourceGroupName -ObjectId $objectId
+    Remove-AzureRmKeyVaultAccessPolicy -VaultName $keyVaultName -ResourceGroupName $keyVaultResourceGroupName -ObjectId $objectId -ErrorAction SilentlyContinue
 }
 
 $parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
