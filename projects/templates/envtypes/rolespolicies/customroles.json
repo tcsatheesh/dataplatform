@@ -1,0 +1,19 @@
+{
+    "type": "customroles",
+    "resources": [
+        {
+            "resourceType": "customroles",
+            "resources": [
+                {
+                    "type": "dataandaideveloper"
+                },
+                {
+                    "type": "datalakestoresuperuser"
+                },
+                {
+                    "type": "dataserviceteam"
+                }
+            ]
+        }
+    ]
+}

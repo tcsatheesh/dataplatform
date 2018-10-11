@@ -1,0 +1,29 @@
+{
+    "type": "mlexperiment",
+    "resources": [
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "mlstorage"
+                }
+            ]
+        },
+        {
+            "resourceType": "mlexps",
+            "resources": [
+                {
+                    "type": "mlexp"
+                }
+            ]
+        }
+    ]
+}

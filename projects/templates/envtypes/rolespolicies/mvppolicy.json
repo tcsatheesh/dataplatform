@@ -1,0 +1,13 @@
+{
+    "type": "mvppolicy",
+    "resources": [
+        {
+            "resourceType": "azurepolicies",
+            "resources": [
+                {
+                    "type": "mvp"
+                }
+            ]
+        }
+    ]
+}

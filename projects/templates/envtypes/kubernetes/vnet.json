@@ -1,0 +1,29 @@
+{
+    "type": "vnet",
+    "resources": [
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "aks"
+                }
+            ]
+        },
+        {
+            "resourceType": "principals",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                }
+            ]
+        }
+    ]
+}

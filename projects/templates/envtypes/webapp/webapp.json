@@ -1,0 +1,45 @@
+{
+    "type": "webapp",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "developers"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "web"
+                }
+            ]
+        },
+        {
+            "resourceType": "sqldbs",
+            "resources": [
+                {
+                    "type": "appdb"
+                }
+            ]
+        },
+        {
+            "resourceType": "appsvcs",
+            "resources": [
+                {
+                    "type": "appsvcwinnossl"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "web"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,39 @@
+{
+    "type": "sqldb",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "dbadmins"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "sqladmin"
+                }
+            ]
+        },
+        {
+            "resourceType": "sqldbs",
+            "resources": [
+                {
+                    "type": "appdb"
+                }
+            ]
+        },
+        {
+            "resourceType": "logicapps",
+            "resources": [
+                {
+                    "type": "logicapp"
+                }
+            ]
+        }
+    ]
+}

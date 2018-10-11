@@ -1,0 +1,48 @@
+{
+    "type": "aks",
+    "parent": "<fill in the parent project name>",
+    "resources": [
+
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "keyvaultadmins"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaults",
+            "resources": [
+                {
+                    "type": "appkeyvault"
+                }
+            ]
+        },
+        {
+            "resourceType": "clientsecrets",
+            "resources": [
+                {
+                    "type": "password",
+                    "subtype": "deploymentPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "aks",
+            "resources": [
+                {
+                    "type": "aks"
+                }
+            ]
+        }
+    ]
+}

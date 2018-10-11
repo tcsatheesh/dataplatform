@@ -18,17 +18,20 @@ param
     [Parameter(ParameterSetName='parent', Mandatory = $True, HelpMessage = 'The vsts account branch.')]
     [String]$branch,
 
-    [Parameter(ParameterSetName='parent', Mandatory = $False, HelpMessage = 'Should we create AD Groups in Azure AD.')]
-    [bool]$createADGroups = $false,
+    [Parameter(ParameterSetName='parent', Mandatory = $False, HelpMessage = 'The project folder')]
+    [Parameter(ParameterSetName='child', Mandatory = $False, HelpMessage = 'The project folder')]
+    [string]$envtypeFolder,
 
     [Parameter(ParameterSetName='parent', Mandatory = $False, HelpMessage = 'The project folder')]
-    [string]$projectFolder = $null,
+    [Parameter(ParameterSetName='child', Mandatory = $False, HelpMessage = 'The project folder')]
+    [string]$envtype,
 
     [Parameter(ParameterSetName='child', Mandatory = $True, HelpMessage = 'The project folder')]
-    [string]$parentProject
-)
+    [string]$parentProject,
 
-$envtype = "{0}-{1}-{2}" -f $department, $projectName, $environment
+    [Parameter(ParameterSetName='parent', Mandatory = $False, HelpMessage = 'Should we create AD Groups in Azure AD.')]
+    [bool]$createADGroups = $false
+)
 
 function Get-SubscriptionDetails {
     $subscriptionId = $null
@@ -112,36 +115,15 @@ function Update-OutputFile {
     return $projectParameterFullPath    
 }
 
-function Get-EnvironmentParameters {
-    param (
-        [string]$envType,
-        [string]$parentProject
-    )
-    if ([string]::IsNullorEmpty($parentProject)) {
-        $envTemplateFile = (Get-Item -Path "$PSScriptRoot\..\templates\$envtype\$envtype.json").FullName
-    }else{
-        $envTemplateFile = (Get-Item -Path "$PSScriptRoot\..\templates\$parentProject\$envtype.json").FullName
-    }
-    Write-Verbose "Environment Template File is $envTemplateFile"
-    if (-not (Test-Path -Path $envTemplateFile)) {
-        throw "Environment $envtype not defined in the environment templates."
-    }else {
-        $envProps = Get-Content -Path $envTemplateFile -Raw | ConvertFrom-Json
-        if ($envProps.type -ne $envtype) {
-            throw "invalid type in the environment file $envTemplateFile"
-        }else{
-            return $envProps
-        }
-    }    
-}
-
 function New-Resources2 {
     param (
         [object]$parameters
     )
 
     $resources = $parameters.parameters.resources.value
-    $envParameters = Get-EnvironmentParameters -envType $envType -parentProject $parentProject        
+    $envtypeFile = (Get-Item -Path "$PSScriptRoot\..\templates\envtypes\$envtypeFolder\$envtype.json").FullName
+    $envtypeContent = Get-Content -Path $envtypeFile -Raw | ConvertFrom-Json
+    $parentProp = $null
 
     if ([string]::IsNullOrEmpty($parentProject)) {
         $resource = $resources | Where-Object {$_.type -eq "department"}
@@ -168,13 +150,9 @@ function New-Resources2 {
         $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
         $resource.name = $vstsaccountname
         $resource.branch = $branch
-    }else{
-        if ($envParameters.parent -ne $parentProject) {
-            throw "the parent projects do not match provided $parentProject found $($resource.parent)"
-        }
-        
-        $projectRootFolder = "$PSScriptRoot\..\.."
-        $parentProjectParameters = Get-Content -Path "$projectRootFolder\projects\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
+    }
+    else {
+        $parentProjectParameters = Get-Content -Path "$PSScriptRoot\..\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
         $parentProjectResources = $parentProjectParameters.parameters.resources.value
 
         $resource = $resources | Where-Object {$_.type -eq "department"}
@@ -200,6 +178,8 @@ function New-Resources2 {
         $resource = $resources | Where-Object {$_.type -eq "vstsaccount"}
         $resource.name = ($parentProjectResources | Where-Object {$_.type -eq "vstsaccount"}).name
         $resource.branch = ($parentProjectResources | Where-Object {$_.type -eq "vstsaccount"}).branch
+        
+        $envtypeContent.parent = $parentProject
     }
 
     $newarray = @()
@@ -211,8 +191,7 @@ function New-Resources2 {
                 $resource.type -eq "createADGroups" -or `
                 $resource.type -eq "tenant" -or `
                 $resource.type -eq "subscription" -or `
-                $resource.type -eq "vstsaccount" -or `
-                $resource.type -eq $envtype
+                $resource.type -eq "vstsaccount"
         ) {
             $newarray += $resource
         }
@@ -222,13 +201,12 @@ function New-Resources2 {
         value = $envtype
     }
     $newarray += $props
-    $newarray += $envParameters
+    $newarray += $envtypeContent
 
     $parameters.parameters.resources.value = $newarray
 }
 
 $parameters = Get-Content -Path (Get-Item -Path "$PSScriptRoot\..\templates\projects.parameters.json").FullName -Raw | ConvertFrom-JSON
-
 
 New-Resources2 -parameters $parameters
 Update-OutputFile -parameters $parameters

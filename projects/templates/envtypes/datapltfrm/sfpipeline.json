@@ -1,0 +1,14 @@
+{
+    "type": "sfpipeline",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "dfpipelines",
+            "resources": [
+                {
+                    "type": "salesforce"
+                }
+            ]
+        }
+    ]
+}

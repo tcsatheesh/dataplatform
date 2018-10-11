@@ -1,0 +1,29 @@
+{
+    "type": "mlstudio",
+    "resources": [
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "mlstorage"
+                }
+            ]
+        },
+        {
+            "resourceType": "mlstudios",
+            "resources": [
+                {
+                    "type": "mlstudio"
+                }
+            ]
+        }
+    ]
+}
