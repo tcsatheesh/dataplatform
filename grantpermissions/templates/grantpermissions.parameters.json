@@ -20,13 +20,6 @@
                             }
                         },
                         {
-                            "name": "Windows Azure Active Directory",
-                            "type": "appRole",
-                            "value": [
-                                "Directory.Read.All"
-                            ]
-                        },
-                        {
                             "name": "tenantId",
                             "type": "reference",
                             "ref": {
