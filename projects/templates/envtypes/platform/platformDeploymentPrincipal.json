@@ -1,19 +1,11 @@
 {
-    "type": "pltcred",
-    "resources": [
-        {
-            "resourceType": "adgroups",
-            "resources": [
-                {
-                    "type": "managers"
-                }
-            ]
-        },
+    "type": "platformDeploymentPrincipal",
+    "resources": [        
         {
             "resourceType": "resourcegroups",
             "resources": [
                 {
-                    "type": "app"
+                    "type": "platform"
                 }
             ]
         },
@@ -21,7 +13,7 @@
             "resourceType": "keyvaults",
             "resources": [
                 {
-                    "type": "masterkeyvault"
+                    "type": "platformKeyVault"
                 }
             ]
         },

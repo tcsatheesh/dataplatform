@@ -109,9 +109,9 @@
                     ]
                 },
                 {
-                    "type": "masterkeyvault",
+                    "type": "platformKeyVault",
                     "resourceType": "keyvaults",
-                    "resourceGroupTypeRef": "app",
+                    "resourceGroupTypeRef": "platform",
                     "name": "{0}{1}{2}nekvltacc",
                     "location": "North Europe",
                     "expiryTerm": 4,

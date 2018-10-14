@@ -7,8 +7,8 @@
                 {
                     "name": "{0}-{1}-{2}-accesspolicy",
                     "type": "platformDeploymentPrincipal",
-                    "keyVaultType": "masterkeyvault",
-                    "resourceGroupTypeRef": "app",
+                    "keyVaultType": "platformKeyVault",
+                    "resourceGroupTypeRef": "platform",
                     "parameters": [
                         {
                             "secrets": [
