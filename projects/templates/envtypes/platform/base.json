@@ -1,5 +1,5 @@
 {
-    "type": "platformDeploymentPrincipal",
+    "type": "base",
     "resources": [        
         {
             "resourceType": "resourcegroups",
