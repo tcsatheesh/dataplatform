@@ -62,8 +62,8 @@
                     "type": "adlsv2storage",
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "app",
-                    "name": "{0}{1}{2}weus2stgacc",
-                    "location": "West US 2",
+                    "name": "{0}{1}{2}neus2stgacc",
+                    "location": "North Europe",
                     "templateFileName": "adlsv2.json",
                     "parameterFileName": "adlsv2.parameters.json"
                 }

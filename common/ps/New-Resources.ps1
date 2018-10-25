@@ -116,18 +116,6 @@ function Get-KeyEncryptionKeyUrl {
     return $keyEncryptionKeyUrl
 }
 
-function Get-SubnetID {
-    param (
-        [object]$subnetRef
-    )
-    $VNetName = Get-ValueFromResource -resourceType $subnetRef.resourceType `
-        -property $subnetRef.property -typeFilter $subnetRef.typeFilter
-    
-    $vnet = Get-AzureRmVirtualNetwork | Where-Object {$_.Name -eq $VnetName}
-    $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetRef.subnetName}
-    return $subnet.Id
-}
-
 function Get-ResourceId {
     param (
         [object]$ref

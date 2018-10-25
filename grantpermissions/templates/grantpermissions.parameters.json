@@ -40,7 +40,7 @@
                         },
                         {
                             "name": "masterClientIdPassword",
-                            "keyVaultName": "itpltfrmdnekvltacc",
+                            "keyVaultName": "itplatformdnekvltacc",
                             "secretName": "it-pltfrm-d-dep-prn-password"
                         }
                     ]
@@ -67,6 +67,23 @@
                                 "Directory.ReadWrite.All",
                                 "Application.ReadWrite.OwnedBy"
                             ]
+                        }
+                    ]
+                },
+                {
+                    "type": "deploymentPrincipal",
+                    "resourceType": "grantpermissions",
+                    "name": "application deployment service principal",
+                    "location": "North Europe",
+                    "parameters": [
+                        {
+                            "name": "objectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "deploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
                         }
                     ]
                 }

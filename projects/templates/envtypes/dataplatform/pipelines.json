@@ -1,42 +1,12 @@
 {
-    "type": "datapltfrm",
+    "type": "pipelines",
+    "parent": "",
     "resources": [
-        {
-            "resourceType": "principals",
-            "resources": [
-                {
-                    "type": "deploymentPrincipal"
-                },
-                {
-                    "type": "applicationPrincipal"
-                }
-            ]
-        },
         {
             "resourceType": "adgroups",
             "resources": [
                 {
-                    "type": "managers"
-                },
-                {
-                    "type": "buildadmins"
-                },
-                {
-                    "type": "datacontrollers"
-                },
-                {
-                    "type": "keyvaultadmins"
-                },
-                {
                     "type": "developers"
-                }
-            ]
-        },
-        {
-            "resourceType": "resourcegroups",
-            "resources": [
-                {
-                    "type": "app"
                 }
             ]
         },
@@ -47,28 +17,7 @@
                     "type": "diagnostics"
                 },
                 {
-                    "type": "storage"
-                }
-            ]
-        },
-        {
-            "resourceType": "keyvaults",
-            "resources": [
-                {
-                    "type": "appkeyvault"
-                }
-            ]
-        },
-        {
-            "resourceType": "clientsecrets",
-            "resources": [
-                {
-                    "type": "password",
-                    "subtype": "deploymentPrincipal"
-                },
-                {
-                    "type": "password",
-                    "subtype": "applicationPrincipal"
+                    "type": "adlsv2storage"
                 }
             ]
         },
@@ -143,17 +92,6 @@
                 },
                 {
                     "type": "adf"
-                }
-            ]
-        },
-        {
-            "resourceType": "accesspolicies",
-            "resources": [
-                {
-                    "type": "app"
-                },
-                {
-                    "type": "adlstore"
                 }
             ]
         }

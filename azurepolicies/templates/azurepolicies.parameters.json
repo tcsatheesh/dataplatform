@@ -6,6 +6,7 @@
             "value": [
                 {
                     "type": "mvp",
+                    "subtype": "policyset",
                     "resourceType": "azurepolicies",
                     "update": true,
                     "templateFileName": "mvp.json",
@@ -21,6 +22,76 @@
                             "name": "minimum viable product",
                             "displayName": "Minimum Viable Product",
                             "scope": "subscription"
+                        }
+                    ]
+                },
+                {
+                    "type": "allowpip-nic",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "allowpip-nic.json",
+                    "templateParameterFileName": "allowpip.parameters.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "nic-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "description": "This policy enforces Public IP Address to use subnet"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "nic-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [
+                                {
+                                    "name": "subnetIds",
+                                    "value": [
+                                        {
+                                            "resourceType": "vnets",
+                                            "typeFilter": "dplt",
+                                            "property": "name",
+                                            "subnetName" : "appgw"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "allowpip-appgw",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "allowpip-appgw.json",
+                    "templateParameterFileName": "allowpip.parameters.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "appgw-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "description": "This policy enforces Public IP Address to use subnet"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "appgw-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [
+                                {
+                                    "name": "subnetIds",
+                                    "value": [
+                                        {
+                                            "resourceType": "vnets",
+                                            "typeFilter": "dplt",
+                                            "property": "name",
+                                            "subnetName" : "appgw"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }

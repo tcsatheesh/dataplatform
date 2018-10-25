@@ -159,7 +159,7 @@ function New-Resource {
         "default" { throw "hmmm... you need to add this type $type in the data factory linked services"}        
     }
 
-    if ($resource.ref -ne $null) {
+    if ($resource.name.ref -ne $null) {
         $linkedServiceName = Get-ValueFromResource `
             -resourceType $resource.name.ref.resourceType `
             -typeFilter $resource.name.ref.typeFilter `

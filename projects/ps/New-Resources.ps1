@@ -152,7 +152,12 @@ function New-Resources2 {
         $resource.branch = $branch
     }
     else {
-        $parentProjectParameters = Get-Content -Path "$PSScriptRoot\..\$parentProject\projects.parameters.json" -Raw | ConvertFrom-Json
+        $rootFolder = Get-Item -Path "$PSScriptRoot\.."
+        $parentProjectPath = "$rootFolder\$parentProject\projects.parameters.json"
+        if (-not (Test-Path -Path $parentProjectPath)) {
+            throw "Parent project not found here $parentProjectPath "
+        }
+        $parentProjectParameters = Get-Content -Path $parentProjectPath -Raw | ConvertFrom-Json
         $parentProjectResources = $parentProjectParameters.parameters.resources.value
 
         $resource = $resources | Where-Object {$_.type -eq "department"}

@@ -1,0 +1,25 @@
+{
+	"if": {
+	   "allOf": [
+		  {
+			 "field": "type",
+			 "equals": "Microsoft.Network/applicationGateways"
+		  },
+		  {
+			 "not": {
+				"field": "Microsoft.Network/applicationGateways/frontendIPConfigurations[*].publicIpAddress.id",
+				"exists": false
+			 }
+		  },
+		  {
+			 "not": {
+				"field": "Microsoft.Network/applicationGateways/gatewayIPConfigurations[*].subnet.id",
+				"in": "[parameters('subnetIds')]"
+			 }
+		  }
+	   ]
+	},
+	"then": {
+	   "effect": "deny"
+	}
+ }

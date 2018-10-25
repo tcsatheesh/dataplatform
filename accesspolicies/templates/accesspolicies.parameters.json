@@ -24,6 +24,7 @@
                 {
                     "type": "sharedStorage",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "sharedStorage",
                     "accesspolicies": [
                         {
                             "type": "Contributor",
@@ -48,6 +49,7 @@
                 {
                     "type": "storage",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "storage",
                     "accesspolicies": [
                         {
                             "type": "Contributor",
@@ -72,6 +74,7 @@
                 {
                     "type": "data",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "data",
                     "accesspolicies": [
                         {
                             "type": "Contributor",
@@ -94,17 +97,23 @@
                     ]
                 },
                 {
-                    "type": "app",
+                    "type": "app-base",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "app",
                     "accesspolicies": [
                         {
-                            "type": "Contributor",
+                            "type": "Owner",
                             "policies": [
                                 {
                                     "type": "principals",
                                     "ref": [
-                                        "deploymentPrincipal",
-                                        "applicationPrincipal"
+                                        "deploymentPrincipal"
+                                    ]
+                                },
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "datacontrollers"
                                     ]
                                 }
                             ]
@@ -119,14 +128,32 @@
                                     ]
                                 }
                             ]
-                        },
+                        }
+                    ]
+                },
+                {
+                    "type": "app",
+                    "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "app",
+                    "accesspolicies": [                        
                         {
-                            "type": "Data and AI Developer",
+                            "type": "Owner",
                             "policies": [
                                 {
                                     "type": "adgroups",
                                     "ref": [
-                                        "developers"
+                                        "datacontrollers"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Reader",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "keyvaultadmins"
                                     ]
                                 }
                             ]
@@ -136,6 +163,7 @@
                 {
                     "type": "databricks",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "databricks",
                     "accesspolicies": [
                         {
                             "type": "Contributor",
@@ -160,21 +188,15 @@
                 {
                     "type": "vnet",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "vnet",
                     "accesspolicies": [
                         {
-                            "type": "Contributor",
+                            "type": "Owner",
                             "policies": [
                                 {
                                     "type": "adgroups",
                                     "ref": [
-                                        "managers"
-                                    ]
-                                },
-                                {
-                                    "type": "principals",
-                                    "ref": [
-                                        "deploymentPrincipal",
-                                        "applicationPrincipal"
+                                        "datacontrollers"
                                     ]
                                 }
                             ]
@@ -184,6 +206,7 @@
                 {
                     "type": "vms",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "vms",
                     "accesspolicies": [
                         {
                             "type": "Contributor",
@@ -208,6 +231,7 @@
                 {
                     "type": "web",
                     "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "web",
                     "accesspolicies": [
                         {
                             "type": "Contributor",

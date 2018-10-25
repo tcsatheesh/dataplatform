@@ -1,0 +1,14 @@
+{
+    "type": "allowpip-appgw",
+    "parent": "",
+    "resources": [        
+        {
+            "resourceType": "azurepolicies",
+            "resources": [
+                {
+                    "type": "allowpip-appgw"
+                }
+            ]
+        }
+    ]
+}
