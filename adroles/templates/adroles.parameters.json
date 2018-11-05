@@ -1,0 +1,59 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "platformDeploymentPrincipal",
+                    "role": {
+                        "name": "Company Administrator",
+                        "id": ""
+                    },
+                    "members": [
+                        {
+                            "type": "principals",
+                            "ref": [
+                                "platformDeploymentPrincipal"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "deploymentPrincipal",
+                    "role": {
+                        "name": "Application Developer",
+                        "id": ""
+                    },
+                    "members": [
+                        {
+                            "type": "principals",
+                            "ref": [
+                                "deploymentPrincipal"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "appdevusers",
+                    "role": {
+                        "name": "Application Developer",
+                        "id": ""
+                    },
+                    "members": [
+                        {
+                            "type": "users",
+                            "user" : {
+                                "upn": "",
+                                "id": ""
+                            }
+                        }
+                    ]
+                }
+            ],
+            "metadata": {
+                "description": "The Azure AD Roles that can be assigned."
+            }
+        }
+    }
+}
