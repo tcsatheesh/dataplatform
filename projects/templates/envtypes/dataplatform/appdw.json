@@ -1,0 +1,31 @@
+{
+    "type": "appdw",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "dbadmins"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "sqldwadmin"
+                }
+            ]
+        },
+        {
+            "resourceType": "sqldws",
+            "resources": [
+                {
+                    "type": "appdw"
+                }
+            ]
+        }
+    ]
+}

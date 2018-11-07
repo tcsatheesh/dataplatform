@@ -9,7 +9,7 @@ function Remove-Group {
         [string]$groupName
     )
     Write-Verbose "Searching Azure AD Group $groupName"
-    $group = Get-AzureADGroup -SearchString $groupName -ErrorAction SilentlyContinue
+    $group = Get-AzureRmADGroup -DisplayName $groupName -ErrorAction SilentlyContinue
     if ($group -ne $null) {
         Write-Verbose "Removing Azure AD Group $groupName"
         try {

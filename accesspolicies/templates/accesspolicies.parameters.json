@@ -186,6 +186,24 @@
                     ]
                 },
                 {
+                    "type": "vnet-deploymentPrincipal",
+                    "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "vnet",
+                    "accesspolicies": [
+                        {
+                            "type": "Owner",
+                            "policies": [
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "type": "vnet",
                     "resourceType": "resourcegroups",
                     "resourceGroupTypeRef": "vnet",

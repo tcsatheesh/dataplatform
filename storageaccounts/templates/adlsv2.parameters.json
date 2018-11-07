@@ -11,6 +11,9 @@
         "accountType": {
             "value": "Standard_LRS"
         },
+        "tier": {
+            "value": "Standard"
+        },
         "kind": {
             "value": "StorageV2"
         },

@@ -1,0 +1,43 @@
+{
+    "type": "hdinsight",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "clsadmin"
+                },
+                {
+                    "type": "login",
+                    "subtype": "sshuser"
+                }
+            ]
+        },        
+        {
+            "resourceType": "adlstores",
+            "resources": [
+                {
+                    "type": "adlstore"
+                }
+            ]
+        },        
+        {
+            "resourceType": "adlsfolders",
+            "resources": [
+                {
+                    "type": "hdinsight"
+                }
+            ]
+        },
+        {
+            "resourceType": "hdinsights",
+            "resources": [
+                {
+                    "type": "hdinsight"
+                }
+            ]
+        }
+    ]
+}

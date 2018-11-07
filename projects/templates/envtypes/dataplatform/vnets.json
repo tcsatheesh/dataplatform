@@ -1,0 +1,30 @@
+{
+    "type": "vnets",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "dplt"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "vnet-deploymentPrincipal"
+                }
+            ]
+        }
+    ]
+}

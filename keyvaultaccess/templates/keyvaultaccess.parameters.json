@@ -34,7 +34,8 @@
                             "secrets": [
                                 "set",
                                 "get",
-                                "list"
+                                "list",
+                                "delete"
                             ],
                             "type": "objectId",
                             "ref": {

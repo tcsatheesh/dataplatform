@@ -6,8 +6,8 @@ param(
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 . "$commonPSFolder\Get-CommonFunctions.ps1"
 
-$principals = Get-ResourceParameters -parameterFileName "principals.parameters.json"
-$projects = Get-ResourceParameters -parameterFileName "projects.parameters.json"
+$principals = Get-ResourceParameters -parameterFileName "principals.parameters.json" -godeep
+$projects = Get-ResourceParameters -parameterFileName "projects.parameters.json" -godeep
 
 $platformDeploymentPrincipal = $principals.parameters.resources.value | Where-Object {$_.type -eq "deploymentPrincipal"}
 $applicationName = $platformDeploymentPrincipal.application.name

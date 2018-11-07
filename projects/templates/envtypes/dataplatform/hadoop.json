@@ -1,37 +1,33 @@
 {
-    "type": "sqldb",
+    "type": "hadoop",
     "parent": "",
     "resources": [
-        {
-            "resourceType": "adgroups",
-            "resources": [
-                {
-                    "type": "dbadmins"
-                }
-            ]
-        },
         {
             "resourceType": "keyvaultsecrets",
             "resources": [
                 {
                     "type": "login",
-                    "subtype": "sqladmin"
+                    "subtype": "clsadmin"
+                },
+                {
+                    "type": "login",
+                    "subtype": "sshuser"
+                }
+            ]
+        },        
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "adlsv2storage"
                 }
             ]
         },
         {
-            "resourceType": "sqldbs",
+            "resourceType": "hdinsights",
             "resources": [
                 {
-                    "type": "appdb"
-                }
-            ]
-        },
-        {
-            "resourceType": "logicapps",
-            "resources": [
-                {
-                    "type": "logicapp"
+                    "type": "hadoop"
                 }
             ]
         }

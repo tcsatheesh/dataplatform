@@ -1,5 +1,5 @@
 {
-    "type": "sqldw",
+    "type": "appdb",
     "parent": "",
     "resources": [
         {
@@ -15,15 +15,23 @@
             "resources": [
                 {
                     "type": "login",
-                    "subtype": "sqldwadmin"
+                    "subtype": "sqladmin-appdb"
                 }
             ]
         },
         {
-            "resourceType": "sqldws",
+            "resourceType": "sqldbs",
             "resources": [
                 {
-                    "type": "appdw"
+                    "type": "appdb"
+                }
+            ]
+        },
+        {
+            "resourceType": "logicapps",
+            "resources": [
+                {
+                    "type": "logicapp"
                 }
             ]
         }

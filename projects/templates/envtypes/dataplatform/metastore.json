@@ -1,0 +1,39 @@
+{
+    "type": "metastore",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "dbadmins"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "sqladmin"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                { 
+                    "type": "diagnostics"
+                }
+            ]
+        },
+        {
+            "resourceType": "sqldbs",
+            "resources": [
+                {
+                    "type": "metastore"
+                }
+            ]
+        }
+    ]
+}

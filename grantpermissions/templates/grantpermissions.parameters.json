@@ -84,6 +84,13 @@
                                 "typeFilter": "deploymentPrincipal",
                                 "property": "servicePrincipal.id"
                             }
+                        },
+                        {
+                            "name": "Windows Azure Active Directory",
+                            "type": "appRole",
+                            "value": [
+                                "Directory.Read.All"                                
+                            ]
                         }
                     ]
                 }
