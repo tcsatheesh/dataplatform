@@ -15,7 +15,15 @@
             "resources": [
                 {
                     "type": "login",
-                    "subtype": "sqladmin-appdb"
+                    "subtype": "sqladmin"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "diagnostics"
                 }
             ]
         },
@@ -24,14 +32,6 @@
             "resources": [
                 {
                     "type": "appdb"
-                }
-            ]
-        },
-        {
-            "resourceType": "logicapps",
-            "resources": [
-                {
-                    "type": "logicapp"
                 }
             ]
         }
