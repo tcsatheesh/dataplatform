@@ -16,9 +16,17 @@ function New-Resource {
     $subnetIdConfig = $assignment.parameters | Where-Object {$_.name -eq "subnetIds"}
     $subnetIds = @()
     foreach ($subnetIdRef in $subnetIdConfig.value) {
-        Write-Verbose "SubnetIdRef is $subnetIdRef"
-        $subnetId = Get-SubnetID -subnetRef $subnetIdRef
-        $subnetIds += $subnetId
+        if ($subnetIdRef.type -eq "reference"){
+            Write-Verbose "SubnetIdRef is $subnetIdRef"
+            $subnetId = Get-SubnetID -subnetRef $subnetIdRef    
+            $subnetIds += $subnetId
+        }else {
+            $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName $subnetIdRef.resourceGroupName -Name $subnetIdRef.virtualNetworkName
+            foreach ($subnetName in $subnetIdRef.subnetNames){
+                $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetName}
+                $subnetIds += $subnet.Id
+            }
+        }
     }
     $subnetIdConfig.value = $subnetIds
 

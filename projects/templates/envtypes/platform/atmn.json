@@ -1,0 +1,14 @@
+{
+    "type": "atmn",
+    "parent": "",
+    "resources": [        
+        {
+            "resourceType": "atmnaccs",
+            "resources": [
+                {
+                    "type": "platform"
+                }
+            ]
+        }
+    ]
+}

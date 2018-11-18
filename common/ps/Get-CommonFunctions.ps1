@@ -79,7 +79,7 @@ function Get-SubnetID {
     )
     $VNetName = Get-ValueFromResource -resourceType $subnetRef.resourceType `
         -property $subnetRef.property -typeFilter $subnetRef.typeFilter
-    
+    Write-Verbose "Vnet name is $VNetName"
     $vnet = Get-AzureRmVirtualNetwork | Where-Object {$_.Name -eq $VnetName}
     $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetRef.subnetName}
     return $subnet.Id
@@ -183,10 +183,16 @@ function Get-TemplateParameters {
 }
 function Get-ApplicationParameter {
     param (
-        [string]$type
+        [string]$type,
+        [switch]$godeep
     )
     $applicationsParameterFileName = "principals.parameters.json"
-    $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue
+    if ($godeep) {
+        $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue -godeep
+    }
+    else {
+        $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue
+    }
     if ($applicationsParameters -ne $null) {
         $principal = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $type}
         return $principal

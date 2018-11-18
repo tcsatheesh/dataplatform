@@ -29,7 +29,7 @@
             }
         },
         "kubernetesVersion": {
-            "value": "1.10.5"
+            "value": "1.11.4"
         },
         "workspaceName": {
             "value": ""

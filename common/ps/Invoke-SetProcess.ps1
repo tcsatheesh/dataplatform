@@ -1,7 +1,6 @@
 param(
     [string]$projectsParameterFile,
-    [string]$parameterFileName,
-    [scriptblock]$procToRun
+    [string]$parameterFileName
 )
 
 $commonPSFolder = (Get-Item -Path $PSScriptRoot).FullName

@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "managedClusters_myAKSCluster_serverAppSecret": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "managedClusters_myAKSCluster_name": {
+            "defaultValue": "myAKSCluster",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/ad31fdc0-e357-4925-b068-a20e5a634fb5/resourcegroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myAKSCluster'.",
+            "type": "Microsoft.ContainerService/managedClusters",
+            "name": "[parameters('managedClusters_myAKSCluster_name')]",
+            "apiVersion": "2018-03-31",
+            "location": "northeurope",
+            "scale": null,
+            "properties": {
+                "kubernetesVersion": "1.9.11",
+                "dnsPrefix": "myAKSClust-myResourceGroup-ad31fd",
+                "agentPoolProfiles": [
+                    {
+                        "name": "nodepool1",
+                        "count": 3,
+                        "vmSize": "Standard_DS2_v2",
+                        "osDiskSizeGB": 30,
+                        "storageProfile": "ManagedDisks",
+                        "maxPods": 110,
+                        "osType": "Linux"
+                    }
+                ],
+                "linuxProfile": {
+                    "adminUsername": "azureuser",
+                    "ssh": {
+                        "publicKeys": [
+                            {
+                                "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjO91OHaQgILpLdNtBSY3/1F0rHTjNUGdM54qjh5yGWDN0o46VD8Q/hoDwWcx2FyvWNtxVzv4hbCdXHbbAK+l58+K1bOEwGPViwl/Au8Gm35vklEmODhicvbrIiJlRKZ4Y5rVAvxtqDe4hLsMvd4iMmUWVuHt0VxpM3PBWGd8eQUnjx4HLBcuq8Brrphq1FDklbdZ26GJqKxmsJK9vHMg8QLJYWF7P6oClYGLGr/EbU6hSqyYjlyIvQvFOAK+dLa7dpsGZBD0koThz3lWTD6cKLAvzzWd8CQKNL8xB1uTRBAL55gjKKEL0PihTOKoacQvHSNcOSOYI4diteuVP8r7N"
+                            }
+                        ]
+                    }
+                },
+                "servicePrincipalProfile": {
+                    "clientId": "904094ab-178c-43e1-8301-a96a504ad20b"
+                },
+                "enableRBAC": true,
+                "networkProfile": {
+                    "networkPlugin": "kubenet",
+                    "podCidr": "10.244.0.0/16",
+                    "serviceCidr": "10.0.0.0/16",
+                    "dnsServiceIP": "10.0.0.10",
+                    "dockerBridgeCidr": "172.17.0.1/16"
+                },
+                "aadProfile": {
+                    "clientAppID": "09028201-fd78-45f6-a4e4-b7181566a78c",
+                    "serverAppID": "57c8485a-8deb-45e8-bc6f-3bb2b98c3858",
+                    "tenantID": "363adc83-e49d-41ca-8919-aadcd95fd5a3",
+                    "serverAppSecret": "[parameters('managedClusters_myAKSCluster_serverAppSecret')]"
+                }
+            },
+            "dependsOn": []
+        }
+    ]
+}

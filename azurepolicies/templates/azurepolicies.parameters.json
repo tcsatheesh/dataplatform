@@ -49,10 +49,13 @@
                                     "name": "subnetIds",
                                     "value": [
                                         {
-                                            "resourceType": "vnets",
-                                            "typeFilter": "dplt",
-                                            "property": "name",
-                                            "subnetName" : "appgw"
+                                            "type": "value",
+                                            "resourceGroupName": "it-dplt-d-vnet-rg",
+                                            "virtualNetworkName": "itdpltdvnet01",
+                                            "subnetNames": [
+                                                "dsvm",
+                                                "appgw"
+                                            ]
                                         }
                                     ]
                                 }

@@ -191,7 +191,7 @@
                     "resourceGroupTypeRef": "vnet",
                     "accesspolicies": [
                         {
-                            "type": "Owner",
+                            "type": "Contributor",
                             "policies": [
                                 {
                                     "type": "principals",
