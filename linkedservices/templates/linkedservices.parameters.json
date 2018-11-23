@@ -31,7 +31,7 @@
                     "name": {
                         "ref": {
                             "resourceType": "storageaccounts",
-                            "typeFilter": "storage",
+                            "typeFilter": "adlsv2storage",
                             "property": "name"
                         }
                     },

@@ -19,7 +19,7 @@
             ]
         },
         "tier": {
-            "value": "Standard"
+            "type": "string"
         },
         "kind": {
             "type": "string"

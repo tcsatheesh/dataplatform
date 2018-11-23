@@ -16,8 +16,10 @@ function Set-Resource {
     $templateFile = Get-ProjectTemplateFilePath -resourceType $resource.ResourceType -fileName $resource.templateFileName
     $templateParameterFile = Get-ProjectTemplateFilePath -resourceType $resource.ResourceType -fileName $resource.parameterFileName
 
+    Write-Verbose "DeploymentName is $deploymentName"
     Write-Verbose "Template file is $templateFile"
     Write-Verbose "Template parameter file is $templateParameterFile"
+    Write-Verbose "resourceGroupName is $resourceGroupName"
     New-AzureRmResourceGroupDeployment -Name $deploymentName `
         -ResourceGroupName $resourceGroupName `
         -TemplateFile $templateFile `
