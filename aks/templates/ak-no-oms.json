@@ -98,44 +98,6 @@
                 "description": "The version of Kubernetes."
             }
         },
-        "enableOmsAgent": {
-            "type": "bool",
-            "defaultValue": true,
-            "metadata": {
-                "description": "boolean flag to turn on and off of omsagent addon"
-            }
-        },
-        "workspaceRegion": {
-            "type": "string",
-            "defaultValue": "East US",
-            "metadata": {
-                "description": "Specify the region for your OMS workspace"
-            }
-        },
-        "workspaceName": {
-            "type": "string",
-            "metadata": {
-                "description": "Specify the name of the OMS workspace"
-            }
-        },
-        "omsWorkspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Specify the resource id of the OMS workspace"
-            }
-        },
-        "omsSku": {
-            "type": "string",
-            "defaultValue": "standalone",
-            "allowedValues": [
-                "free",
-                "standalone",
-                "pernode"
-            ],
-            "metadata": {
-                "description": "Select the SKU for your workspace"
-            }
-        },
         "enableHttpApplicationRouting": {
             "type": "bool",
             "defaultValue": true,
@@ -190,6 +152,12 @@
             "metadata": {
                 "description": "A CIDR notation IP for Docker bridge."
             }
+        },
+        "tags": {
+            "type": "object",
+            "metadata": {
+                "description": "Tags for this resource."
+            }
         }
     },
     "resources": [
@@ -198,6 +166,7 @@
             "type": "Microsoft.ContainerService/managedClusters",
             "location": "[parameters('location')]",
             "name": "[parameters('resourceName')]",
+            "tags": "[parameters('tags')]",
             "properties": {
                 "kubernetesVersion": "[parameters('kubernetesVersion')]",
                 "enableRBAC": "[parameters('enableRBAC')]",
@@ -205,12 +174,6 @@
                 "addonProfiles": {
                     "httpApplicationRouting": {
                         "enabled": "[parameters('enableHttpApplicationRouting')]"
-                    },
-                    "omsagent": {
-                        "enabled": "[parameters('enableOmsAgent')]",
-                        "config": {
-                            "logAnalyticsWorkspaceResourceID": "[parameters('omsWorkspaceId')]"
-                        }
                     }
                 },
                 "agentPoolProfiles": [
@@ -220,6 +183,7 @@
                         "count": "[parameters('agentCount')]",
                         "vmSize": "[parameters('agentVMSize')]",
                         "osType": "[parameters('osType')]",
+                        "maxPods": "[parameters('maxPods')]",
                         "storageProfile": "ManagedDisks",
                         "vnetSubnetID": "[parameters('vnetSubnetID')]"
                     }
@@ -240,42 +204,7 @@
                     "tenantID": "[parameters('tenantId')]",
                     "serverAppSecret": "[parameters('serverApplicationSecret')]"
                 }
-            },
-            "tags": {}
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "name": "SolutionDeployment",
-            "apiVersion": "2017-05-10",
-            "resourceGroup": "[split(parameters('omsWorkspaceId'),'/')[4]]",
-            "subscriptionId": "[split(parameters('omsWorkspaceId'),'/')[2]]",
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
-                        {
-                            "apiVersion": "2015-11-01-preview",
-                            "type": "Microsoft.OperationsManagement/solutions",
-                            "location": "[parameters('workspaceRegion')]",
-                            "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
-                            "properties": {
-                                "workspaceResourceId": "[parameters('omsWorkspaceId')]"
-                            },
-                            "plan": {
-                                "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
-                                "product": "[concat('OMSGallery/', 'ContainerInsights')]",
-                                "promotionCode": "",
-                                "publisher": "Microsoft"
-                            }
-                        }
-                    ]
-                }
-            },
-            "dependsOn": []
+            }            
         }
     ],
     "outputs": {

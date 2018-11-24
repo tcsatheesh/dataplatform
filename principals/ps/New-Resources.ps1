@@ -10,10 +10,17 @@ function New-Resource {
     )
     $resource.application.name = Get-FormatedText -strFormat $resource.application.name
     $resource.application.uri = Get-FormatedText -strFormat $resource.application.uri
-    if (-not [string]::IsNullOrEmpty($resource.application.replyUrl)) {
-        $resource.application.replyUrl = Get-FormatedText -strFormat $resource.application.replyUrl
+    $replyUrls = @()
+    foreach ($replyUrl in $resource.application.replyUrls) {
+         $replyUrls += Get-FormatedText -strFormat $replyUrl
+    }
+    if ($null -ne $resource.application.replyUrls) {
+        $resource.application.replyUrls = $replyUrls
+    }
+    if (-not [string]::IsNullOrEmpty($resource.application.homepage)) {
         $resource.application.homepage = Get-FormatedText -strFormat $resource.application.homepage    
     }
+
     $resource.servicePrincipal.name = Get-FormatedText -strFormat $resource.servicePrincipal.name
 
     $resource.application.passwordSecretName = "$($resource.application.name)-password"

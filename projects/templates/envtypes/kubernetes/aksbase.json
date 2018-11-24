@@ -1,5 +1,5 @@
 {
-    "type": "base",
+    "type": "aksbase",
     "resources": [
         {
             "resourceType": "principals",
@@ -98,6 +98,30 @@
             "resources": [
                 {
                     "type": "app-base"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "aks"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "vnet-deploymentPrincipal"
                 }
             ]
         }

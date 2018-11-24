@@ -48,15 +48,6 @@
         "kubernetesVersion": {
             "value": "1.11.4"
         },
-        "workspaceName": {
-            "value": ""
-        },
-        "omsWorkspaceId": {
-            "value": ""
-        },
-        "workspaceRegion": {
-            "value": ""
-        },
         "enableHttpApplicationRouting": {
             "value": true
         },
@@ -77,6 +68,13 @@
         },
         "dockerBridgeCidr": {
             "value": ""
+        },
+        "tags": {
+            "value": {
+                "Tag1": "Tag1",
+                "Tag2": "Tag2",
+                "Tag3": "Tag3"
+            }
         }
     }
 }

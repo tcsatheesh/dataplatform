@@ -10,6 +10,8 @@ function New-Resource {
     )
     if ($resource.resourceType -eq "projects") {
         # Assignment is at the subscription level
+    }elseif ($resource.resourceType -eq "other") {
+        # Value is in the config
     }elseif ($resource.resourceType -ne "resourcegroups") {
         $selectedResourceResourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef $selectedResource.resourceGroupTypeRef
         $selectedResourceType = (Get-AzureRmResource -ResourceGroupName $selectedResourceResourceGroupName -ResourceName $selectedResourceName).ResourceType    

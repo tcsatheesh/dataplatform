@@ -28,15 +28,6 @@
                             }
                         },
                         {
-                            "name": "principalId",
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "deploymentPrincipal",
-                                "property": "servicePrincipal.id"
-                            }
-                        },
-                        {
                             "name": "servicePrincipalClientSecret",
                             "type": "keyvault",
                             "ref": {
@@ -46,17 +37,43 @@
                             }
                         },
                         {
-                            "name": "vnetSubnetID",
-                            "type": "subnetid",
+                            "name": "serverApplicationId",
+                            "type": "reference",
                             "ref": {
-                                "resourceType": "vnets",
-                                "typeFilter": "aks",
-                                "property": "name",
-                                "subnetName" : "kubernetes"
+                                "resourceType": "principals",
+                                "typeFilter": "aksServerPrincipal",
+                                "property": "application.clientId"
                             }
                         },
                         {
-                            "name": "scope",
+                            "name": "serverApplicationSecret",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}-{1}-{2}-aks-svr-prn-password"
+                            }
+                        },
+                        {
+                            "name": "clientApplicationId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "aksClientPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "tenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "vnetSubnetID",
                             "type": "subnetid",
                             "ref": {
                                 "resourceType": "vnets",
@@ -97,6 +114,101 @@
                             "name": "workspaceRegion",
                             "type": "value",
                             "value": "westeurope"
+                        }
+                    ]
+                },
+                {
+                    "type": "aks-no-oms",
+                    "resourceType": "aks",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}aksnooms03",
+                    "location": "North Europe",
+                    "templateFileName": "ak-no-oms.json",
+                    "parameterFileName": "ak-no-oms.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "dnsPrefix",
+                            "type": "format",
+                            "value": "{0}{1}{2}aks01"
+                        },
+                        {
+                            "name": "servicePrincipalClientId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "deploymentPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "servicePrincipalClientSecret",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}-{1}-{2}-dep-prn-password"
+                            }
+                        },
+                        {
+                            "name": "serverApplicationId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "aksServerPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "serverApplicationSecret",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}-{1}-{2}-aks-svr-prn-password"
+                            }
+                        },
+                        {
+                            "name": "clientApplicationId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "aksClientPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "tenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "vnetSubnetID",
+                            "type": "subnetid",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "aks",
+                                "property": "name",
+                                "subnetName" : "kubernetes"
+                            }
+                        },
+                        {
+                            "name": "serviceCidr",
+                            "type": "value",
+                            "value": "10.0.0.0/16"
+                        },
+                        {
+                            "name": "dnsServiceIP",
+                            "type": "value",
+                            "value": "10.0.0.10"
+                        },
+                        {
+                            "name": "dockerBridgeCidr",
+                            "type": "value",
+                            "value": "172.17.0.1/16"
                         }
                     ]
                 }

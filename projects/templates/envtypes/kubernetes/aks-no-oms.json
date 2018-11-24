@@ -1,0 +1,14 @@
+{
+  "type": "aks-no-oms",
+  "parent": "<fill in the parent project name>",
+  "resources": [
+      {
+          "resourceType": "aks",
+          "resources": [
+              {
+                  "type": "aks-no-oms"
+              }
+          ]
+      }
+  ]
+}

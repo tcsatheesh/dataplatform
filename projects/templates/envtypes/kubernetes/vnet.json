@@ -23,6 +23,9 @@
             "resources": [
                 {
                     "type": "vnet-deploymentPrincipal"
+                },
+                {
+                    "type": "oms"
                 }
             ]
         }

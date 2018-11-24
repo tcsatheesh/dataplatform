@@ -339,6 +339,24 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "oms",
+                    "resourceType": "other",
+                    "resourceGroupName": "itomsp-mgmt-rg",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

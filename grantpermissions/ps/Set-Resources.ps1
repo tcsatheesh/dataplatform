@@ -60,6 +60,41 @@ function Set-AppRoles {
     }
 }
 
+function Set-GroupMembershipClaims {
+    param (
+        [string]$resourceName,
+        [object]$scopes,
+        [string]$objectId
+    )
+    foreach ($scope in $scopes) {
+        Set-AzureADApplication -ObjectId $objectId -GroupMembershipClaims $scope
+    }
+}
+
+function Get-Principal {
+    param (
+        [string]$principalref
+    )
+    $parameterFileName = "principals.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
+    $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $principalref}
+    Write-Verbose "Got principal $($resource.application.name) for principalref $principalref"
+    return $resource
+}
+
+function Set-CustomAppRole {
+    param (
+        [string]$principalref,
+        [object]$scopes,
+        [string]$objectId
+    )
+    Write-Verbose "Principal ref is $principalref"
+    $resourceName = Get-Principal $principalref
+    foreach ($scope in $scopes) {
+        Set-AppRole -resourceName $resourceName -roleName $scope -objectId $objectId
+    }
+}
+
 function Get-OAuth2Permissions {
     param (
         [string]$accessToken,
@@ -215,12 +250,22 @@ function Set-Resource {
     }
 
     $winAADResource = $resource.parameters | Where-Object { $_.type -eq "appRole"}
-    if ($winAADResource -ne $null) {
+    if ($null -ne $winAADResource) {
         Set-AppRoles -objectId $objectId -resourceName $winAADResource.name -scopes $winAADResource.value
     }
 
+    $groupMemberShipClaims = $resource.parameters | Where-Object { $_.type -eq "groupMembershipClaims"}
+    if ($null -ne $groupMemberShipClaims) {
+        Set-GroupMembershipClaims -objectId $objectId -resourceName $groupMemberShipClaims.name -scopes $groupMemberShipClaims.value
+    }
+
+    $customAppRole = $resource.parameters | Where-Object { $_.type -eq "customAppRole"} 
+    if ($null -ne $customAppRole) {
+        Set-CustomAppRole -objectId $objectId -principalref $customAppRole.principalref -scopes $customAppRole.value
+    }
+
     $OAuth2Permissions = $resource.parameters | Where-Object { $_.type -eq "OAuth2Permissions"}
-    if ($OAuth2Permissions -ne $null) {
+    if ($null -ne $OAuth2Permissions) {
         $ref = ($resource.parameters | Where-Object { $_.name -eq "tenantId"}).ref
         $tenantId = Get-ValueFromResource -resourceType $ref.resourceType -property $ref.property -typeFilter $ref.typeFilter
         Write-Verbose "Tenant Id is $tenantId"
@@ -230,7 +275,7 @@ function Set-Resource {
         Write-Verbose "Master Client Id is $masterClientId"
         
         $pwdObj = $resource.parameters | Where-Object { $_.name -eq "masterClientIdPassword"}
-        if ($pwdObj -eq $null) {
+        if ($null -eq $pwdObj) {
             throw "Cannot find any password information"
         }
         $masterClientIdPassword = Get-AzureKeyVaultSecret -VaultName $pwdObj.keyVaultName -Name $pwdObj.secretName
