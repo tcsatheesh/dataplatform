@@ -1,0 +1,14 @@
+{
+  "type": "oms",
+  "parent": "<fill in the parent project name>",
+  "resources": [        
+    {
+      "resourceType": "accesspolicies",
+      "resources": [
+          {
+              "type": "oms"
+          }
+      ]
+    }
+  ]
+}

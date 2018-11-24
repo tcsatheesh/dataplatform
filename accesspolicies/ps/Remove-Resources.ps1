@@ -76,15 +76,15 @@ function Remove-ResourceAcls {
             if ($policy.type -eq "principals") {
                 foreach ($principalTypeRef in $policy.ref) {
                     Write-Verbose "Processing principalTypeRef $principalTypeRef"
-                    $principalObj = Get-ApplicationParameter -type $principalTypeRef
-                    if ($principalObj -ne $null) {
+                    $principalObj = Get-ApplicationParameter -type $principalTypeRef -godeep
+                    if ($null -ne $principalObj) {
                         $objectId = $principalObj.servicePrincipal.id
                         if ([string]::IsNullOrEmpty($objectid)) {
                             Write-Verbose "Principal $principalTypeRef not defined in the environment"
                         }
                         else {        
                             $app = Get-AzureRmADServicePrincipal -ObjectId $objectId -ErrorAction SilentlyContinue
-                            if ($app -ne $null) {
+                            if ($null -ne $app) {
                                 if ([string]::IsNullOrEmpty($resource.resourcename) -and [string]::IsNullOrEmpty($resource.resourceGroupName)) {
                                     Remove-RoleAssignment3 -objectId $objectId -roleName $roleName
                                 }elseif ([string]::IsNullOrEmpty($resource.resourcename)) {
