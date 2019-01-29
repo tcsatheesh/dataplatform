@@ -17,7 +17,21 @@ function Get-ValueFromResource {
     }
     
     if ($item -eq $null ) {
-        throw "1. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
+        $parameters = Get-ResourceParametersDeep -parameterFileName "$resourceType.parameters.json"
+    
+        if ([String]::IsNullOrEmpty($subtypeFilter)) {
+            $item = $parameters.parameters.resources.value | Where-Object {$_.type -eq $typeFilter}
+        }
+        else {
+            $item = $parameters.parameters.resources.value | `
+                Where-Object {$_.type -eq $typeFilter -and $_.subtype -eq $subtypeFilter}
+        }
+    
+        if ($item -eq $null ) {        
+            $cs = Get-PSCallStack
+            Write-Verbose "Call stack is $cs"    
+            throw "1. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
+        }
     }
     $props = $property.Split(".")
     foreach ($prop in $props) {
@@ -25,6 +39,8 @@ function Get-ValueFromResource {
     }
     $val = $item
     if ($item -eq $null ) {
+        $cs = Get-PSCallStack
+        Write-Verbose "Call stack is $cs"    
         throw "2. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
     }
     return $val 
@@ -93,7 +109,7 @@ function Get-ResourceParameters {
         [Parameter(Mandatory = $False, HelpMessage = 'Should I go deep')]
         [Switch]$godeep
     )
-    Write-Verbose "Get-ResourceParameters for $parameterFileName"
+    Write-Verbose "Get-ResourceParameters for $parameterFileName with godeep value as $godeep"
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
     $parameterFullPath = "$projectFolder\$parameterFileName"
     if (Test-Path -Path $parameterFullPath) { 
@@ -124,9 +140,9 @@ function Get-ResourceParametersDeep {
         $projectFolder = (Get-Item -Path $currentProjectsParameterFile).DirectoryName
         $projectParameters = Get-Content -Path $currentProjectsParameterFile -Raw | ConvertFrom-JSON
         $envType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq "envType"}
-        #Write-Verbose "Env type is $($envType.value)"
+        # Write-Verbose "Env type is $($envType.value)"
         $currentType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $envType.value}
-        #Write-Verbose "Parent is $($currentType.parent)"
+        # Write-Verbose "Parent is $($currentType.parent)"
         $parameterFullPath = "$projectFolder\$parameterFileName"
         if (Test-Path -Path $parameterFullPath) { 
             Write-Verbose "Added parameter file $parameterFullPath"

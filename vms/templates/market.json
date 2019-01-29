@@ -44,6 +44,12 @@
         "description": "Admin username"
       }
     },
+    "storageAccountType": {
+      "type": "string",
+      "metadata": {
+        "description": "The storage account type."
+      }
+    },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
@@ -127,7 +133,7 @@
             "name": "[concat(parameters('resourcename'),'-os')]",
             "createOption": "FromImage",
             "managedDisk": {
-              "storageAccountType": "Premium_LRS"
+              "storageAccountType": "[parameters('storageAccountType')]"
             }
           },
           "dataDisks": [
@@ -137,7 +143,7 @@
               "createOption": "FromImage",
               "diskSizeGB": 100,
               "managedDisk": {
-                "storageAccountType": "Premium_LRS"
+                "storageAccountType": "[parameters('storageAccountType')]"
               }
             }
           ]

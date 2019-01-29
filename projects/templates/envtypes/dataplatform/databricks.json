@@ -1,0 +1,14 @@
+{
+    "type": "databricks",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "databricks",
+            "resources": [
+                {
+                    "type": "databrick"
+                }
+            ]
+        }
+    ]
+}
