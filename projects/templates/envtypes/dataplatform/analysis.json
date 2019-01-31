@@ -1,0 +1,22 @@
+{
+    "type": "analysis",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "analysisadmin"
+                }
+            ]
+        },
+        {
+            "resourceType": "analysis",
+            "resources": [
+                {
+                    "type": "as"
+                }
+            ]
+        }
+    ]
+}

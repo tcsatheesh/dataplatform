@@ -20,14 +20,6 @@
             ]
         },
         {
-            "resourceType": "storageaccounts",
-            "resources": [
-                {
-                    "type": "diagnostics"
-                }
-            ]
-        },
-        {
             "resourceType": "sqldbs",
             "resources": [
                 {
