@@ -11,7 +11,7 @@
     "location": {
       "type": "string",
       "metadata": {
-        "description": "Name of the location"
+        "description": "Name of the location for the vm"
       }
     },
     "virtualNetworkName": {

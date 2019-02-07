@@ -1,0 +1,23 @@
+{
+    "type": "gwsvr",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "vmadmin02"
+                }
+            ]
+        },
+        {
+            "resourceType": "vms",
+            "resources": [
+                {
+                    "type": "gateway"
+                }
+            ]
+        }
+    ]
+}
