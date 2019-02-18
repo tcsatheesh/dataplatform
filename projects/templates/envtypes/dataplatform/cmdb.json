@@ -1,0 +1,14 @@
+{
+    "type": "cmdb",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "cosmosdbs",
+            "resources": [
+                {
+                    "type": "cosmosdb"
+                }
+            ]
+        }
+    ]
+}
