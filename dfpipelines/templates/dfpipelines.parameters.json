@@ -182,6 +182,163 @@
                             }
                         ]
                     }
+                },
+                {
+                    "type": "pattern1",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern1.json",
+                    "parameterFileName": "pattern1.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "sourceDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_src_ds"
+                        },
+                        {
+                            "name": "destinationDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_ds"
+                        },
+                        {
+                            "name": "sourceLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgdia"
+                        },
+                        {
+                            "name": "destinationLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgdia"
+                        },
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_outer"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_1"
+                        },
+                        {
+                            "name": "copyActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_activity"
+                        },
+                        {
+                            "name": "ifconditionCopyActivityName",
+                            "type": "format",
+                            "value": "IfCopyHasWrittenFiles"
+                        },
+                        {
+                            "name": "copyCondition",
+                            "type": "format",
+                            "value": "@greater(activity('{0}{1}{2}_copy_activity').output.filesWritten,0)"
+                        },
+                        {
+                            "name": "innerPipelineName1",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_inner_1"
+                        },
+                        {
+                            "name": "metaDataActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_metadata_activity_1"
+                        },
+                        {
+                            "name": "forEachActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_foreach_activity_1"
+                        },
+                        {
+                            "name": "forEachOutputIter",
+                            "type": "format",
+                            "value": "@activity('{0}{1}{2}_metadata_activity_1').output.childItems"
+                        },
+                        {
+                            "name": "metaDataActivityName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_metadata_activity_2"
+                        },
+                        {
+                            "name": "forEachActivityName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_foreach_activity_2"
+                        },
+                        {
+                            "name": "forEachOutputIter2",
+                            "type": "format",
+                            "value": "@activity('{0}{1}{2}_metadata_activity_2').output.childItems"
+                        },
+                        {
+                            "name": "innerPipelineName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_inner_2"
+                        },
+                        {
+                            "name": "functionActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_function_activity"
+                        },
+                        {
+                            "name" : "ifconditionControlFileActivityName",
+                            "type": "value",
+                            "value": "IfControlFile"
+                        },
+                        {
+                            "name": "functionName",
+                            "type": "value",
+                            "value": "TransformXMLToJSON"
+                        },
+                        {
+                            "name": "functionLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}fn01"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}trigger"
+                        },
+                        {
+                            "name": "triggerStartTime",
+                            "type": "utcdatetime",
+                            "value": "-1",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "inputFileName",
+                            "type": "value",
+                            "value": "@concat('*_',formatDateTime(dataset().windowStartTime,'yyyyMMddHH'),'*.zip')"
+                        },
+                        {
+                            "name": "inputFolderName",
+                            "type": "value",
+                            "value": "source"
+                        },
+                        {
+                            "name": "destinationFolderPath",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/')"
+                        },
+                        {
+                            "name": "controlFileCondition",
+                            "type": "value",
+                            "value": "@endswith(item().name,'pmc.xml')"
+                        },
+                        {
+                            "name": "metadataactivity2_folderPath",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/',pipeline().parameters.item.name)"
+                        },
+                        {
+                            "name": "functionAppParameter",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/',pipeline().parameters.item.name,'/',item().name)"
+                        }
+                    ]
                 }
             ]
         }

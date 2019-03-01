@@ -226,6 +226,13 @@ function Set-AdditionalParameters {
             elseif ($resourceparam.type -eq "currentLogin") {
                 $val = Get-CurrentLogin
             }
+            elseif ($resourceparam.type -eq "utcdatetime") {
+                $datetimeValue = Get-Date
+                if (-not [string]::IsNullOrEmpty($resourceparam.value)) {
+                    $datetimeValue = $datetimeValue.AddHours($resourceparam.value)
+                }
+                $val =  $datetimeValue.ToString($resourceparam.format)
+            }
             else {
                 throw "you are missing the resource type $($resourceparam.type)"
             }
