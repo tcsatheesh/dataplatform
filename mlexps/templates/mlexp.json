@@ -1,106 +1,143 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "resourcename": {
+        "containerRegistryApiVersion": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "friendlyName": {
             "type": "string"
         },
         "location": {
-            "type": "string",
-            "allowedValues": [
-                "Australia East",
-                "East US 2",
-                "Southeast Asia",
-                "West Central US",
-                "West Europe"
-            ]
+            "type": "string"
         },
-        "storageAccountResourceGroupName": {
+        "machineLearningApiVersion": {
+            "type": "string"
+        },
+        "resourcename": {
+            "type": "string"
+        },
+        "containerRegistryName": {
+            "type": "string"
+        },
+        "containerRegistryType": {
             "type": "string"
         },
         "storageAccountName": {
             "type": "string"
         },
-        "seatCount": {
-            "type": "string",
-            "defaultValue": "2"
-        },
-        "workspaceName": {
+        "storageAccountType": {
             "type": "string"
         },
-        "workspaceUserObjectId": {
+        "storageApiVersion": {
             "type": "string"
         },
-        "modelManagementAccountName": {
-            "type": "string",
-            "defaultValue": ""
+        "appInsightsApiVersion": {
+            "type": "string"
         },
-        "modelManagementAccountSkuName": {
-            "type": "string",
-            "defaultValue": "DevTest"
+        "appInsightsName": {
+            "type": "string"
         },
-        "modelManagementAccountSkuTier": {
-            "type": "string",
-            "defaultValue": "Standard"
+        "appInsightsKind": {
+            "type": "string"
+        },
+        "appInsightsType": {
+            "type": "string"
+        },
+        "appInsightsLocation": {
+            "type": "string"
+        },
+        "keyVaultApiVersion": {
+            "type": "string"
+        },
+        "keyVaultName": {
+            "type": "string"
+        },
+        "keyVaultTenant": {
+            "type": "string"
         }
     },
     "variables": {
-        "experimentationAccountApiVersion": "2017-05-01-preview",
-        "storageApiVersion": "2016-12-01",
-        "classicStorageApiVersion": "2014-04-01",
-        "modelManagementAccountApiVersion": "2017-09-01-preview",
-        "authorizationApiVersion": "2015-07-01"
+        "containerRegistryId" : "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]",
+        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]",
+        "appInsightsId": "[resourceId('Microsoft.Insights/components',parameters('appInsightsName'))]",
+        "keyVaultId": "[resourceId('Microsoft.KeyVault/vaults',parameters('keyVaultName'))]"
     },
     "resources": [
         {
-            "apiVersion": "[variables('experimentationAccountApiVersion')]",
+            "apiVersion": "[parameters('machineLearningApiVersion')]",
             "name": "[parameters('resourcename')]",
             "location": "[parameters('location')]",
-            "type": "Microsoft.MachineLearningExperimentation/accounts",
+            "type": "Microsoft.MachineLearningServices/workspaces",
             "properties": {
-                "storageAccount": {
-                    "storageAccountId": "[resourceId(parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
-                    "accessKey": "[listKeys(resourceId(parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), variables('storageApiVersion')).keys[0].value]"
-                },
-                "seats": "[parameters('seatCount')]"
-            }
-        },
-        {
-            "apiVersion": "[variables('experimentationAccountApiVersion')]",
-            "name": "[concat(parameters('resourcename'), '/', parameters('workspaceName'))]",
-            "location": "[parameters('location')]",
-            "type": "Microsoft.MachineLearningExperimentation/accounts/workspaces",
-            "dependsOn": [
-                "[resourceId('Microsoft.MachineLearningExperimentation/accounts', parameters('resourcename'))]"
-            ],
-            "properties": {
-                "friendlyName": "[parameters('workspaceName')]"
-            }
-        },
-        {
-            "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[concat(parameters('resourcename'), '/', parameters('workspaceName'), '/Microsoft.Authorization/29dbedc8-5001-4032-8cfb-048c3d9b5ea7')]",
-            "type": "Microsoft.MachineLearningExperimentation/accounts/workspaces/providers/roleAssignments",
-            "dependsOn": [
-                "[resourceId('Microsoft.MachineLearningExperimentation/accounts/workspaces', parameters('resourcename'), parameters('workspaceName'))]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[concat(resourceId('Microsoft.MachineLearningExperimentation/accounts/workspaces', parameters('resourcename'), parameters('workspaceName')), '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
-                "principalId": "[parameters('workspaceUserObjectId')]"
-            }
-        },
-        {
-            "apiVersion": "[variables('modelManagementAccountApiVersion')]",
-            "name": "[parameters('modelManagementAccountName')]",
-            "location": "[parameters('location')]",
-            "type": "Microsoft.MachineLearningModelManagement/accounts",
-            "properties": {
-                "description": ""
+                "containerRegistry": "[variables('containerRegistryId')]",
+                "descsription": "[parameters('description')]",
+                "friendlyName": "[parameters('friendlyName')]",
+                "keyVault": "[variables('keyVaultId')]",
+                "storageAccount": "[variables('storageAccountId')]",
+                "applicationInsights": "[variables('appInsightsId')]"
             },
+            "identity": {
+                "type": "systemAssigned"
+            },
+            "dependsOn": [
+                "[variables('containerRegistryId')]",
+                "[variables('keyVaultId')]",
+                "[variables('storageAccountId')]",
+                "[variables('appInsightsId')]"
+            ]
+        },
+        {
+            "apiVersion": "[parameters('storageApiVersion')]",
+            "name": "[parameters('storageAccountName')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.Storage/storageAccounts",
             "sku": {
-                "name": "[parameters('modelManagementAccountSkuName')]",
-                "tier": "[parameters('modelManagementAccountSkuTier')]",
-                "capacity": 1
+                "name": "[parameters('storageAccountType')]"
+            },
+            "kind": "Storage"
+        },
+        {
+            "apiVersion": "[parameters('containerRegistryApiVersion')]",
+            "name": "[parameters('containerRegistryName')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.ContainerRegistry/registries",
+            "sku": {
+                "name": "[parameters('containerRegistryType')]"
+            },
+            "properties": {
+                "adminUserEnabled": true
+            },
+            "kind": "Registry"
+        },
+        {
+            "apiVersion": "[parameters('keyVaultApiVersion')]",
+            "name": "[parameters('keyVaultName')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.KeyVault/vaults",
+            "properties": {
+                "accessPolicies": [],
+                "enabledForDeployment": true,
+                "enabledForTemplateDeployment": true,
+                "enabledForVolumeEncryption": true,
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "tenantId": "[parameters('keyVaultTenant')]"
+            }
+        },
+        {
+            "apiVersion": "[parameters('appInsightsApiVersion')]",
+            "name": "[parameters('appInsightsName')]",
+            "location": "[parameters('appInsightsLocation')]",
+            "type": "Microsoft.Insights/components",
+            "kind": "[parameters('appInsightsKind')]",
+            "properties": {
+                "Application_Type": "[parameters('appInsightsType')]"
             }
         }
     ]

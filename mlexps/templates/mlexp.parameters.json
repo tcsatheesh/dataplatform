@@ -2,27 +2,62 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "resourcename": {
+        "containerRegistryApiVersion": {
+            "value": "2017-10-01"
+        },
+        "description": {
+            "value": ""
+        },
+        "friendlyName": {
             "value": ""
         },
         "location": {
             "value": ""
         },
-        "storageAccountResourceGroupName": {
+        "machineLearningApiVersion": {
+            "value": "2018-11-19"
+        },
+        "resourcename": {
             "value": ""
+        },
+        "containerRegistryName": {
+            "value": ""
+        },
+        "containerRegistryType": {
+            "value": "Basic"
         },
         "storageAccountName": {
             "value": ""
         },
-        "workspaceName": {
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "storageApiVersion": {
+            "value": "2016-12-01"
+        },
+        "appInsightsApiVersion": {
+            "value": "2015-05-01"
+        },
+        "appInsightsName": {
             "value": ""
         },
-        "workspaceUserObjectId": {
+        "appInsightsKind": {
+            "value": "web"
+        },
+        "appInsightsType": {
+            "value": "web"
+        },
+        "appInsightsLocation": {
+            "value": "westeurope"
+        },
+        "keyVaultApiVersion": {
+            "value": "2015-06-01"
+        },
+        "keyVaultName": {
             "value": ""
         },
-        "modelManagementAccountName": {
+        "keyVaultTenant": {
             "value": ""
         }
-        
     }
 }

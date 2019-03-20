@@ -1,0 +1,22 @@
+{
+    "type": "mlexps",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "mle"
+                }
+            ]
+        },
+        {
+            "resourceType": "mlexps",
+            "resources": [
+                {
+                    "type": "mlexp"
+                }
+            ]
+        }
+    ]
+}

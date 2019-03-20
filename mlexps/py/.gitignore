@@ -1,0 +1,8 @@
+venv35
+aml_config
+data
+outputs
+*.pyc
+.vscode
+__pycache__
+assets

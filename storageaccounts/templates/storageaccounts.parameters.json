@@ -44,8 +44,8 @@
                     "type": "mlstorage",
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "app",
-                    "name": "{0}{1}{2}westgaccmlexp",
-                    "location": "West Europe",
+                    "name": "{0}{1}{2}nestgaccmlexp",
+                    "location": "North Europe",
                     "templateFileName": "v2genstorage.json",
                     "parameterFileName": "v2genstorage.parameters.json"
                 },
