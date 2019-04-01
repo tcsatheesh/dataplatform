@@ -11,6 +11,14 @@
             ]
         },
         {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "storage"
+                }
+            ]
+        },
+        {
             "resourceType": "functions",
             "resources": [
                 {

@@ -11,6 +11,10 @@
       },
       "contentShareName": {
           "type": "string"
+      },
+      "website_node_default_version": {
+          "type": "string",
+          "defaultValue": "10.14.1"
       }
   },
   "resources": [
@@ -44,7 +48,7 @@
                       },
                       {
                           "name": "WEBSITE_NODE_DEFAULT_VERSION",
-                          "value": "8.11.1"
+                          "value": "[parameters('website_node_default_version')]"
                       }
                   ]
               },
