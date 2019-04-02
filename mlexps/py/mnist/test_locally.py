@@ -89,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument('--maxNodes', type=int, default=1)
     parser.add_argument('--clusterSku', default='Standard_D2_v2')
     parser.add_argument('--modelName', default='sklearn_mnist')
-    parser.add_argument('--entryScript', default='train.py')
+    parser.add_argument('--entryScript', default='mnist_train.py')
     parser.add_argument('--condaPackages', default='scikit-learn')
     parser.add_argument('--dsDataFolder', default='mnist')
     parser.add_argument('--regularization', type=float, default=0.04)

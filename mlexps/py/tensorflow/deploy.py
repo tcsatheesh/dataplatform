@@ -10,9 +10,6 @@ from azureml.core.model import Model
 import os
 import collections
 import pickle
-from sklearn.externals import joblib
-from sklearn.metrics import confusion_matrix
-from scripts.utils import load_data
 import numpy as np
 import matplotlib.pyplot as plt
 from azureml.core.webservice import AciWebservice
@@ -45,8 +42,8 @@ def deployWebservice(ws,args,folders):
     model=Model(ws, args.modelName)
     aciconfig = AciWebservice.deploy_configuration(cpu_cores=args.cpuCores, 
                                                memory_gb=args.memoryGB, 
-                                               tags={"data": "MNIST",  "method" : "sklearn"}, 
-                                               description='Predict MNIST with sklearn')
+                                               tags={"data": "FMNIST",  "method" : "tensorflow"}, 
+                                               description='Predict FMNIST with tensorflow')
     if (args.verbose):
         print("Deploy ACI Webservice configuration.")
 
@@ -64,29 +61,35 @@ def deployWebservice(ws,args,folders):
     if (args.verbose):
         print ("Deploy webservice from model")
     service.wait_for_deployment(show_output=True)
-    if (args.verbose):
-        print("Scoring url: {0}".format(service.scoring_uri))
+    print("Scoring url: {0}".format(service.scoring_uri))
+
+def printImageLogFileNames(ws):
+    for name, img in ws.images.items():
+        print (img.name, img.version, img.image_build_log_uri)
+
+def printServiceLogs(ws, args):
+    print(ws.webservices[args.webserviceName].get_logs())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')
-    parser.add_argument('--experimentName', default='exp02')
+    parser.add_argument('--experimentName', default='exp03')
     parser.add_argument('--clusterName', default='cpucluster')
     parser.add_argument('--minNodes', type=int, default=0)
     parser.add_argument('--maxNodes', type=int, default=1)
     parser.add_argument('--clusterSku', default='Standard_D2_v2')
-    parser.add_argument('--modelName', default='sklearn_mnist')
-    parser.add_argument('--entryScript', default='train.py')
-    parser.add_argument('--condaPackages', default='scikit-learn')
-    parser.add_argument('--dsDataFolder', default='mnist')
+    parser.add_argument('--modelName', default='tf_fmnist')
+    parser.add_argument('--entryScript', default='fmnist_train.py')
+    parser.add_argument('--condaPackages', default=['tensorflow','matplotlib'])
+    parser.add_argument('--dsDataFolder', default='fmnist')
     parser.add_argument('--regularization', type=float, default=0.04)
-    parser.add_argument('--modelPath', default='outputs/sklearn_mnist_model.pkl')
-    parser.add_argument('--modelFileName', default='sklearn_mnist_model.pkl')
+    parser.add_argument('--modelPath', default='outputs/fmnist.h5')
+    parser.add_argument('--modelFileName', default='fmnist.h5')
     parser.add_argument('--cpuCores', type=int, default=1)
     parser.add_argument('--memoryGB', type=int, default=1)
-    parser.add_argument('--scoringScript', default='score.py') 
+    parser.add_argument('--scoringScript', default='fmnist_score.py') 
     parser.add_argument('--environmentFileName', default='env.yml')   
-    parser.add_argument('--webserviceName', default='sklearn-mnist-svc')       
+    parser.add_argument('--webserviceName', default='tensorflow-fmnist-svc')       
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     args = parser.parse_args()
@@ -100,3 +103,5 @@ if __name__ == '__main__':
         
     ws = Workspace.from_config(path=args.config)
     deployWebservice(ws,args,folders)
+    # printImageLogFileNames(ws)
+    # printServiceLogs(ws,args)

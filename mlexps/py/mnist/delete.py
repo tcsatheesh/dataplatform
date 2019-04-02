@@ -63,7 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('--maxNodes', type=int, default=1)
     parser.add_argument('--clusterSku', default='Standard_D2_v2')
     parser.add_argument('--modelName', default='sklearn_mnist')
-    parser.add_argument('--entryScript', default='train.py')
+    parser.add_argument('--entryScript', default='mnist_train.py')
     parser.add_argument('--condaPackages', default='scikit-learn')
     parser.add_argument('--dsDataFolder', default='mnist')
     parser.add_argument('--regularization', type=float, default=0.04)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     parser.add_argument('--modelFileName', default='sklearn_mnist_model.pkl')
     parser.add_argument('--cpuCores', type=int, default=1)
     parser.add_argument('--memoryGB', type=int, default=1)
-    parser.add_argument('--scoringScript', default='score.py') 
+    parser.add_argument('--scoringScript', default='mnist_score.py') 
     parser.add_argument('--environmentFileName', default='env.yml')   
     parser.add_argument('--webserviceName', default='sklearn-mnist-svc')       
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
@@ -87,3 +87,4 @@ if __name__ == '__main__':
         
     ws = Workspace.from_config(path=args.config)
     deleteWebService(ws,args,folders)
+    
