@@ -22,6 +22,10 @@ def run(raw_data):
     data = np.array(json.loads(raw_data)['data'])
     # make prediction
     predictions_single = model.predict(data)
+
+        # send a random row from the test set to score
+    output_data = "{\"result\": " + str(list(predictions_single.tolist())) + "}"
+    
     # you can return any data type as long as it is JSON-serializable
-    return predictions_single.tolist()
+    return output_data
     

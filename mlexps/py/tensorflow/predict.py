@@ -42,41 +42,43 @@ def plot_value_array(i, predictions_array, true_label):
   thisplot[true_label].set_color('blue')
 
 def score(args, folders):
-    fashion_mnist = keras.datasets.fashion_mnist
-    (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
-    class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 
-               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
-    train_images = train_images / 255.0
-    test_images = test_images / 255.0
-    selected_index = args.selected_item
-    img = test_images[selected_index]
-    img = (np.expand_dims(img,0))[0].tolist()    
+  fashion_mnist = keras.datasets.fashion_mnist
+  (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+  class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 
+              'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+  train_images = train_images / 255.0
+  test_images = test_images / 255.0
+  selected_index = args.selected_item
+  img = test_images[selected_index]
+  img = (np.expand_dims(img,0))[0].tolist()    
 
-    # send a random row from the test set to score
-    input_data = "{\"data\": [" + str(list(img)) + "]}"
+  # send a random row from the test set to score
+  input_data = "{\"data\": [" + str(list(img)) + "]}"
+  
+  headers = {'Content-Type':'application/json'}
+
+  # for AKS deployment you'd need to the service key in the header as well
+  # api_key = service.get_key()
+  # headers = {'Content-Type':'application/json',  'Authorization':('Bearer '+ api_key)} 
+  print("POST to url", args.scoring_uri)
+  resp = requests.post(args.scoring_uri, input_data, headers=headers)
+  # print("input data:", input_data)
+  print("Actual label:", class_names[test_labels[selected_index]])
     
-    headers = {'Content-Type':'application/json'}
-
-    # for AKS deployment you'd need to the service key in the header as well
-    # api_key = service.get_key()
-    # headers = {'Content-Type':'application/json',  'Authorization':('Bearer '+ api_key)} 
-    print("POST to url", args.scoring_uri)
-    resp = requests.post(args.scoring_uri, input_data, headers=headers)
-    #print("input data:", input_data)
-    print("label:", class_names[test_labels[selected_index]])
-    prediction_single = np.fromstring(resp.text.strip('[').strip(']'),dtype="float", sep=",")
-    prediction_single = prediction_single[np.newaxis]
-    print("prediction:", prediction_single)
-    plot_value_array(0, prediction_single , test_labels)
-    _ = plt.xticks(range(10), class_names, rotation=45)
-    plt.show()
+  jsonResult01 = json.loads(resp.text)
+  jsonResult = json.loads(jsonResult01) # i don't know why but this needs to be done twice for json to recognize itself!
+  prediction_single = np.array(jsonResult['result'])  
+  print("Prediction:", prediction_single)
+  plot_value_array(0, prediction_single , test_labels)
+  _ = plt.xticks(range(10), class_names, rotation=45)
+  plt.show()        
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--scoring_uri', default='http://52.157.20.197:80/score')
-    parser.add_argument('--selected_item', type=int, default=0)
-    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
-    args = parser.parse_args()
-    folders = createFolders()
-    score(args,folders)
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--scoring_uri', default='http://40.81.11.80:80/score')
+  parser.add_argument('--selected_item', type=int, default=0)
+  parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
+  parser.add_argument('--version', action='version', version='%(prog)s 1.0')
+  args = parser.parse_args()
+  folders = createFolders()
+  score(args,folders)
