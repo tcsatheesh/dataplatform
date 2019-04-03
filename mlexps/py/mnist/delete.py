@@ -49,8 +49,6 @@ def deleteWebService(ws,args,folders):
     else:
         print ("Webservice is deployed")
         services[0].delete()
-
-    if (args.verbose):
         print ("Deleted webservice")
 
 

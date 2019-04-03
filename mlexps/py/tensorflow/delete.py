@@ -46,8 +46,7 @@ def deleteWebService(ws,args,folders):
     else:
         print ("Webservice is deployed")
         services[0].delete()
-
-    print ("Deleted webservice")
+        print ("Deleted webservice")
 
 
 if __name__ == '__main__':
