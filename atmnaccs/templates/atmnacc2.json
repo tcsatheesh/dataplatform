@@ -1,0 +1,145 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0",
+    "parameters": {
+        "resourceName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Azure Automation account to deploy to."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location for the automation account."
+            }
+        },
+        "credentialName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Automation credential used in this runbook. This credential allows you to authenticate to Azure."
+            }
+        },
+        "clientId": {
+            "type": "string",
+            "metadata": {
+                "description": "The client Id for the Azure Automation credential."
+            }
+        },
+        "clientSecret": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The client Secret for the Azure Automation credential."
+            }
+        },
+        "runbookName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the runbook."
+            }
+        },
+        "runbookUri": {
+            "type": "string",
+            "metadata": {
+                "description": "The uri for the runbook."
+            }
+        },
+        "runbookDescription": {
+            "type": "string",
+            "metadata": {
+                "description": "Run book description."
+            }
+        },
+        "variableNames": {
+            "type": "array",
+            "metadata": {
+                "description": "Name of the variable 1"
+            }
+        },
+        "variableValues": {
+            "type": "array",
+            "metadata": {
+                "description": "Value of the variable 1"
+            }
+        },
+        "webhookName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the webhook"
+            }
+        },
+        "webhookExpiryTime": {
+            "type": "string",
+            "defaultValue": "2021-10-02T17:31:10+00:00",
+            "metadata": {
+                "description": "webhook expiry time"
+            }
+        },
+        "runOn": {
+            "type": "string",
+            "metadata": {
+                "description": "Run the run book on this worker"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[concat(parameters('resourceName'),'/', parameters('credentialName'))]",
+            "type": "Microsoft.Automation/automationAccounts/credentials",
+            "apiVersion": "2018-06-30",
+            "location": "[parameters('location')]",
+            "properties": {
+                "userName": "[parameters('clientId')]",
+                "password": "[parameters('clientSecret')]"
+            }
+        },
+        {
+            "name": "[concat(parameters('resourceName'),'/', parameters('runbookName'))]",
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2018-06-30",
+            "location": "[parameters('location')]",
+            "properties": {
+                "runbookType": "Script",
+                "logProgress": false,
+                "logVerbose": false,
+                "description": "[parameters('runbookDescription')]",
+                "publishContentLink": {
+                    "uri": "[parameters('runbookUri')]",
+                    "version": "1.0.0.0"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2018-06-30",
+            "name": "[concat(parameters('resourceName'),'/', parameters('variableNames')[copyIndex()])]",
+            "location": "[parameters('location')]",
+            "copy": {
+                "name": "variableNames",
+                "count": "[length(parameters('variableNames'))]"
+            },
+            "properties": {
+                "isEncrypted": false,
+                "value": "[parameters('variableValues')[copyIndex()]]",
+                "description": ""
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/webhooks",
+            "name": "[concat(parameters('resourceName'),'/', parameters('webhookName'))]",
+            "apiVersion": "2015-10-31",
+            "dependsOn": [
+                "[concat('Microsoft.Automation/automationAccounts/', parameters('resourceName'), '/runbooks/', parameters('runbookName'))]"
+            ],
+            "properties": {
+                "isEnabled": true,
+                "runbook": {
+                    "name": "[parameters('runbookName')]"
+                },
+                "runOn": "[parameters('runOn')]"
+            }
+        }
+    ],
+    "outputs": {}
+}

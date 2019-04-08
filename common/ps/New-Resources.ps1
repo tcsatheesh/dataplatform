@@ -233,6 +233,9 @@ function Set-AdditionalParameters {
                 }
                 $val =  $datetimeValue.ToString($resourceparam.format)
             }
+            elseif ($resourceparam.type -eq "resourceSpecific") {
+                $val = Set-ResourceSpecificParameters -resource $resource -resourceparam $resourceparam
+            }
             else {
                 throw "you are missing the resource type $($resourceparam.type)"
             }

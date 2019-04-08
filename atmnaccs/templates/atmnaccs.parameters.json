@@ -5,13 +5,83 @@
         "resources": {
             "value": [
                 {
-                    "type": "platform",
+                    "type": "app",
                     "resourceType": "atmnaccs",
                     "resourceGroupTypeRef": "app",
                     "name": "{0}{1}{2}atmnacc01",
                     "location": "North Europe",
                     "templateFileName": "atmnacc.json",
                     "parameterFileName": "atmnacc.parameters.json"
+                },
+                {
+                    "type": "deployrunbook",
+                    "resourceType": "atmnaccs",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}atmnacc01",
+                    "location": "North Europe",
+                    "templateFileName": "atmnacc2.json",
+                    "parameterFileName": "atmnacc2.parameters.json",
+                    "parameters": [                        
+                        {
+                            "name": "credentialName",
+                            "type": "value",
+                            "value": "ServicePrincipal"
+                        },
+                        {
+                            "name": "clientId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
+                                "property": "application.clientId"
+                            }
+                        },
+                        {
+                            "name": "clientSecret",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}-{1}-{2}-app-prn-password"
+                            }
+                        },
+                        {
+                            "name": "runbookName",
+                            "type": "value",
+                            "value": "Refresh-AnalysisServicesDatabase"
+                        },
+                        {
+                            "name": "runbookUri",
+                            "type": "value",
+                            "value": "https://raw.githubusercontent.com/tcsatheesh/dataplatform/develop/atmnaccs/runbooks/Refresh-AnalysisServicesDatabase.ps1"
+                        },
+                        {
+                            "name": "runbookDescription",
+                            "type": "value",
+                            "value": "Refresh the Azure Analysis Services database."
+                        },
+                        {
+                            "name": "webhookName",
+                            "type": "value",
+                            "value": "RefreshFromAzureDataFactory"
+                        },
+                        {
+                            "name": "runOn",
+                            "type": "format",
+                            "value": "{0}{1}{2}vm02"
+                        },
+                        {
+                            "name": "variableValues",
+                            "type": "resourceSpecific",
+                            "value": [
+                                "'<tenantId>'",
+                                "'asazure://northeurope.asazure.windows.net/<analysisServicesName>'",
+                                "'northeurope.asazure.windows.net'",
+                                "'Adventure Works Internet Sales'",
+                                "'Full'"
+                            ]
+                        }
+                    ]
                 }
             ]
         }

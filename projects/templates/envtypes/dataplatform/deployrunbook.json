@@ -1,12 +1,12 @@
 {
-    "type": "atmnaccs",
+    "type": "deployrunbook",
     "parent": "",
     "resources": [
         {
             "resourceType": "atmnaccs",
             "resources": [
                 {
-                    "type": "app"
+                    "type": "deployrunbook"
                 }
             ]
         }

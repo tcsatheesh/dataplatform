@@ -1,0 +1,62 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "credentialName": {
+            "value": "ServicePrincipal"
+        },
+        "clientId": {
+            "value": ""
+        },
+        "clientSecret": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+            }
+        },
+        "runbookName": {
+            "value": ""
+        },
+        "runbookUri": {
+            "value": ""
+        },
+        "runbookDescription": {
+            "value": ""
+        },
+        "variableNames": {
+            "value": [
+                "TenantId",
+                "AnalysisServicesServer",
+                "AnalysisServicesRolloutEnvironment",
+                "AnalysisServicesDatabaseName",
+                "DatabaseRefreshType"
+            ]
+        },
+        "variableValues": {
+            "value": [
+                "'<tenantId>'",
+                "'<analysisServicesUrl>'",
+                "'<analysisServiceRollOutEnvironment>'",
+                "'<databaseName>'",
+                "'Full'"
+            ]
+        },
+        "webhookName": {
+            "value": ""
+        },
+        "webhookExpiryTime": {
+            "value": "2021-10-02T17:31:10+00:00"
+        },
+        "runOn": {
+            "value": ""
+        }
+    }
+}
