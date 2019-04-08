@@ -7,7 +7,7 @@
                 {
                     "type": "platform",
                     "resourceType": "atmnaccs",
-                    "resourceGroupTypeRef": "platform",
+                    "resourceGroupTypeRef": "app",
                     "name": "{0}{1}{2}atmnacc01",
                     "location": "North Europe",
                     "templateFileName": "atmnacc.json",
