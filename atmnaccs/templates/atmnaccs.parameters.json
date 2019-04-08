@@ -80,6 +80,11 @@
                                 "'Adventure Works Internet Sales'",
                                 "'Full'"
                             ]
+                        },
+                        {
+                            "name": "webhookUri",
+                            "type": "resourceSpecific",
+                            "value": ""
                         }
                     ]
                 }

@@ -75,6 +75,12 @@
                 "description": "webhook expiry time"
             }
         },
+        "webhookUri": {
+            "type": "string",
+            "metadata": {
+                "description": "webhook uri"
+            }
+        },
         "runOn": {
             "type": "string",
             "metadata": {
@@ -134,6 +140,8 @@
             ],
             "properties": {
                 "isEnabled": true,
+                "expiryTime": "[parameters('webhookExpiryTime')]",
+                "uri": "[parameters('webhookUri')]",
                 "runbook": {
                     "name": "[parameters('runbookName')]"
                 },
