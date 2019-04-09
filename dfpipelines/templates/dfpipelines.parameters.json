@@ -339,6 +339,79 @@
                             "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/',pipeline().parameters.item.name,'/',item().name)"
                         }
                     ]
+                },
+                {
+                    "type": "atmnaccs",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "atmnaccs.json",
+                    "parameterFileName": "atmnaccs.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "Refresh-AnalysisServicesDatabase"
+                        },
+                        {
+                            "name": "activityName",
+                            "type": "format",
+                            "value": "Call-AzureAutomationWebhook"
+                        },
+                        {
+                            "name": "url",
+                            "type": "resourceSpecific",
+                            "value": "{0}{1}{2}atmnacc01"
+                        },
+                        {
+                            "name": "messageHeader",
+                            "type": "format",
+                            "value": "StartedbyDataFactory"
+                        },
+                        {
+                            "name": "body",
+                            "type": "resourceSpecific",
+                            "value": {
+                                "CredentialName": "ServicePrincipal",
+                                "TenantId": "{0}",
+                                "AnalysisServicesServer": "asazure://northeurope.asazure.windows.net/{0}",
+                                "AnalysisServicesRolloutEnvironment": "northeurope.asazure.windows.net",
+                                "AnalysisServicesDatabaseName": "Adventure Works Internet Sales",
+                                "DatabaseRefreshType": "Full"
+                            }
+                        },
+                        {
+                            "name": "automationAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}atmnacc01"
+                        },
+                        {
+                            "name": "runbookName",
+                            "type": "value",
+                            "value": "Refresh-AnalysisServicesDatabase"
+                        },
+                        {
+                            "name": "webhookName",
+                            "type": "value",
+                            "value": "RefreshFromAzureDataFactory"
+                        },
+                        {
+                            "name": "webhookExpiryTime",
+                            "type": "value",
+                            "value": "2021-10-02T17:31:10+00:00"
+                        },
+                        {
+                            "name": "runOn",
+                            "type": "format",
+                            "value": "{0}{1}{2}vm02"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_atmnacc"
+                        }
+                    ]
                 }
             ]
         }

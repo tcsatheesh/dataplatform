@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "location of the data factory"
+            }
+        },
+        "pipelineName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the pipeline"
+            }
+        },
+        "activityName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the web activity"
+            }
+        },
+        "url": {
+            "type": "string",
+            "metadata": {
+                "description": "url to the web hook"
+            }
+        },
+        "messageHeader": {
+            "type": "string",
+            "metadata": {
+                "description": "string to send in the message header"
+            }
+        },
+        "body": {
+            "type": "object",
+            "metadata": {
+                "description": "body of the web activity"
+            }
+        },
+        "automationAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "automation account name"
+            }
+        },
+        "runbookName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the runbook."
+            }
+        },
+        "webhookName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the webhook"
+            }
+        },
+        "webhookExpiryTime": {
+            "type": "string",
+            "defaultValue": "2021-10-02T17:31:10+00:00",
+            "metadata": {
+                "description": "webhook expiry time"
+            }
+        },
+        "runOn": {
+            "type": "string",
+            "metadata": {
+                "description": "Run the run book on this worker"
+            }
+        },
+        "folderName": {
+            "type": "string",
+            "metadata": {
+                "description": "Activity folder name."
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('pipelineName'))]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "[parameters('activityName')]",
+                        "type": "WebActivity",
+                        "typeProperties": {
+                            "url": "[parameters('url')]",
+                            "method": "POST",
+                            "headers": {
+                                "message": "[parameters('messageHeader')]"
+                            },
+                            "body": "[parameters('body')]"
+                        }
+                    }
+                ],
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/webhooks",
+            "name": "[concat(parameters('automationAccountName'),'/', parameters('webhookName'))]",
+            "apiVersion": "2015-10-31",
+            "properties": {
+                "isEnabled": true,
+                "expiryTime": "[parameters('webhookExpiryTime')]",
+                "uri": "[parameters('url')]",
+                "runbook": {
+                    "name": "[parameters('runbookName')]"
+                },
+                "runOn": "[parameters('runOn')]"
+            }
+        }
+    ]
+}

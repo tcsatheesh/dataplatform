@@ -1,0 +1,14 @@
+{
+    "type": "dfpipeatmn",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "dfpipelines",
+            "resources": [
+                {
+                    "type": "atmnaccs"
+                }
+            ]
+        }
+    ]
+}
