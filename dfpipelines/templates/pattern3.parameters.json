@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceName": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "pipelineName": {
+            "value": "AuthPipe"
+        },
+        "authUrl": {
+            "value": ""
+        },
+        "authBody": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "analysisServicesUrl": {
+            "value": ""
+        },
+        "folderName": {
+            "value": ""
+        }
+    }
+}

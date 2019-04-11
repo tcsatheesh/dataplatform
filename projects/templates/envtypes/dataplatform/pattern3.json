@@ -1,0 +1,14 @@
+{
+    "type": "pattern3",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "dfpipelines",
+            "resources": [
+                {
+                    "type": "pattern3"
+                }
+            ]
+        }
+    ]
+}

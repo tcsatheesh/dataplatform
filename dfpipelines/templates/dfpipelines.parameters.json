@@ -412,6 +412,139 @@
                             "value": "{0}{1}{2}_pattern_atmnacc"
                         }
                     ]
+                },
+                {
+                    "type": "pattern2",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern2.json",
+                    "parameterFileName": "pattern2.parameters.json",
+                    "parameters" : [
+                        
+                        {
+                            "name": "onPremiseSourceSQLLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
+                        },
+                        {
+                            "name": "onPremiseSourceSQLDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_sql_src_ds"
+                        },
+                        {
+                            "name": "sqldbDestinationLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
+                        },
+                        {
+                            "name": "storageAccountLookupLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "storageAccountLookupDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_lkup_ds"
+                        },
+                        {
+                            "name": "sqldbDestinationDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_sql_dest_ds"
+                        },
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_sql_outer"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_2"
+                        },
+                        {
+                            "name": "copyActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_sql_activity"
+                        },
+                        {
+                            "name": "storedProcedureActivityName",
+                            "type": "value",
+                            "value": "Call_SP"
+                        },
+                        {
+                            "name": "storedProcedureName",
+                            "type": "value",
+                            "value": "dbo.callDummySP"
+                        },
+                        {
+                            "name": "innerPipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_sql_inner"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}triggersql"
+                        },
+                        {
+                            "name": "triggerStartDateTime",
+                            "type": "utcdatetime",
+                            "value": "-1",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "lookupConfigInputFolderPath",
+                            "type": "value",
+                            "value": "config"
+                        },
+                        {
+                            "name": "lookupConfigInputFolderPath",
+                            "type": "value",
+                            "value": "config"
+                        }
+                    ]
+                },
+                {
+                    "type": "pattern3",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern3.json",
+                    "parameterFileName": "pattern3.parameters.json",
+                    "parameters" : [                        
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3"
+                        },
+                        {
+                            "name": "authUrl",
+                            "type": "resourceSpecific",
+                            "value": "https://login.microsoftonline.com/{0}/oauth2/token"
+                        },
+                        {
+                            "name": "authBody",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "auth-body"
+                            }
+                        },
+                        {
+                            "name": "analysisServicesUrl",
+                            "type": "format",
+                            "value": "https://northeurope.asazure.windows.net/servers/{0}{1}{2}as01/models/Adventure Works Internet Sales/refreshes"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_3"
+                        }
+                    ]
                 }
             ]
         }

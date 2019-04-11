@@ -1,0 +1,23 @@
+{
+    "type": "sqllkdsvc",
+    "parent": "",
+    "resources": [        
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "sqldbconnectionstring",
+                    "subtype": "admin"
+                }
+            ]
+        },
+        {
+            "resourceType": "linkedservices",
+            "resources": [
+                {
+                    "type": "sqldb"
+                }
+            ]
+        }
+    ]
+}

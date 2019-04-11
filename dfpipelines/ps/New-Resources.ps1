@@ -117,6 +117,16 @@ function Get-Body {
     
     return $value
 }
+
+function Get-AuthUrl {
+    param (
+        [object]$resourceparam
+    )
+    $tenantId = (Get-ProjectParameter -type "tenant").id
+    $val = $resourceparam.value -f $tenantId
+    return $val
+}
+
 function Set-ResourceSpecificParameters {
     param (
         [object]$resource,
@@ -128,6 +138,9 @@ function Set-ResourceSpecificParameters {
     elseif ($resourceparam.name -eq "url") {
         $atmnaccname = Get-FormatedText -strFormat $resourceparam.value
         $val = Get-WebhookUri -resourcename $atmnaccname
+    }
+    elseif ($resourceparam.name -eq "authUrl") {
+        $val = Get-AuthUrl -resourceparam $resourceparam
     }
     else {
         throw "resource param $($resourceparam.name) not supported"
