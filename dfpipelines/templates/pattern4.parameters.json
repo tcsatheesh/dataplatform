@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceName": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "pipelineName": {
+            "value": ""
+        },
+        "analysisServicesUrl": {
+            "value": ""
+        },
+        "rolloutEnvironment": {
+            "value": ""
+        },
+        "folderName": {
+            "value": ""
+        },
+        "analysisServicesResourceUrl": {
+            "value": ""
+        },
+        "getIpUrl": {
+            "value": ""
+        },
+        "managementResource": {
+            "value": ""
+        },
+        "analysisServicesDatabaseRefreshType": {
+            "value": ""
+        },
+        "analysisServicesDatabaseRefreshMaxParallelism": {
+            "value": ""
+        },
+        "bodyWithIP": {
+            "value": ""
+        },
+        "bodyWithoutIP": {
+            "value": ""
+        }
+    }
+}

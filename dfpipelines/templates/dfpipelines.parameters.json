@@ -255,7 +255,7 @@
                         {
                             "name": "forEachOutputIter",
                             "type": "format",
-                            "value": "@activity('{0}{1}{2}_metadata_activity_1').output.childItems"
+                            "value": "activity('{0}{1}{2}_metadata_activity_1').output.childItems"
                         },
                         {
                             "name": "metaDataActivityName2",
@@ -270,7 +270,7 @@
                         {
                             "name": "forEachOutputIter2",
                             "type": "format",
-                            "value": "@activity('{0}{1}{2}_metadata_activity_2').output.childItems"
+                            "value": "activity('{0}{1}{2}_metadata_activity_2').output.childItems"
                         },
                         {
                             "name": "innerPipelineName2",
@@ -543,6 +543,72 @@
                             "name": "folderName",
                             "type": "format",
                             "value": "{0}{1}{2}_pattern_3"
+                        }
+                    ]
+                },
+                {
+                    "type": "pattern4",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern4.json",
+                    "parameterFileName": "pattern4.parameters.json",
+                    "parameters" : [                        
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_4"
+                        },
+                        {
+                            "name": "analysisServicesUrl",
+                            "type": "format",
+                            "value": "https://northeurope.asazure.windows.net/servers/{0}{1}{2}as01/models/Adventure Works Internet Sales/refreshes"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_4"
+                        },
+                        {
+                            "name": "rolloutEnvironment",
+                            "type": "value",
+                            "value": "https://northeurope.asazure.windows.net"
+                        },
+                        {
+                            "name": "analysisServicesResourceUrl",
+                            "type": "resourceSpecific",
+                            "value": "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.AnalysisServices/servers/{2}?api-version=2017-08-01"
+                        },
+                        {
+                            "name": "getIpUrl",
+                            "type": "value",
+                            "value": "https://api.ipify.org?format=json"
+                        },
+                        {
+                            "name": "managementResource",
+                            "type": "value",
+                            "value": "https://management.azure.com/"
+                        },
+                        {
+                            "name": "analysisServicesDatabaseRefreshType",
+                            "type": "value",
+                            "value": "full"
+                        },
+                        {
+                            "name": "analysisServicesDatabaseRefreshMaxParallelism",
+                            "type": "value",
+                            "value": 2
+                        },
+                        {
+                            "name": "bodyWithIP",
+                            "type": "value",
+                            "value": "@concat('{\"properties\":{\"serverFullName\":\"', activity('GetAnalysisServerInfo').output.properties.serverFullName , '\",\"managedMode\":\"', activity('GetAnalysisServerInfo').output.properties.managedMode , '\",\"asAdministrators\":{\"members\":',activity('GetAnalysisServerInfo').output.properties.asAdministrators.members ,'},\"gatewayDetails\":{\"gatewayResourceId\":\"', activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayResourceId ,'\",\"gatewayObjectId\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayObjectId,'\",\"dmtsClusterUri\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.dmtsClusterUri,'\"},\"querypoolConnectionMode\":\"All\",\"ipV4FirewallSettings\":{\"firewallRules\":[{\"firewallRuleName\":\"ADF\",\"rangeStart\":\"', activity('GetIPAddress').output.ip,'\",\"rangeEnd\":\"',activity('GetIPAddress').output.ip,'\"}],\"enablePowerBIService\":true},\"serverMonitorMode\":1},\"name\":\"',activity('GetAnalysisServerInfo').output.name,'\",\"type\":\"Microsoft.AnalysisServices/servers\",\"location\":\"',activity('GetAnalysisServerInfo').output.location,'\",\"sku\":{\"name\":\"',activity('GetAnalysisServerInfo').output.sku.name,'\",\"tier\":\"',activity('GetAnalysisServerInfo').output.sku.tier,'\",\"capacity\":',activity('GetAnalysisServerInfo').output.sku.capacity,'}}')"
+                        },
+                        {
+                            "name": "bodyWithoutIP",
+                            "type": "value",
+                            "value": "@concat('{\"properties\":{\"serverFullName\":\"', activity('GetAnalysisServerInfo').output.properties.serverFullName , '\",\"managedMode\":\"', activity('GetAnalysisServerInfo').output.properties.managedMode , '\",\"asAdministrators\":{\"members\":',activity('GetAnalysisServerInfo').output.properties.asAdministrators.members ,'},\"gatewayDetails\":{\"gatewayResourceId\":\"', activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayResourceId ,'\",\"gatewayObjectId\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayObjectId,'\",\"dmtsClusterUri\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.dmtsClusterUri,'\"},\"querypoolConnectionMode\":\"All\",\"ipV4FirewallSettings\":{\"firewallRules\":[],\"enablePowerBIService\":true},\"serverMonitorMode\":1},\"name\":\"',activity('GetAnalysisServerInfo').output.name,'\",\"type\":\"Microsoft.AnalysisServices/servers\",\"location\":\"',activity('GetAnalysisServerInfo').output.location,'\",\"sku\":{\"name\":\"',activity('GetAnalysisServerInfo').output.sku.name,'\",\"tier\":\"',activity('GetAnalysisServerInfo').output.sku.tier,'\",\"capacity\":',activity('GetAnalysisServerInfo').output.sku.capacity,'}}')"
                         }
                     ]
                 }

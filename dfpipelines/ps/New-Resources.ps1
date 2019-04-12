@@ -126,6 +126,16 @@ function Get-AuthUrl {
     $val = $resourceparam.value -f $tenantId
     return $val
 }
+function Get-AnalysisServicesResourceUrl {
+    param (
+        [object]$resourceparam
+    )
+    $subscriptionId = Get-SubscriptionId
+    $resourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef "app"
+    $resourceName = Get-FormatedText -strFormat "{0}{1}{2}as01"
+    $val = $resourceparam.value -f $subscriptionId, $resourceGroupName, $resourceName
+    return $val
+}
 
 function Set-ResourceSpecificParameters {
     param (
@@ -141,6 +151,9 @@ function Set-ResourceSpecificParameters {
     }
     elseif ($resourceparam.name -eq "authUrl") {
         $val = Get-AuthUrl -resourceparam $resourceparam
+    }
+    elseif ($resourceparam.name -eq "analysisServicesResourceUrl") {
+        $val = Get-AnalysisServicesResourceUrl -resourceparam $resourceparam
     }
     else {
         throw "resource param $($resourceparam.name) not supported"

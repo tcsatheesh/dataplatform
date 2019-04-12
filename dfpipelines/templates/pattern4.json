@@ -1,0 +1,219 @@
+{
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory. Must be globally unique."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory."
+            }
+        },
+        "pipelineName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pipeline"
+            }
+        },
+        "analysisServicesUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "Url of the analysis services"
+            }
+        },
+        "rolloutEnvironment": {
+            "type": "string",
+            "metadata": {
+                "description": "roll out environment for analysis services"
+            }
+        },
+        "folderName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the folder"
+            }
+        },
+        "analysisServicesResourceUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "REST url for analysis service resources"
+            }
+        },
+        "getIpUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "url to get the IP address"
+            }
+        },
+        "managementResource": {
+            "type": "string",
+            "metadata": {
+                "description": "ARM management resource url"
+            }
+        },
+        "analysisServicesDatabaseRefreshType": {
+            "type": "string"
+        },
+        "analysisServicesDatabaseRefreshMaxParallelism": {
+            "type": "int"
+        },
+        "bodyWithIP": {
+            "type": "string"
+        },
+        "bodyWithoutIP": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'), '/', parameters('pipelineName'))]",
+            "apiVersion": "2017-09-01-preview",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "GetIPAddress",
+                        "type": "WebActivity",
+                        "policy": {
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "typeProperties": {
+                            "url": "[parameters('getIpUrl')]",
+                            "method": "GET"
+                        }
+                    },
+                    {
+                        "name": "GetAnalysisServerInfo",
+                        "type": "WebActivity",
+                        "policy": {
+                            "secureOutput": true,
+                            "secureInput": true
+                        },
+                        "typeProperties": {
+                            "url": "[parameters('analysisServicesResourceUrl')]",
+                            "method": "GET",
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "[parameters('managementResource')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "AddFirewallRule",
+                        "type": "WebActivity",
+                        "dependsOn": [
+                            {
+                                "activity": "GetAnalysisServerInfo",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            },
+                            {
+                                "activity": "GetIPAddress",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": true,
+                            "secureInput": true
+                        },
+                        "typeProperties": {
+                            "url": "[parameters('analysisServicesResourceUrl')]",
+                            "method": "PUT",
+                            "body": {
+                                "value": "[parameters('bodyWithIP')]",
+                                "type": "Expression"
+                            },
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "[parameters('managementResource')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "ProcessAnalysisServices",
+                        "type": "WebActivity",
+                        "dependsOn": [
+                            {
+                                "activity": "AddFirewallRule",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": true,
+                            "secureInput": true
+                        },
+                        "typeProperties": {
+                            "method": "Post",
+                            "url": {
+                                "value": "[parameters('analysisServicesUrl')]",
+                                "type": "Expression"
+                            },
+                            "body": {
+                                "type": "@pipeline().parameters.databaseRefreshType",
+                                "maxparallelism": "[parameters('analysisServicesDatabaseRefreshMaxParallelism')]"
+                            },
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "[parameters('rolloutEnvironment')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "RemoveFirewallRule",
+                        "type": "WebActivity",
+                        "dependsOn": [
+                            {
+                                "activity": "ProcessAnalysisServices",
+                                "dependencyConditions": [
+                                    "Completed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": true,
+                            "secureInput": true
+                        },
+                        "typeProperties": {
+                            "url": "[parameters('analysisServicesResourceUrl')]",
+                            "method": "PUT",
+                            "body": {
+                                "value": "[parameters('bodyWithoutIP')]",
+                                "type": "Expression"
+                            },
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "[parameters('managementResource')]"
+                            }
+                        }
+                    }
+                ],
+                "parameters": {
+                    "windowStartTime": {
+                        "type": "datetime"
+                    },
+                    "windowEndTime": {
+                        "type": "datetime"
+                    },
+                    "databaseRefreshType": {
+                        "type": "string"
+                    },
+                    
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        }
+    ]
+}
