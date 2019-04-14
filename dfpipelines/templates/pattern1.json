@@ -26,6 +26,12 @@
                 "description": "Name of the destination dataset"
             }
         },
+        "destinationDBDatasetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination DB dataset"
+            }
+        },
         "sourceLinkedServiceName": {
             "type": "string",
             "metadata": {
@@ -36,6 +42,12 @@
             "type": "string",
             "metadata": {
                 "description": "Name of the destination Linked Service"
+            }
+        },
+        "destinationDBLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination DB Linked Service"
             }
         },
         "pipelineName": {
@@ -211,6 +223,18 @@
                 "description": "Inner metadata activity folder path"
             }
         },
+        "copyToDocumentDbActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "copy activity to document db"
+            }
+        },
+        "destinationDBCollectionName": {
+            "type": "string",
+            "metadata": {
+                "description": "document db collection name"
+            }
+        },
         "tags": {
             "type": "object"
         }
@@ -254,6 +278,9 @@
                     "type": "LinkedServiceReference"
                 },
                 "parameters": {
+                    "fileName": {
+                        "type": "string"
+                    },
                     "folderPath": {
                         "type": "string"
                     },
@@ -266,11 +293,41 @@
                 },
                 "type": "AzureBlob",
                 "typeProperties": {
-                    "fileName": "",
+                    "fileName": "@dataset().fileName",
                     "folderPath": {
                         "value": "@dataset().folderPath",
                         "type": "Expression"
+                    },
+                    "format": {
+                        "type": "JsonFormat",
+                        "filePattern": "setOfObjects"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "name": "[concat(parameters('resourcename'),'/',parameters('destinationDBDatasetName'))]",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('destinationDBLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "collectionName": {
+                        "type": "string"
+                    },
+                    "windowStartTime": {
+                        "type": "Object"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                },
+                "type": "DocumentDbCollection",
+                "typeProperties": {
+                    "collectionName": "@dataset().collectionName"
                 }
             }
         },
@@ -293,6 +350,7 @@
                                 "referenceName": "[parameters('destinationDatasetName')]",
                                 "type": "DatasetReference",
                                 "parameters": {
+                                    "fileName" : "",
                                     "folderPath": "[parameters('destinationFolderPath')]",
                                     "windowStartTime": "@pipeline().parameters.windowStartTime"
                                 }
@@ -360,7 +418,8 @@
             "apiVersion": "2018-06-01",
             "dependsOn": [
                 "[parameters('sourceDatasetName')]",
-                "[parameters('destinationDatasetName')]"
+                "[parameters('destinationDatasetName')]",
+                "[parameters('destinationDBDatasetName')]"
             ],
             "properties": {
                 "activities": [
@@ -372,6 +431,7 @@
                                 "referenceName": "[parameters('destinationDatasetName')]",
                                 "type": "DatasetReference",
                                 "parameters": {
+                                    "fileName" : "",
                                     "folderPath": "[parameters('metadataactivity2_folderPath')]",
                                     "windowStartTime": "@pipeline().parameters.windowStartTime"
                                 }
@@ -429,6 +489,52 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "[parameters('copyToDocumentDbActivityName')]",
+                        "type": "Copy",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('forEachActivityName2')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BlobSource",
+                                "recursive": true
+                            },
+                            "sink": {
+                                "type": "DocumentDbCollectionSink",
+                                "nestingSeparator": ".",
+                                "writeBatchSize": 10000,
+                                "writeBehavior": "upsert"
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "[parameters('destinationDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "fileName" : "*.json",
+                                    "folderPath": "[parameters('metadataactivity2_folderPath')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "[parameters('destinationDBDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "collectionName" : "[parameters('destinationDBCollectionName')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            }
+                        ]
                     }
                 ],
                 "parameters": {
@@ -485,6 +591,7 @@
                                 "referenceName": "[parameters('destinationDataSetName')]",
                                 "type": "DatasetReference",
                                 "parameters": {
+                                    "fileName" : "",
                                     "folderPath": "[parameters('destinationFolderPath')]",
                                     "windowStartTime": "@pipeline().parameters.windowStartTime"
                                 }
@@ -545,8 +652,6 @@
             "name": "[concat(parameters('resourcename'),'/',parameters('triggerName'))]",
             "apiVersion": "2018-06-01",
             "dependsOn": [
-                "[parameters('sourceDatasetName')]",
-                "[parameters('destinationDatasetName')]",
                 "[parameters('pipelineName')]"
             ],
             "properties": {

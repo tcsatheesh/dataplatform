@@ -1,0 +1,12 @@
+<policy>
+    <type>mort</type>
+    <customer>
+        <id>00001</id>
+    </customer>
+    <cars>
+        <car>
+            <model>Focus</model>
+            <brand>Ford1</brand>
+        </car>
+    </cars>
+</policy>

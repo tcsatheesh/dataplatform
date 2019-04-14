@@ -203,14 +203,24 @@
                             "value": "{0}{1}{2}_dest_ds"
                         },
                         {
+                            "name": "destinationDBDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_db_ds"
+                        },
+                        {
                             "name": "sourceLinkedServiceName",
                             "type": "format",
-                            "value": "{0}{1}{2}nestgdia"
+                            "value": "{0}{1}{2}nestgacc"
                         },
                         {
                             "name": "destinationLinkedServiceName",
                             "type": "format",
-                            "value": "{0}{1}{2}nestgdia"
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationDBLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}cmdb01"
                         },
                         {
                             "name": "pipelineName",
@@ -255,7 +265,7 @@
                         {
                             "name": "forEachOutputIter",
                             "type": "format",
-                            "value": "activity('{0}{1}{2}_metadata_activity_1').output.childItems"
+                            "value": "@activity('{0}{1}{2}_metadata_activity_1').output.childItems"
                         },
                         {
                             "name": "metaDataActivityName2",
@@ -270,7 +280,7 @@
                         {
                             "name": "forEachOutputIter2",
                             "type": "format",
-                            "value": "activity('{0}{1}{2}_metadata_activity_2').output.childItems"
+                            "value": "@activity('{0}{1}{2}_metadata_activity_2').output.childItems"
                         },
                         {
                             "name": "innerPipelineName2",
@@ -305,7 +315,7 @@
                         {
                             "name": "triggerStartTime",
                             "type": "utcdatetime",
-                            "value": "-1",
+                            "value": "-2",
                             "format": "yyyy-MM-ddTHH:00:00Z"
                         },
                         {
@@ -337,6 +347,16 @@
                             "name": "functionAppParameter",
                             "type": "value",
                             "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/',pipeline().parameters.item.name,'/',item().name)"
+                        },
+                        {
+                            "name": "copyToDocumentDbActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_to_documentdb_activity"
+                        },
+                        {
+                            "name": "destinationDBCollectionName",
+                            "type": "value",
+                            "value": "policy"
                         }
                     ]
                 },

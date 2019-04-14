@@ -1,0 +1,12 @@
+<policy>
+    <type>pmc</type>
+    <customer>
+        <id>00001</id>
+    </customer>
+    <cars>
+        <car>
+            <model>Focus</model>
+            <brand>Ford2</brand>
+        </car>
+    </cars>
+</policy>

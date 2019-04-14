@@ -14,10 +14,16 @@
         "destinationDatasetName": {
             "value": ""
         },
+        "destinationDBDatasetName": {
+            "value": ""
+        },
         "sourceLinkedServiceName": {
             "value": ""
         },
         "destinationLinkedServiceName": {
+            "value": ""
+        },
+        "destinationDBLinkedServiceName": {
             "value": ""
         },
         "pipelineName": {
@@ -102,6 +108,12 @@
             "value": ""
         },
         "metadataactivity2_folderPath": {
+            "value": ""
+        },
+        "copyToDocumentDbActivityName": {
+            "value": ""
+        },
+        "destinationDBCollectionName": {
             "value": ""
         },
         "tags": {

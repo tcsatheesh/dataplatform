@@ -1,0 +1,12 @@
+<policy>
+    <type>pmc</type>
+    <customer>
+        <id>00003</id>
+    </customer>
+    <cars>
+        <car>
+            <model>325</model>
+            <brand>BMW</brand>
+        </car>
+    </cars>
+</policy>

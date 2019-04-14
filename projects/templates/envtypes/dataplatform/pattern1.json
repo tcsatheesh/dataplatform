@@ -1,0 +1,39 @@
+{
+    "type": "pattern1",
+    "parent": "",
+    "resources": [
+        
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "storageconnectionstring"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "storage"
+                }
+            ]
+        },
+        {
+            "resourceType": "linkedservices",
+            "resources": [
+                {
+                    "type": "storage"
+                }
+            ]
+        },
+        {
+            "resourceType": "dfpipelines",
+            "resources": [
+                {
+                    "type": "pattern1"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+<policy>
+    <type>mort</type>
+    <customer>
+        <id>00002</id>
+    </customer>
+    <cars>
+        <car>
+            <model>Zafira</model>
+            <brand>Vauxhall</brand>
+        </car>
+    </cars>
+</policy>
