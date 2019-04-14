@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Xml;
@@ -56,11 +57,18 @@ namespace itdplt.function
                 CloudBlockBlob blockBlob = cloudBlobContainer.GetBlockBlobReference(blobName);
                 string xmlFileName = Path.GetTempFileName();
                 await blockBlob.DownloadToFileAsync(xmlFileName, FileMode.Create);
+
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlFileName);
+
                 string jsonFileName = blobName.Replace(".xml", ".json");
                 log.LogInformation("Json File Name: {jsonFileName}", jsonFileName);
+
                 string json = JsonConvert.SerializeXmlNode(doc);
+                dynamic jsonDocument = JObject.Parse(json);
+                jsonDocument.id = doc.SelectSingleNode("//policy/id").InnerText;
+                json = jsonDocument.ToString();
+
                 blockBlob = cloudBlobContainer.GetBlockBlobReference(jsonFileName);
                 await blockBlob.UploadTextAsync(json);
             }
