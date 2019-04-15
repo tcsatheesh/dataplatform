@@ -535,6 +535,37 @@
                                 }
                             }
                         ]
+                    },
+                    {
+                        "name": "DeleteSourceData",
+                        "type": "Delete",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('copyToDocumentDbActivityName')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "typeProperties": {
+                            "dataset": {
+                                "referenceName": "[parameters('sourceDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            },
+                            "recursive": false,
+                            "maxConcurrentConnections": 1,
+                            "enableLogging": true,
+                            "logStorageSettings": {
+                                "linkedServiceName": {
+                                    "referenceName": "[parameters('sourceLinkedServiceName')]",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "path": "adflog"
+                            }
+                        }
                     }
                 ],
                 "parameters": {
