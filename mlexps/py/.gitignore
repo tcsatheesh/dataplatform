@@ -1,5 +1,5 @@
 venv35
-venv35t
+venv36
 aml_config
 data
 outputs
@@ -7,3 +7,4 @@ outputs
 .vscode
 __pycache__
 assets
+.ipynb_checkpoints

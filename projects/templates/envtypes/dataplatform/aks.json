@@ -1,0 +1,34 @@
+{
+    "type": "aks",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "principals",
+            "resources": [
+                {
+                    "type": "aksServerPrincipal"
+                },
+                {
+                    "type": "aksClientPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "clientsecrets",
+            "resources": [
+                {
+                    "type": "password",
+                    "subtype": "aksServerPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "aks",
+            "resources": [
+                {
+                    "type": "aks"
+                }
+            ]
+        }
+    ]
+}

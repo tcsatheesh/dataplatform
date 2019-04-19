@@ -46,7 +46,7 @@
             "value": ""
         },
         "kubernetesVersion": {
-            "value": "1.11.4"
+            "value": ""
         },
         "enableHttpApplicationRouting": {
             "value": true

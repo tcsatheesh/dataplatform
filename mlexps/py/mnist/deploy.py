@@ -7,7 +7,6 @@ from azureml.core import Experiment
 from azureml.core.compute import AmlCompute
 from azureml.core.compute import ComputeTarget
 from azureml.core.model import Model
-import os
 import collections
 import pickle
 from sklearn.externals import joblib
