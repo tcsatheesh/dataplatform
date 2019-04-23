@@ -313,6 +313,51 @@
                             "value": "64"
                         }
                     ]
+                },
+                {
+                    "type" : "ubuntudlvm", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm01",
+                    "location": "North Europe",
+                    "templateFileName": "dlvm.json",
+                    "parameterFileName": "dlvm.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUsername",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}vm01-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "vmSize",
+                            "type": "value",
+                            "value": "Standard_NC6"
+                        },
+                        {
+                            "name": "StorageAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nstgaccv1"
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Standard_LRS"
+                        },
+                        {
+                            "name": "osType",
+                            "type": "value",
+                            "value": "UbuntuLinux"
+                        }
+                    ]
                 }
             ]
         }
