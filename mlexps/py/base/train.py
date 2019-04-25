@@ -54,13 +54,17 @@ def createCompute(ws, args):
         #     print(compute_target.get_status().serialize())
     return compute_target
 
-def createEstimator(ws, args, folders):
-    ds = ws.get_default_datastore()
+def createEstimator(ws, args, folders):    
+    data_folder = args.remoteDataFolder
+    if (args.mountDataStore == True):
+        ds = ws.get_default_datastore()
+        data_folder = ds.path(args.remoteDataFolder).as_mount(),
+
     if (args.verbose):
-        print("Remote data folder         : {0}".format(ds.path(args.remoteDataFolder).as_mount()))
-        
+        print("Remote data folder         : {0}".format(data_folder))
+
     script_params = {
-        '--data-folder': ds.path(args.remoteDataFolder).as_mount(),
+        '--data-folder': data_folder,
         '--modelFilePath': args.modelFilePath        
     }
 
@@ -78,6 +82,7 @@ def createEstimator(ws, args, folders):
                     script_params=script_params,
                     compute_target=compute_target,
                     entry_script=args.entryScript,
+                    use_gpu=args.useGPU,
                     user_managed=args.userManaged,
                     use_docker=args.useDocker,
                     conda_packages=conda_packages,
@@ -119,11 +124,14 @@ if __name__ == '__main__':
     parser.add_argument('--clusterSku', default='Standard_D2_v2')
     parser.add_argument('--minNodes', type=int, default=0)
     parser.add_argument('--maxNodes', type=int, default=1)
+    parser.add_argument('--useGPU', default=False)
     parser.add_argument('--userManaged', default=False)
     parser.add_argument('--useDocker', default=True)
+    parser.add_argument('--mountDataStore', default=True)
     parser.add_argument('--entryScript', default='train.py')
     parser.add_argument('--conda_dependencies_file_path', default='train_environment.yaml')
     parser.add_argument('--pip_requirements_file_path', default='train_requirements.txt')
+    parser.add_argument('--uploadDataToCloud', default=True)
     parser.add_argument('--verbose', dest='verbose', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     args = parser.parse_args()
@@ -155,9 +163,11 @@ if __name__ == '__main__':
         print ("Model output file path     : {0}".format(args.modelFilePath))
         print ("Conda dependencies         : {0}".format(args.conda_dependencies_file_path))
         print ("Pip dependencies           : {0}".format(args.pip_requirements_file_path))
-        print ("Verbose value              : {0}".format(args.verbose))      
+        print ("Upload data to cloud       : {0}".format(args.uploadDataToCloud))
+        print ("Verbose value              : {0}".format(args.verbose))
 
     svc_pr = utils.loadAuthCredentials(args)
     ws = Workspace.from_config(path=args.config, auth=svc_pr)
-    uploadDataToCloud(ws, args, folders)
+    if (args.uploadDataToCloud == True):
+        uploadDataToCloud(ws, args, folders)
     createExperiment(ws, args,folders)    
