@@ -44,7 +44,7 @@ def score(args, folders):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--scoring_uri', default='http://52.180.92.74:80/score')
+    parser.add_argument('--scoring_uri', default='http://13.86.234.109:80/score')
     parser.add_argument('--selected_item', type=int, default=0)
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')

@@ -10,7 +10,7 @@ from azureml.core.model import Model
 def init():
     global model
     # retrieve the path to the model file using the model name
-    model_path = Model.get_model_path('sklearn_mnist')
+    model_path = Model.get_model_path('mnist2')
     model = joblib.load(model_path)
 
 def run(raw_data):

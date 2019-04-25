@@ -1,21 +1,20 @@
-import argparse
-import urllib.request
 import os
-from azureml.train.estimator import Estimator
-from azureml.core import Workspace
-from azureml.core import Experiment
-from azureml.core.compute import AmlCompute
-from azureml.core.compute import ComputeTarget
-from azureml.core.model import Model
-import os
-import collections
+import json
 import pickle
+import argparse
+import collections
+import urllib.request
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 from sklearn.externals import joblib
 from sklearn.metrics import confusion_matrix
 from scripts.utils import load_data
-import numpy as np
-import matplotlib.pyplot as plt
- 
+
+from azureml.core import Workspace
+from azureml.core.model import Model
+from azureml.core.authentication import ServicePrincipalAuthentication
 
 def getwd():
     currentFile = __file__
@@ -80,25 +79,35 @@ def showConfusionMatrix(conf_mx):
     plt.savefig('conf.png')
     plt.show()
 
+def loadAuthCredentials(args):
+    with open(args.spconfig) as jsonFile:
+        data = json.load(jsonFile)
+    tenantid = data['tenantid']
+    applicationid = data['applicationid']
+    password = data['password']
+    if (args.verbose):
+        print ("Tenant Id                  : {0}".format(tenantid))
+        print ("Application Id is          : {0}".format(applicationid))
+
+    svc_pr = ServicePrincipalAuthentication(tenantid,
+                                            applicationid,
+                                            password)
+    return svc_pr    
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--config')
-    parser.add_argument('--experimentName', default='exp02')
-    parser.add_argument('--clusterName', default='cpucluster')
-    parser.add_argument('--minNodes', type=int, default=0)
-    parser.add_argument('--maxNodes', type=int, default=1)
-    parser.add_argument('--clusterSku', default='Standard_D2_v2')
-    parser.add_argument('--modelName', default='sklearn_mnist')
-    parser.add_argument('--entryScript', default='mnist_train.py')
-    parser.add_argument('--condaPackages', default='scikit-learn')
-    parser.add_argument('--dsDataFolder', default='mnist')
-    parser.add_argument('--regularization', type=float, default=0.04)
+    parser.add_argument('--config', default='..\\aml_config\\config.json')
+    parser.add_argument('--spconfig', default='..\\aml_config\\spconfig.json')
+    parser.add_argument('--modelName', default='mnist2')
     parser.add_argument('--modelPath', default='outputs/sklearn_mnist_model.pkl')
     parser.add_argument('--modelFileName', default='sklearn_mnist_model.pkl')
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     args = parser.parse_args()
     folders = createFolders()
+    args.config = os.path.join(getwd(),args.config)
+    args.spconfig = os.path.join(getwd(),args.spconfig)
+
     if (args.verbose):
         print ("config file: {0}".format(args.config))
         print ("verbose value: {0}".format(args.verbose))
@@ -106,7 +115,8 @@ if __name__ == '__main__':
         print ("local data folder: {0}".format(folders.data_folder))
         print ("local output folder: {0}".format(folders.output_folder))
         
-    ws = Workspace.from_config(path=args.config)
+    svc_pr = loadAuthCredentials(args)        
+    ws = Workspace.from_config(path=args.config, auth=svc_pr)
     downloadModel(ws,args,folders)
     conf_mx = teestModel(args,folders)
     showConfusionMatrix(conf_mx)

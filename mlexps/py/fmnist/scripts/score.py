@@ -15,7 +15,7 @@ from azureml.core.model import Model
 def init():
     global model
     # retrieve the path to the model file using the model name
-    model_path = Model.get_model_path('tf_fmnist')
+    model_path = Model.get_model_path('fmnist')
     model = keras.models.load_model(model_path)
 
 def run(raw_data):

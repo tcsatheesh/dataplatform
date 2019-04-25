@@ -1,26 +1,21 @@
 from __future__ import absolute_import, division, print_function
 
+import os
+import json
+import pickle
+import collections
 import argparse
 import urllib.request
-import os
-from azureml.train.estimator import Estimator
-from azureml.core import Workspace
-from azureml.core import Experiment
-from azureml.core.compute import AmlCompute
-from azureml.core.compute import ComputeTarget
-from azureml.core.model import Model
-import os
-import collections
-import pickle
 import numpy as np
 import matplotlib.pyplot as plt
+
+from azureml.core import Workspace
+from azureml.core.model import Model
+from azureml.core.authentication import ServicePrincipalAuthentication
 
 # TensorFlow and tf.keras
 import tensorflow as tf
 from tensorflow import keras
-
-
- 
 
 def getwd():
     currentFile = __file__
@@ -38,6 +33,21 @@ def createFolders():
     folders = collections.namedtuple('Folders', ['script_folder','data_folder', 'output_folder'])
     f = folders(script_folder=script_folder, data_folder=data_folder, output_folder=output_folder)
     return f
+
+def loadAuthCredentials(args):
+    with open(args.spconfig) as jsonFile:
+        data = json.load(jsonFile)
+    tenantid = data['tenantid']
+    applicationid = data['applicationid']
+    password = data['password']
+    if (args.verbose):
+        print ("Tenant Id                  : {0}".format(tenantid))
+        print ("Application Id is          : {0}".format(applicationid))
+
+    svc_pr = ServicePrincipalAuthentication(tenantid,
+                                            applicationid,
+                                            password)
+    return svc_pr    
 
 def downloadModel(ws,args,folders):
     file_path = os.path.join(folders.output_folder, args.modelFileName)
@@ -107,17 +117,9 @@ def testModel(args, folders):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--config')
-    parser.add_argument('--experimentName', default='exp03')
-    parser.add_argument('--clusterName', default='cpucluster')
-    parser.add_argument('--minNodes', type=int, default=0)
-    parser.add_argument('--maxNodes', type=int, default=1)
-    parser.add_argument('--clusterSku', default='Standard_D2_v2')
-    parser.add_argument('--modelName', default='tf_fmnist')
-    parser.add_argument('--entryScript', default='fmnist_train.py')
-    parser.add_argument('--condaPackages', default=['tensorflow','matplotlib'])
-    parser.add_argument('--dsDataFolder', default='fmnist')
-    parser.add_argument('--regularization', type=float, default=0.04)
+    parser.add_argument('--config', default='..\\aml_config\\config.json')
+    parser.add_argument('--spconfig', default='..\\aml_config\\spconfig.json')
+    parser.add_argument('--modelName', default='fmnist')
     parser.add_argument('--modelPath', default='outputs/fmnist.h5')
     parser.add_argument('--modelFileName', default='fmnist.h5')
     parser.add_argument('--selected_item', type=int, default=0)
@@ -132,6 +134,7 @@ if __name__ == '__main__':
         print ("local data folder: {0}".format(folders.data_folder))
         print ("local output folder: {0}".format(folders.output_folder))
         
-    ws = Workspace.from_config(path=args.config)
+    svc_pr = loadAuthCredentials(args)        
+    ws = Workspace.from_config(path=args.config, auth=svc_pr)
     downloadModel(ws,args,folders)
     testModel(args,folders)

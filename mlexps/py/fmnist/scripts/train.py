@@ -11,6 +11,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from azureml.core import Run
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--data-folder', type=str, dest='data_folder', help='data folder mounting point')
+parser.add_argument('--modelFilePath', type=str, dest='output_filename', default="outputs/model.pb", help='model output folder')
+args = parser.parse_args()
+
 print(tf.__version__)
 
 fashion_mnist = keras.datasets.fashion_mnist
@@ -62,4 +67,4 @@ run = Run.get_context()
 run.log('Accuracy', np.float(test_acc))
 print('\nTest accuracy:', test_acc)
 
-model.save('outputs/fmnist.h5')
+model.save(args.output_filename)

@@ -8,3 +8,5 @@ outputs
 __pycache__
 assets
 .ipynb_checkpoints
+logs
+
