@@ -59,7 +59,7 @@ if __name__ == '__main__':
     utils.setConfigFiles(args)
     
     if (args.verbose):
-        print ("Current working directory  : {0}".format(utils.getcwd(args)))
+        print ("Current working directory  : {0}".format(utils.getcwd()))
         print ("Experiment name            : {0}".format(args.experimentName))
         print ("Model name                 : {0}".format(args.modelName))
         print ("Project root folder        : {0}".format(args.projectFolder))

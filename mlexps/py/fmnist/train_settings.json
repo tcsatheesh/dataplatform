@@ -1,0 +1,22 @@
+{
+    "experimentName": "fmnist",
+    "modelName": "fmnist",
+    "remoteDataFolder" : "fmnist",
+    "modelFilePath": "outputs/fmnist.h5",
+    "config" : "config.json",
+    "spconfig" : "spconfig.json",
+    "aml_config_dir" : "aml_config",
+    "clusterName" : "cpucluster",
+    "clusterSku" : "Standard_D2_v2",
+    "minNodes" : 0,
+    "maxNodes" : 1,
+    "useGPU" : false,
+    "userManaged" : false,
+    "useDocker" : true,
+    "mountDataStore" : true,
+    "entryScript": "train.py",
+    "conda_dependencies_file_path": "train_environment.yaml",
+    "pip_requirements_file_path" : "train_requirements.txt",
+    "uploadDataToCloud" : true,
+    "verbose": true
+}

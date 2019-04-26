@@ -4,7 +4,7 @@ import collections
 
 from azureml.core.authentication import ServicePrincipalAuthentication
 
-def getcwd(args):
+def getcwd():
     currentFile = __file__
     realPath = os.path.realpath(currentFile)
     dirPath = os.path.dirname(realPath)
@@ -22,12 +22,12 @@ def getFolders(args):
     return f
 
 def getProjectFolderFullPath(args):
-    cwd = getcwd(args)
+    cwd = getcwd()
     parentdir = os.path.dirname(cwd)
     return os.path.join(parentdir, args.projectFolder)
 
 def setConfigFiles(args):
-    cwd = getcwd(args)
+    cwd = getcwd()
     parentdir = os.path.dirname(cwd)    
     args.config = os.path.join(parentdir,args.aml_config_dir, args.config)
     args.spconfig = os.path.join(parentdir,args.aml_config_dir,args.spconfig)
@@ -51,3 +51,4 @@ def loadAuthCredentials(args):
                                             applicationid,
                                             password)
     return svc_pr
+

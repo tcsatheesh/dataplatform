@@ -14,6 +14,45 @@ from azureml.core.compute import ComputeTarget
 from azureml.core.authentication import ServicePrincipalAuthentication
 
 
+def parseArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--projectFolder', required=True)
+    parser.add_argument('--settingsFile', default="train_settings.json")
+    argsmain = parser.parse_args()        
+    
+    projectFolder = utils.getProjectFolderFullPath(argsmain)
+    settingsFilePath = os.path.join(projectFolder, argsmain.settingsFile)
+    print ("Settings File Path         : {0}".format(settingsFilePath))
+    with open(settingsFilePath) as settingsFile:
+        data = json.load(settingsFile)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--projectFolder',                  default=argsmain.projectFolder)
+    parser.add_argument('--settingsFile',                    default=argsmain.settingsFile)
+    parser.add_argument('--experimentName',                 default=data['experimentName'])
+    parser.add_argument('--modelName',                      default=data['modelName'])
+    parser.add_argument('--remoteDataFolder',               default=data['remoteDataFolder'])
+    parser.add_argument('--modelFilePath',                  default=data['modelFilePath'])
+    parser.add_argument('--config',                         default=data['config'])
+    parser.add_argument('--spconfig',                       default=data['spconfig'])
+    parser.add_argument('--aml_config_dir',                 default=data['aml_config_dir'])
+    parser.add_argument('--clusterName',                    default=data['clusterName'])
+    parser.add_argument('--clusterSku',                     default=data['clusterSku'])
+    parser.add_argument('--minNodes', type=int,             default=data['minNodes'])
+    parser.add_argument('--maxNodes', type=int,             default=data['maxNodes'])
+    parser.add_argument('--useGPU',   type=bool,            default=data['useGPU'])
+    parser.add_argument('--userManaged', type=bool,         default=data['userManaged'])
+    parser.add_argument('--useDocker', type=bool,           default=data['useDocker'])
+    parser.add_argument('--mountDataStore', type=bool,      default=data['mountDataStore'])
+    parser.add_argument('--entryScript',                    default=data['entryScript'])
+    parser.add_argument('--conda_dependencies_file_path',   default=data['conda_dependencies_file_path'])
+    parser.add_argument('--pip_requirements_file_path',     default=data['pip_requirements_file_path'])
+    parser.add_argument('--uploadDataToCloud', type=bool,   default=data['uploadDataToCloud'])
+    parser.add_argument('--verbose', type=bool,             default=data['verbose'])
+    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
+    args = parser.parse_args()
+    return args
+
 def uploadDataToCloud(ws,args,folders):
     ds = ws.get_default_datastore()
     print ("Datastore type             : {0}".format(ds.datastore_type))
@@ -58,7 +97,7 @@ def createEstimator(ws, args, folders):
     data_folder = args.remoteDataFolder
     if (args.mountDataStore == True):
         ds = ws.get_default_datastore()
-        data_folder = ds.path(args.remoteDataFolder).as_mount(),
+        data_folder = ds.path(args.remoteDataFolder).as_mount()
 
     if (args.verbose):
         print("Remote data folder         : {0}".format(data_folder))
@@ -111,30 +150,8 @@ def createExperiment(ws, args, folders):
     print ("Model Version              : {0}".format(model.version))
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--projectFolder', required=True)
-    parser.add_argument('--experimentName', required=True)
-    parser.add_argument('--modelName', required=True)
-    parser.add_argument('--remoteDataFolder', required=True)
-    parser.add_argument('--modelFilePath', required=True)
-    parser.add_argument('--config', default='config.json')
-    parser.add_argument('--spconfig', default='spconfig.json')
-    parser.add_argument('--aml_config_dir', default='aml_config')
-    parser.add_argument('--clusterName', default='cpucluster')
-    parser.add_argument('--clusterSku', default='Standard_D2_v2')
-    parser.add_argument('--minNodes', type=int, default=0)
-    parser.add_argument('--maxNodes', type=int, default=1)
-    parser.add_argument('--useGPU', default=False)
-    parser.add_argument('--userManaged', default=False)
-    parser.add_argument('--useDocker', default=True)
-    parser.add_argument('--mountDataStore', default=True)
-    parser.add_argument('--entryScript', default='train.py')
-    parser.add_argument('--conda_dependencies_file_path', default='train_environment.yaml')
-    parser.add_argument('--pip_requirements_file_path', default='train_requirements.txt')
-    parser.add_argument('--uploadDataToCloud', default=True)
-    parser.add_argument('--verbose', dest='verbose', action='store_true')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
-    args = parser.parse_args()
+
+    args = parseArgs()
 
     args.projectFolder = utils.getProjectFolderFullPath(args)
     folders = utils.getFolders(args)
@@ -142,7 +159,7 @@ if __name__ == '__main__':
     utils.setDependencies(args,folders)
     
     if (args.verbose):
-        print ("Current working directory  : {0}".format(utils.getcwd(args)))
+        print ("Current working directory  : {0}".format(utils.getcwd()))
         print ("Experiment name            : {0}".format(args.experimentName))
         print ("Model name                 : {0}".format(args.modelName))
         print ("Project root folder        : {0}".format(args.projectFolder))
