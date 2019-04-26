@@ -49,7 +49,7 @@ if __name__ == '__main__':
     parser.add_argument('--cpuCores', type=int, default=1)
     parser.add_argument('--memoryGB', type=int, default=1)
     parser.add_argument('--scoringScript', default='score.py') 
-    parser.add_argument('--environmentFileName', default='score_environment.yml')   
+    parser.add_argument('--environmentFileName', default='score_environment.yaml')   
     parser.add_argument('--verbose', dest='verbose', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     args = parser.parse_args()
