@@ -1,4 +1,5 @@
 import os
+import json
 import utils
 import pickle
 import argparse
@@ -14,6 +15,39 @@ from azureml.core.model import Model
 from azureml.core.webservice import AciWebservice
 from azureml.core.webservice import Webservice
 from azureml.core.image import ContainerImage
+
+
+def parseArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--projectFolder', required=True)
+    parser.add_argument('--settingsFile', default="score_settings.json")
+    argsmain = parser.parse_args()        
+    
+    projectFolder = utils.getProjectFolderFullPath(argsmain)
+    settingsFilePath = os.path.join(projectFolder, argsmain.settingsFile)
+    print ("Settings File Path         : {0}".format(settingsFilePath))
+    with open(settingsFilePath) as settingsFile:
+        data = json.load(settingsFile)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--projectFolder',                  default=argsmain.projectFolder)
+    parser.add_argument('--settingsFile',                   default=argsmain.settingsFile)
+    parser.add_argument('--experimentName',                 default=data['experimentName'])
+    parser.add_argument('--modelName',                      default=data['modelName'])
+    parser.add_argument('--modelFilePath',                  default=data['modelFilePath'])
+    parser.add_argument('--modelFileName',                  default=data['modelFileName'])
+    parser.add_argument('--webserviceName',                 default=data['webserviceName'])
+    parser.add_argument('--config',                         default=data['config'])
+    parser.add_argument('--spconfig',                       default=data['spconfig'])
+    parser.add_argument('--aml_config_dir',                 default=data['aml_config_dir'])
+    parser.add_argument('--cpuCores', type=int,             default=data['cpuCores'])
+    parser.add_argument('--memoryGB', type=int,             default=data['memoryGB'])
+    parser.add_argument('--scoringScript',                  default=data['scoringScript'])
+    parser.add_argument('--environmentFileName',            default=data['environmentFileName'])
+    parser.add_argument('--verbose', type=bool,             default=data['verbose'])
+    parser.add_argument('--version', action='version',      version='%(prog)s 1.0')
+    args = parser.parse_args()
+    return args
 
 def deployWebservice(ws,args,folders):
     # this section requries that the processing is done in the directory where the execution script and the conda_file resides
@@ -36,23 +70,7 @@ def deployWebservice(ws,args,folders):
     return service.scoring_uri
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--projectFolder', required=True)
-    parser.add_argument('--experimentName', required=True)
-    parser.add_argument('--modelName', required=True)
-    parser.add_argument('--modelFilePath', required=True)
-    parser.add_argument('--modelFileName', required=True)
-    parser.add_argument('--webserviceName', required=True)
-    parser.add_argument('--config', default='config.json')
-    parser.add_argument('--spconfig', default='spconfig.json')
-    parser.add_argument('--aml_config_dir', default='aml_config')
-    parser.add_argument('--cpuCores', type=int, default=1)
-    parser.add_argument('--memoryGB', type=int, default=1)
-    parser.add_argument('--scoringScript', default='score.py') 
-    parser.add_argument('--environmentFileName', default='score_environment.yaml')   
-    parser.add_argument('--verbose', dest='verbose', action='store_true')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
-    args = parser.parse_args()
+    args = parseArgs()
 
     args.projectFolder = utils.getProjectFolderFullPath(args)
     folders = utils.getFolders(args)
