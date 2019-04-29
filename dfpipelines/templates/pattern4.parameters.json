@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "resourceName": {
+        "resourcename": {
             "value": ""
         },
         "location": {
@@ -11,34 +11,34 @@
         "pipelineName": {
             "value": ""
         },
-        "analysisServicesUrl": {
+        "activityName": {
             "value": ""
         },
-        "rolloutEnvironment": {
+        "url": {
+            "value": ""
+        },
+        "messageHeader": {
+            "value": ""
+        },
+        "body": {
+            "value": ""
+        },
+        "automationAccountName": {
+            "value": ""
+        },
+        "runbookName": {
+            "value": ""
+        },
+        "webhookName": {
+            "value": ""
+        },
+        "webhookExpiryTime": {
+            "value": ""
+        },
+        "runOn": {
             "value": ""
         },
         "folderName": {
-            "value": ""
-        },
-        "analysisServicesResourceUrl": {
-            "value": ""
-        },
-        "getIpUrl": {
-            "value": ""
-        },
-        "managementResource": {
-            "value": ""
-        },
-        "analysisServicesDatabaseRefreshType": {
-            "value": ""
-        },
-        "analysisServicesDatabaseRefreshMaxParallelism": {
-            "value": ""
-        },
-        "bodyWithIP": {
-            "value": ""
-        },
-        "bodyWithoutIP": {
             "value": ""
         }
     }

@@ -3,186 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resources": {
-            "value": [
-                {
-                    "type": "salesforce",
-                    "datafactoryResourceGroup": {
-                        "name": "",
-                        "ref": {
-                            "resourceType": "resourcegroups",
-                            "type": "app",
-                            "property": "name"
-                        }
-                    },
-                    "dataFactory": {
-                        "name": "",
-                        "ref": {
-                            "resourceType": "adfs",
-                            "type": "adf",
-                            "property": "name"
-                        }
-                    },
-                    "resources": {
-                        "linkedservices": [
-                            {
-                                "name": "Salesforce",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\linkedservice.json",
-                                "parameters": [
-                                    {
-                                        "type": "usernameSecretName",
-                                        "ref": {
-                                            "resourceType": "keyvaultsecrets",
-                                            "typeFilter": "value",
-                                            "subtypeFilter": "salesforce.com.username",
-                                            "property": "name"
-                                        }
-                                    },
-                                    {
-                                        "type": "passwordSecretName",
-                                        "ref": {
-                                            "resourceType": "keyvaultsecrets",
-                                            "typeFilter": "value",
-                                            "subtypeFilter": "salesforce.com.password",
-                                            "property": "name"
-                                        }
-                                    },
-                                    {
-                                        "type": "securityTokenSecretName",
-                                        "ref": {
-                                            "resourceType": "keyvaultsecrets",
-                                            "typeFilter": "value",
-                                            "subtypeFilter": "salesforce.com.securitytoken",
-                                            "property": "name"
-                                        }
-                                    },
-                                    {
-                                        "type": "keyvault",
-                                        "ref": {
-                                            "resourceType": "keyvaults",
-                                            "typeFilter": "appkeyvault",
-                                            "property": "name"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "inputdatasets": [
-                            {
-                                "name": "SalesforceDataset",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\input1.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "value": "Salesforce"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "ADLSLookupDataset",
-                                "type": "foreach",
-                                "templateFile": "salesforce\\input2.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "ref": {
-                                            "resourceType": "adlstores",
-                                            "typeFilter": "adlstore",
-                                            "property": "name"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "outputdatasets": [
-                            {
-                                "name": "ADLSDataSetSF",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\output.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "ref": {
-                                            "resourceType": "adlstores",
-                                            "typeFilter": "adlstore",
-                                            "property": "name"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "pipelines": [
-                            {
-                                "name": "SalesforcePipeline",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\pipeline1.json",
-                                "parameters": [
-                                    {
-                                        "type": "inputdataset",
-                                        "value": "SalesforceDataset"
-                                    },
-                                    {
-                                        "type": "outputdataset",
-                                        "value": "ADLSDataSetSF"
-                                    },
-                                    {
-                                        "type": "dffolderName",
-                                        "value": "Salesforce"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "SalesforcePipeline-ForEach",
-                                "type": "foreach",
-                                "templateFile": "salesforce\\pipeline2.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "value": "ADLSLookupDataset"
-                                    },
-                                    {
-                                        "type": "dffolderName",
-                                        "value": "Salesforce"
-                                    }
-                                ]
-                            }                            
-                        ],
-                        "triggers": [
-                            {
-                                "name": "SalesForceTrigger-ForEach",
-                                "type": "foreach",
-                                "templateFile": "salesforce\\trigger.json",
-                                "parameters": [
-                                    {
-                                        "type": "startTime",
-                                        "value": "2018-07-02T16:00:00Z"
-                                    },
-                                    {
-                                        "type": "interval",
-                                        "value": "1"
-                                    },
-                                    {
-                                        "type": "outputFolderPath",
-                                        "value": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')"
-                                    },
-                                    {
-                                        "type": "pipelineName",
-                                        "value": "SalesforcePipeline-ForEach"
-                                    },
-                                    {
-                                        "type": "inputFolderPath",
-                                        "value": "/stage/lookup/"
-                                    },
-                                    {
-                                        "type": "inputFileName",
-                                        "value": "dimtables.json"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                },
+            "value": [                
                 {
                     "type": "pattern1",
                     "resourceType": "dfpipelines",
@@ -361,79 +182,6 @@
                     ]
                 },
                 {
-                    "type": "atmnaccs",
-                    "resourceType": "dfpipelines",
-                    "resourceGroupTypeRef": "app",
-                    "name" : "{0}{1}{2}adfv201",
-                    "location": "northeurope",
-                    "templateFileName": "atmnaccs.json",
-                    "parameterFileName": "atmnaccs.parameters.json",
-                    "parameters" : [
-                        {
-                            "name": "pipelineName",
-                            "type": "format",
-                            "value": "Refresh-AnalysisServicesDatabase"
-                        },
-                        {
-                            "name": "activityName",
-                            "type": "format",
-                            "value": "Call-AzureAutomationWebhook"
-                        },
-                        {
-                            "name": "url",
-                            "type": "resourceSpecific",
-                            "value": "{0}{1}{2}atmnacc01"
-                        },
-                        {
-                            "name": "messageHeader",
-                            "type": "format",
-                            "value": "StartedbyDataFactory"
-                        },
-                        {
-                            "name": "body",
-                            "type": "resourceSpecific",
-                            "value": {
-                                "CredentialName": "ServicePrincipal",
-                                "TenantId": "{0}",
-                                "AnalysisServicesServer": "asazure://northeurope.asazure.windows.net/{0}",
-                                "AnalysisServicesRolloutEnvironment": "northeurope.asazure.windows.net",
-                                "AnalysisServicesDatabaseName": "Adventure Works Internet Sales",
-                                "DatabaseRefreshType": "Full"
-                            }
-                        },
-                        {
-                            "name": "automationAccountName",
-                            "type": "format",
-                            "value": "{0}{1}{2}atmnacc01"
-                        },
-                        {
-                            "name": "runbookName",
-                            "type": "value",
-                            "value": "Refresh-AnalysisServicesDatabase"
-                        },
-                        {
-                            "name": "webhookName",
-                            "type": "value",
-                            "value": "RefreshFromAzureDataFactory"
-                        },
-                        {
-                            "name": "webhookExpiryTime",
-                            "type": "value",
-                            "value": "2021-10-02T17:31:10+00:00"
-                        },
-                        {
-                            "name": "runOn",
-                            "type": "format",
-                            "value": "{0}{1}{2}vm02"
-                        },
-                        {
-                            "name": "folderName",
-                            "type": "format",
-                            "value": "{0}{1}{2}_pattern_atmnacc"
-                        }
-                    ]
-                },
-                {
                     "type": "pattern2",
                     "resourceType": "dfpipelines",
                     "resourceGroupTypeRef": "app",
@@ -538,31 +286,108 @@
                         {
                             "name": "pipelineName",
                             "type": "format",
-                            "value": "{0}{1}{2}_pipeline_3"
-                        },
-                        {
-                            "name": "authUrl",
-                            "type": "resourceSpecific",
-                            "value": "https://login.microsoftonline.com/{0}/oauth2/token"
-                        },
-                        {
-                            "name": "authBody",
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "secretName" : "auth-body"
-                            }
-                        },
-                        {
-                            "name": "analysisServicesUrl",
-                            "type": "format",
-                            "value": "https://northeurope.asazure.windows.net/servers/{0}{1}{2}as01/models/Adventure Works Internet Sales/refreshes"
+                            "value": "{0}{1}{2}_pipeline_3_outer"
                         },
                         {
                             "name": "folderName",
                             "type": "format",
                             "value": "{0}{1}{2}_pattern_3"
+                        },
+                        {
+                            "name": "inputLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}slf01"
+                        },
+                        {
+                            "name": "inputDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern3_in_ds"
+                        },
+                        {
+                            "name": "lookupDataSetLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "lookupDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern3_lk_ds"
+                        },
+                        {
+                            "name": "keyVaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "userNameSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}-sf-username"
+                        },
+                        {
+                            "name": "passwordSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}-sf-password"
+                        },
+                        {
+                            "name": "securityTokenSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}-sf-security-token"
+                        },
+                        {
+                            "name": "outputDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern3_out_ds"
+                        },
+                        {
+                            "name": "outputLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "outputLinkedServiceUrl",
+                            "type": "format",
+                            "value": "https://{0}{1}{2}nestgaccv2.dfs.core.windows.net"
+                        },
+                        {
+                            "name": "outputLinkedServiceSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2-accountKey"
+                        },
+                        {
+                            "name": "pipelineName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_inner"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_trigger"
+                        },
+                        {
+                            "name": "triggerIntervals",
+                            "type": "value",
+                            "value": 1
+                        },
+                        {
+                            "name": "triggerStartTime",
+                            "type": "utcdatetime",
+                            "value": "-2",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "outputFolderPath",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_out_folder"
+                        },
+                        {
+                            "name": "inputFolderPath",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_in_folder"
+                        },
+                        {
+                            "name": "inputFileName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_in_filename"
                         }
                     ]
                 },
@@ -574,61 +399,68 @@
                     "location": "northeurope",
                     "templateFileName": "pattern4.json",
                     "parameterFileName": "pattern4.parameters.json",
-                    "parameters" : [                        
+                    "parameters" : [
                         {
                             "name": "pipelineName",
                             "type": "format",
                             "value": "{0}{1}{2}_pipeline_4"
                         },
                         {
-                            "name": "analysisServicesUrl",
+                            "name": "activityName",
                             "type": "format",
-                            "value": "https://northeurope.asazure.windows.net/servers/{0}{1}{2}as01/models/Adventure Works Internet Sales/refreshes"
+                            "value": "Call-AzureAutomationWebhook"
+                        },
+                        {
+                            "name": "url",
+                            "type": "resourceSpecific",
+                            "value": "{0}{1}{2}atmnacc01"
+                        },
+                        {
+                            "name": "messageHeader",
+                            "type": "format",
+                            "value": "StartedbyDataFactory"
+                        },
+                        {
+                            "name": "body",
+                            "type": "resourceSpecific",
+                            "value": {
+                                "CredentialName": "ServicePrincipal",
+                                "TenantId": "{0}",
+                                "AnalysisServicesServer": "asazure://northeurope.asazure.windows.net/{0}",
+                                "AnalysisServicesRolloutEnvironment": "northeurope.asazure.windows.net",
+                                "AnalysisServicesDatabaseName": "Adventure Works Internet Sales",
+                                "DatabaseRefreshType": "Full"
+                            }
+                        },
+                        {
+                            "name": "automationAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}atmnacc01"
+                        },
+                        {
+                            "name": "runbookName",
+                            "type": "value",
+                            "value": "Refresh-AnalysisServicesDatabase"
+                        },
+                        {
+                            "name": "webhookName",
+                            "type": "value",
+                            "value": "RefreshFromAzureDataFactory"
+                        },
+                        {
+                            "name": "webhookExpiryTime",
+                            "type": "value",
+                            "value": "2021-10-02T17:31:10+00:00"
+                        },
+                        {
+                            "name": "runOn",
+                            "type": "format",
+                            "value": "{0}{1}{2}vm02"
                         },
                         {
                             "name": "folderName",
                             "type": "format",
                             "value": "{0}{1}{2}_pattern_4"
-                        },
-                        {
-                            "name": "rolloutEnvironment",
-                            "type": "value",
-                            "value": "https://northeurope.asazure.windows.net"
-                        },
-                        {
-                            "name": "analysisServicesResourceUrl",
-                            "type": "resourceSpecific",
-                            "value": "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.AnalysisServices/servers/{2}?api-version=2017-08-01"
-                        },
-                        {
-                            "name": "getIpUrl",
-                            "type": "value",
-                            "value": "https://api.ipify.org?format=json"
-                        },
-                        {
-                            "name": "managementResource",
-                            "type": "value",
-                            "value": "https://management.azure.com/"
-                        },
-                        {
-                            "name": "analysisServicesDatabaseRefreshType",
-                            "type": "value",
-                            "value": "full"
-                        },
-                        {
-                            "name": "analysisServicesDatabaseRefreshMaxParallelism",
-                            "type": "value",
-                            "value": 2
-                        },
-                        {
-                            "name": "bodyWithIP",
-                            "type": "value",
-                            "value": "@concat('{\"properties\":{\"serverFullName\":\"', activity('GetAnalysisServerInfo').output.properties.serverFullName , '\",\"managedMode\":\"', activity('GetAnalysisServerInfo').output.properties.managedMode , '\",\"asAdministrators\":{\"members\":',activity('GetAnalysisServerInfo').output.properties.asAdministrators.members ,'},\"gatewayDetails\":{\"gatewayResourceId\":\"', activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayResourceId ,'\",\"gatewayObjectId\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayObjectId,'\",\"dmtsClusterUri\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.dmtsClusterUri,'\"},\"querypoolConnectionMode\":\"All\",\"ipV4FirewallSettings\":{\"firewallRules\":[{\"firewallRuleName\":\"ADF\",\"rangeStart\":\"', activity('GetIPAddress').output.ip,'\",\"rangeEnd\":\"',activity('GetIPAddress').output.ip,'\"}],\"enablePowerBIService\":true},\"serverMonitorMode\":1},\"name\":\"',activity('GetAnalysisServerInfo').output.name,'\",\"type\":\"Microsoft.AnalysisServices/servers\",\"location\":\"',activity('GetAnalysisServerInfo').output.location,'\",\"sku\":{\"name\":\"',activity('GetAnalysisServerInfo').output.sku.name,'\",\"tier\":\"',activity('GetAnalysisServerInfo').output.sku.tier,'\",\"capacity\":',activity('GetAnalysisServerInfo').output.sku.capacity,'}}')"
-                        },
-                        {
-                            "name": "bodyWithoutIP",
-                            "type": "value",
-                            "value": "@concat('{\"properties\":{\"serverFullName\":\"', activity('GetAnalysisServerInfo').output.properties.serverFullName , '\",\"managedMode\":\"', activity('GetAnalysisServerInfo').output.properties.managedMode , '\",\"asAdministrators\":{\"members\":',activity('GetAnalysisServerInfo').output.properties.asAdministrators.members ,'},\"gatewayDetails\":{\"gatewayResourceId\":\"', activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayResourceId ,'\",\"gatewayObjectId\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.gatewayObjectId,'\",\"dmtsClusterUri\":\"',activity('GetAnalysisServerInfo').output.properties.gatewayDetails.dmtsClusterUri,'\"},\"querypoolConnectionMode\":\"All\",\"ipV4FirewallSettings\":{\"firewallRules\":[],\"enablePowerBIService\":true},\"serverMonitorMode\":1},\"name\":\"',activity('GetAnalysisServerInfo').output.name,'\",\"type\":\"Microsoft.AnalysisServices/servers\",\"location\":\"',activity('GetAnalysisServerInfo').output.location,'\",\"sku\":{\"name\":\"',activity('GetAnalysisServerInfo').output.sku.name,'\",\"tier\":\"',activity('GetAnalysisServerInfo').output.sku.tier,'\",\"capacity\":',activity('GetAnalysisServerInfo').output.sku.capacity,'}}')"
                         }
                     ]
                 }

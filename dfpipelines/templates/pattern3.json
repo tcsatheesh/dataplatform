@@ -20,87 +20,473 @@
                 "description": "The name of the pipeline"
             }
         },
-        "authUrl": {
-            "type": "string",
-            "metadata": {
-                "description": "auth url endpoint"
-            }
-        },
-        "authBody": {
-            "type": "string",
-            "metadata": {
-                "description": "body of the auth"
-            }
-        },
-        "analysisServicesUrl": {
-            "type": "string",
-            "metadata": {
-                "description": "Url of the analysis services"
-            }
-        },
         "folderName": {
             "type": "string",
             "metadata": {
                 "description": "name of the folder"
             }
+        },
+        "inputLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the input linked service"
+            }
+        },
+        "inputDataSetName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the input data set"
+            }
+        },
+        "lookupDataSetLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the lookup linked service"
+            }
+        },
+        "lookupDataSetName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the look up data set"
+            }
+        },
+        "keyVaultLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the key vault linked service"
+            }
+        },
+        "userNameSecretName": {
+            "type": "string",
+            "metadata": {
+                "description": "user name secret for sales force account"
+            }
+        },
+        "passwordSecretName": {
+            "type": "string",
+            "metadata": {
+                "description": "password secret for sales force account"
+            }
+        },
+        "securityTokenSecretName": {
+            "type": "string",
+            "metadata": {
+                "description": "security token secret for sales force account"
+            }
+        },
+        "outputDataSetName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the output data set"
+            }
+        },
+        "outputLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the output linked service"
+            }
+        },
+        "outputLinkedServiceUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "url of the output linked service"
+            }
+        },
+        "outputLinkedServiceSecretName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the output linked service secret"
+            }
+        },
+        "pipelineName2": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pipeline2"
+            }
+        },
+        "triggerName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the trigger"
+            }
+        },
+        "triggerIntervals": {
+            "type": "int",
+            "metadata": {
+                "description": "The trigger interval"
+            }
+        },
+        "triggerStartTime": {
+            "type": "string",
+            "metadata": {
+                "description": "The trigger start time"
+            }
+        },
+        "outputFolderPath": {
+            "type": "string",
+            "metadata": {
+                "description": "The output folder path"
+            }
+        },
+        "inputFolderPath": {
+            "type": "string",
+            "metadata": {
+                "description": "The intput folder path"
+            }
+        },
+        "inputFileName": {
+            "type": "string",
+            "metadata": {
+                "description": "The input file name"
+            }
         }
     },
     "resources": [
         {
+            "name": "[concat(parameters('resourcename'), '/', parameters('inputLinkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2017-09-01-preview",
+            "properties": {
+                "type": "Salesforce",
+                "typeProperties": {
+                    "environmentUrl": "https://login.salesforce.com",
+                    "username": {
+                        "type": "AzureKeyVaultSecret",
+                        "secretName": "[parameters('userNameSecretName')]",
+                        "store": {
+                            "referenceName": "[parameters('keyVaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    "password": {
+                        "type": "AzureKeyVaultSecret",
+                        "secretName": "[parameters('passwordSecretName')]",
+                        "store": {
+                            "referenceName": "[parameters('keyVaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    "securityToken": {
+                        "type": "AzureKeyVaultSecret",
+                        "secretName": "[parameters('securityTokenSecretName')]",
+                        "store": {
+                            "referenceName": "[parameters('keyVaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('outputLinkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2017-09-01-preview",
+            "properties": {
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[parameters('outputLinkedServiceUrl')]",
+                    "accountKey": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyVaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[parameters('outputLinkedServiceSecretName')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('inputDataSetName'))]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2017-09-01-preview",
+            "dependsOn": [
+                "[parameters('inputLinkedServiceName')]",
+            ],
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('inputLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "type": "SalesforceObject",
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('lookupDataSetName'))]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2017-09-01-preview",
+            "properties": {
+                "type": "AzureBlobFSFile",
+                "typeProperties": {
+                    "folderPath": {
+                        "value": "@dataset().inputFolderPath",
+                        "type": "Expression"
+                    },
+                    "fileName": {
+                        "value": "@dataset().inputFileName",
+                        "type": "Expression"
+                    },
+                    "format": {
+                        "type": "JsonFormat",
+                        "filePattern": "arrayOfObjects"
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "[parameters('lookupDataSetLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "inputFolderPath": {
+                        "type": "string"
+                    },
+                    "inputFileName": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('outputDataSetName'))]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2017-09-01-preview",
+            "dependsOn": [
+                "[parameters('inputLinkedServiceName')]",
+            ],
+            "properties": {
+                "type": "AzureBlobFSFile",
+                "linkedServiceName": {
+                    "referenceName": "[parameters('outputLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "typeProperties": {
+                    "format": {
+                        "type": "TextFormat",
+                        "columnDelimiter": ",",
+                        "treatEmptyAsNull": true,
+                        "firstRowAsHeader": true
+                    },
+                    "folderPath": {
+                        "value": "@dataset().outputFolderPath",
+                        "type": "Expression"
+                    },
+                    "fileName": {
+                        "value": "@dataset().outputFilePath",
+                        "type": "Expression"
+                    }
+                },
+                "parameters": {
+                    "outputFolderPath": {
+                        "type": "string"
+                    },
+                    "outputFilePath": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
             "type": "Microsoft.DataFactory/factories/pipelines",
-            "name": "[concat(parameters('resourcename'), '/', parameters('pipelineName'))]",
+            "name": "[concat(parameters('resourcename'), '/', parameters('pipelineName2'))]",
             "apiVersion": "2017-09-01-preview",
             "properties": {
                 "activities": [
                     {
-                        "name": "AuthAPI",
-                        "type": "WebActivity",
-                        "policy": {
-                            "timeout": "7.00:00:00",
-                            "retry": 0,
-                            "retryIntervalInSeconds": 30,
-                            "secureOutput": true,
-                            "secureInput": true
-                        },
+                        "name": "RunIfEnabled",
+                        "type": "IfCondition",
                         "typeProperties": {
-                            "method": "Post",
-                            "url": "[parameters('authUrl')]",
-                            "headers": {
-                                "Content-Type": "application/x-www-form-urlencoded"
+                            "expression": {
+                                "value": "@bool(pipeline().parameters.configItem.enabled)",
+                                "type": "Expression"
                             },
-                            "body": "[parameters('authBody')]"
+                            "ifTrueActivities": [
+                                {
+                                    "name": "CopySalesforceToADLS",
+                                    "type": "Copy",
+                                    "inputs": [
+                                        {
+                                            "referenceName": "[parameters('inputDataSetName')]",
+                                            "type": "DatasetReference"
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "referenceName": "[parameters('outputDataSetName')]",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "outputFolderPath": "@pipeline().parameters.outputFolderPath",
+                                                "outputFilePath": "@pipeline().parameters.configItem.outputFilePath"
+                                            }
+                                        }
+                                    ],
+                                    "typeProperties": {
+                                        "source": {
+                                            "type": "SalesforceSource",
+                                            "query": {
+                                                "value": "@pipeline().parameters.configItem.query",
+                                                "type": "Expression"
+                                            }
+                                        },
+                                        "sink": {
+                                            "type": "AzureDataLakeStoreSink"
+                                        },
+                                        "enableStaging": false,
+                                        "cloudDataMovementUnits": 0
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "parameters": {
+                    "outputFolderPath": {
+                        "type": "string"
+                    },
+                    "configItem": {
+                        "type": "object"
+                    },
+                    "windowStart": {
+                        "type": "dateTime"
+                    },
+                    "windowEnd": {
+                        "type": "dateTime"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'), '/', parameters('pipelineName'))]",
+            "apiVersion": "2017-09-01-preview",
+            "dependsOn": [
+                "[parameters('inputDataSetName')]",
+                "[parameters('lookupDataSetName')]",
+                "[parameters('outputDataSetName')]",
+                "[parameters('pipelineName2')]"
+            ],
+            "properties": {
+                "activities": [
+                    {
+                        "name": "LookupActivity",
+                        "type": "Lookup",
+                        "typeProperties": {
+                            "source": {
+                                "type": "AzureDataLakeStoreSource"
+                            },
+                            "dataset": {
+                                "referenceName": "[parameters('lookupDataSetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "inputFolderPath": "@pipeline().parameters.inputFolderPath",
+                                    "inputFileName": "@pipeline().parameters.inputFileName"
+                                }
+                            },
+                            "firstRowOnly": false
                         }
                     },
                     {
-                        "name": "AnalysisServicesRestAPI",
-                        "type": "WebActivity",
+                        "type": "ForEach",
+                        "name": "ForEachRecordInSalesForce",
                         "dependsOn": [
                             {
-                                "activity": "AuthAPI",
+                                "activity": "LookupActivity",
                                 "dependencyConditions": [
                                     "Succeeded"
                                 ]
                             }
                         ],
                         "typeProperties": {
-                            "method": "Post",
-                            "url": {
-                                "value": "[parameters('analysisServicesUrl')]",
+                            "items": {
+                                "value": "@activity('LookupActivity').output.value",
                                 "type": "Expression"
                             },
-                            "headers": {
-                                "Content-Type": "application/json",
-                                "Authorization": "Bearer @{activity('AuthAPI').output.access_token}"
-                            },
-                            "body": {
-                                "type": "full",
-                                "maxparallelism": 2
-                            }
+                            "activities": [
+                                {
+                                    "name": "ExecuteSalesforcePipeline",
+                                    "type": "ExecutePipeline",
+                                    "typeProperties": {
+                                        "pipeline": {
+                                            "referenceName": "[parameters('pipelineName2')]",
+                                            "type": "PipelineReference"
+                                        },
+                                        "parameters": {
+                                            "outputFolderPath": "@pipeline().parameters.outputFolderPath",
+                                            "configItem": "@item()",
+                                            "windowStart": "@pipeline().parameters.windowStart",
+                                            "windowEnd": "@pipeline().parameters.windowEnd"
+                                        },
+                                        "waitOnCompletion": true
+                                    }
+                                }
+                            ]
                         }
                     }
                 ],
+                "parameters": {
+                    "outputFolderPath": {
+                        "type": "string"
+                    },
+                    "inputFolderPath": {
+                        "type": "string"
+                    },
+                    "inputFileName": {
+                        "type": "string"
+                    },
+                    "windowStart": {
+                        "type": "dateTime"
+                    },
+                    "windowEnd": {
+                        "type": "dateTime"
+                    }
+                },
                 "folder": {
                     "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "name": "[concat(parameters('resourcename'), '/', parameters('triggerName'))]",
+            "dependsOn": [
+                "[parameters('pipelineName')]"
+            ],
+            "apiVersion": "2017-09-01-preview",
+            "properties": {
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Hour",
+                    "interval": "[parameters('triggerIntervals')]",
+                    "startTime": "[parameters('triggerStartTime')]",
+                    "delay": "00:00:10",
+                    "retryPolicy": {
+                        "count": 0,
+                        "intervalInSeconds": 30
+                    },
+                    "maxConcurrency": 1
+                },
+                "pipeline": {
+                    "pipelineReference": {
+                        "type": "PipelineReference",
+                        "referenceName": "[parameters('pipelineName')]"
+                    },
+                    "parameters": {
+                        "outputFolderPath": "[parameters('outputFolderPath')]",
+                        "inputFolderPath": "[parameters('inputFolderPath')]",
+                        "inputFileName": "[parameters('inputFileName')]",
+                        "windowStart": "@trigger().outputs.windowStartTime",
+                        "windowEnd": "@trigger().outputs.windowEndTime"
+                    }
                 }
             }
         }
