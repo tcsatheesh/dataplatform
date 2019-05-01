@@ -25,14 +25,6 @@
             ]
         },
         {
-            "resourceType": "keyvaultsecrets",
-            "resources": [
-                {
-                    "type": "storageconnectionstring"
-                }
-            ]
-        },
-        {
             "resourceType": "adfs",
             "resources": [
                 {

@@ -20,10 +20,16 @@
                 "description": "Name of the linked service."
             }
         },
-        "keyVaultName": {
+        "keyvaultLinkedServiceName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the key vault linked service"
+            }
+        },
+        "functionName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the function"
             }
         }
     },
@@ -33,10 +39,18 @@
             "type": "Microsoft.DataFactory/factories/linkedservices",
             "apiVersion": "2018-06-01",
             "properties": {
-                "type": "AzureKeyVault",
+                "type": "AzureFunction",
                 "typeProperties": {
-                    "baseUrl": "[concat('https://',parameters('keyVaultName'),'.vault.azure.net')]"
-                }
+                    "functionAppUrl": "[concat('https://', parameters('functionName'),'.azurewebsites.net')]",
+                    "functionKey": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[concat(parameters('functionName'),'-host-key')]"
+                    }
+                }                       
             }
         }
     ]

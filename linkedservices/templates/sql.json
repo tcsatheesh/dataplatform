@@ -1,17 +1,62 @@
 {
-    "$schema": "http://datafactories.schema.management.azure.com/schemas/2015-09-01/Microsoft.DataFactory.LinkedService.json",
-    "name": "SqlDb",
-    "properties": {
-        "type": "AzureSqlDatabase",
-        "typeProperties": {
-            "connectionString": {
-                "type": "AzureKeyVaultSecret",
-                "secretName": "",
-                "store":{
-                    "referenceName": "",
-                    "type": "LinkedServiceReference"
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory. Must be globally unique."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory."
+            }
+        },
+        "linkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the linked service."
+            }
+        },
+        "keyvaultLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the key vault linked service"
+            }
+        },
+        "sqlServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the sql server"
+            }
+        },
+        "sqldbName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the sql db"
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('linkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[concat(parameters('sqlServerName'),'-',parameters('sqldbName'),'-connectionstring')]"
+                    }
                 }
             }
         }
-    }
+    ]
 }

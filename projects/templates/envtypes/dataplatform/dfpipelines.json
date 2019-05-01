@@ -33,18 +33,19 @@
                     "type": "adlsv2"
                 },
                 {
-                    "type": "cmdb"
+                    "type": "functions"
                 },
                 {
                     "type": "databricks"
-                }
-            ]
-        },
-        {
-            "resourceType": "linkedservices",
-            "resources": [
+                },
                 {
-                    "type": "storage"
+                    "type": "cmdb"
+                },
+                {
+                    "type": "filesystem"
+                },
+                {
+                    "type": "salesforce"
                 }
             ]
         },

@@ -8,26 +8,49 @@ function Remove-Resource {
     param (
         [object]$resource
     )
-    $dataFactoryResourceGroupName = Get-ValueFromResource `
-        -resourceType "resourcegroups" `
-        -typeFilter $resource.dataFactoryResourceGroupTypeRef `
-        -property "name"
+    $dataFactoryResourceGroupName = $resource.datafactoryResourceGroup.name
+    $dataFactoryName = $resource.datafactory.name
 
-    $dataFactoryName = Get-ValueFromResource `
-        -resourceType "adfs" `
-        -typeFilter $resource.dataFactoryNameRef `
-        -property "name"
-            
-    $linkedServiceName = $resource.name
-
-    Write-Verbose "Removing linked service $linkedServiceName"
-        
-    $depl = Remove-AzureRmDataFactoryV2LinkedService `
-        -ResourceGroupName  $dataFactoryResourceGroupName `
-        -DataFactoryName $dataFactoryName `
-        -Name $linkedServiceName -Force
+    foreach ($innerResource in $resource.resources) {
+        foreach ($service in $innerResource.triggers) {
+            Write-Verbose "Processing trigger $($service.templateFile)"
+            $depl = Remove-AzureRmDataFactoryV2Trigger `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name -Force
+        }
+        $count = $innerResource.pipelines.Count
+        for ($index = 0; $index -lt $count ; $index++) {
+            $service = $innerResource.pipelines[$count - $index - 1]
+            Write-Verbose "Processing pipeline $($service.templateFile)"
+            $depl = Remove-AzureRmDataFactoryV2Pipeline `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name -Force
+        }
+        foreach ($service in $innerResource.inputdatasets) {
+            Write-Verbose "Processing dataset $($service.templateFile)"
+            $depl = Remove-AzureRmDataFactoryV2Dataset `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name -Force   
+        }
+        foreach ($service in $innerResource.outputdatasets) {
+            Write-Verbose "Processing dataset $($service.templateFile)"
+            $depl = Remove-AzureRmDataFactoryV2Dataset `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name -Force   
+        }
+        foreach ($service in $innerResource.linkedservices) {
+            Write-Verbose "Processing linked service $($service.templateFile)"
+            $depl = Remove-AzureRmDataFactoryV2LinkedService `
+                -ResourceGroupName  $dataFactoryResourceGroupName `
+                -DataFactoryName $dataFactoryName `
+                -Name $service.name -Force
+        }
+    }
 }
 
-$parameterFileName = "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
-& "$commonPSFolder\Invoke-RemoveProcess.ps1" -projectsParameterFile $projectsParameterFile -parameterFileName $parameterFileName
+& "$commonPSFolder\Invoke-RemoveProcess.ps1" -projectsParameterFile $projectsParameterFile -resourceType (Get-Item -Path $PSScriptRoot).Parent.Name -parameterFileName "$((Get-Item -Path $PSScriptRoot).Parent.Name).parameters.json"

@@ -5,380 +5,266 @@
         "resources": {
             "value": [
                 {
-                    "name": {
-                        "ref": {
-                            "resourceType": "keyvaults",
-                            "typeFilter": "appkeyvault",
-                            "property": "name"
-                        }
-                    },
                     "type": "keyvault",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
                     "templateFileName": "keyvault.json",
+                    "parameterFileName": "keyvault.parameters.json",
                     "parameters": [
                         {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "keyVaultName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
                         }
                     ]
                 },
                 {
-                    "name": {
-                        "ref": {
-                            "resourceType": "storageaccounts",
-                            "typeFilter": "storage",
-                            "property": "name"
-                        }
-                    },
                     "type": "storage",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
                     "templateFileName": "storage.json",
-                    "parameters": [                        
-                        {
-                            "type": "connectionStringSecretName",
-                            "ref": {
-                                "resourceType": "keyvaultsecrets",
-                                "typeFilter": "storageconnectionstring",
-                                "subtypeFilter" : "storage",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
-                        }
-                    ]
-                },                
-                {
-                    "name": {
-                        "ref": {
-                            "resourceType": "adlstores",
-                            "typeFilter": "adlstore",
-                            "property": "name"
-                        }
-                    },
-                    "type": "adlstore",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
-                    "templateFileName": "adlstore.json",
+                    "parameterFileName": "storage.parameters.json",
                     "parameters": [
                         {
-                            "type": "adlstoreResourceGroupName",
-                            "ref": {
-                                "resourceType": "resourcegroups",
-                                "typeFilter": "app",
-                                "property": "name"
-                            }
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
                         },
                         {
-                            "type": "adlstore",
-                            "ref": {
-                                "resourceType": "adlstores",
-                                "typeFilter": "adlstore",
-                                "property": "name"
-                            }
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
                         },
                         {
-                            "type": "tenant",
-                            "ref": {
-                                "resourceType": "projects",
-                                "typeFilter": "tenant",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "subscriptionId",
-                            "ref": {
-                                "resourceType": "projects",
-                                "typeFilter": "subscription",
-                                "property": "id"
-                            }
-                        },
-                        {
-                            "type": "applicationPrincipal",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "applicationPrincipal",
-                                "property": "application.clientId"
-                            }
-                        },
-                        {
-                            "type": "servicePrincipal",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "applicationPrincipal",
-                                "property": "servicePrincipal.id"
-                            }
-                        },
-                        {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "secretName",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "applicationPrincipal",
-                                "property": "application.passwordSecretName"
-                            }
+                            "name": "storageAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
                         }
                     ]
                 },
                 {
-                    "name": {
-                        "ref": {
-                            "resourceType": "adlas",
-                            "typeFilter": "adla",
-                            "property": "name"
-                        }
-                    },
-                    "type": "adla",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
-                    "templateFileName": "adla.json",
-                    "parameters": [
-                        {
-                            "type": "adlaResourceGroupName",
-                            "ref": {
-                                "resourceType": "resourcegroups",
-                                "typeFilter": "app",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "adlAccountName",
-                            "ref": {
-                                "resourceType": "adlas",
-                                "typeFilter": "adla",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "tenant",
-                            "ref": {
-                                "resourceType": "projects",
-                                "typeFilter": "tenant",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "subscriptionId",
-                            "ref": {
-                                "resourceType": "projects",
-                                "typeFilter": "subscription",
-                                "property": "id"
-                            }
-                        },
-                        {
-                            "type": "applicationPrincipal",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "applicationPrincipal",
-                                "property": "application.clientId"
-                            }
-                        },
-                        {
-                            "type": "servicePrincipal",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "applicationPrincipal",
-                                "property": "servicePrincipal.id"
-                            }
-                        },
-                        {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "secretName",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "applicationPrincipal",
-                                "property": "application.passwordSecretName"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": {
-                        "ref": {
-                            "resourceType": "sqldbs",
-                            "typeFilter": "appdb",
-                            "property": "name"
-                        }
-                    },
                     "type": "sqldb",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
                     "templateFileName": "sql.json",
+                    "parameterFileName": "sql.parameters.json",
                     "parameters": [
                         {
-                            "type": "connectionStringSecretName",
-                            "ref": {
-                                "resourceType": "keyvaultsecrets",
-                                "typeFilter": "sqldbconnectionstring",
-                                "subtypeFilter": "admin",
-                                "property": "name"
-                            }
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
                         },
                         {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "sqlServerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqlsvr01"
+                        },
+                        {
+                            "name": "sqldbName",
+                            "type": "value",
+                            "value": "sqladmin"
                         }
                     ]
                 },
                 {
-                    "name": "Salesforce",
-                    "type": "salesforce",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
-                    "templateFileName": "salesforce.json",
-                    "parameters": [
-                        {
-                            "type": "usernameSecretName",
-                            "ref": {
-                                "resourceType": "keyvaultsecrets",
-                                "typeFilter": "value",
-                                "subtypeFilter": "salesforce.com.username",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "passwordSecretName",
-                            "ref": {
-                                "resourceType": "keyvaultsecrets",
-                                "typeFilter": "value",
-                                "subtypeFilter": "salesforce.com.password",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "securityTokenSecretName",
-                            "ref": {
-                                "resourceType": "keyvaultsecrets",
-                                "typeFilter": "value",
-                                "subtypeFilter": "salesforce.com.securitytoken",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": {
-                        "ref": {
-                            "resourceType": "storageaccounts",
-                            "typeFilter": "adlsv2storage",
-                            "property": "name"
-                        }
-                    },
-                    "type": "adlsv2",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
-                    "templateFileName": "adlsv2.json",
-                    "parameters": [                        
-                        {
-                            "type": "adlsv2AccountName",
-                            "ref": {
-                                "resourceType": "storageaccounts",
-                                "typeFilter": "adlsv2storage",
-                                "property": "name"
-                            }
-                        },
-                        {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": {
-                        "ref": {
-                            "resourceType": "cosmosdbs",
-                            "typeFilter": "cosmosdb",
-                            "property": "name"
-                        }
-                    },
                     "type": "cmdb",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
                     "templateFileName": "cmdb.json",
-                    "parameters": [                        
+                    "parameterFileName": "cmdb.parameters.json",
+                    "parameters": [
                         {
-                            "type": "connectionStringSecretName",
-                            "ref": {
-                                "resourceType": "keyvaultsecrets",
-                                "typeFilter": "cmdbconnectionstring",
-                                "property": "name"
-                            }
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}cmdb01"
                         },
                         {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "cmdbName",
+                            "type": "format",
+                            "value": "{0}{1}{2}cmdb01"
+                        },
+                        {
+                            "name": "databaseName",
+                            "type": "format",
+                            "value": "{0}{1}{2}db01"
                         }
                     ]
                 },
                 {
-                    "name": {
-                        "ref": {
-                            "resourceType": "databricks",
-                            "typeFilter": "databrick",
-                            "property": "name"
-                        }
-                    },
                     "type": "databricks",
-                    "dataFactoryResourceGroupTypeRef": "app",
-                    "dataFactoryNameRef": "adf",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
                     "templateFileName": "databricks.json",
-                    "parameters": [                        
+                    "parameterFileName": "databricks.parameters.json",
+                    "parameters": [
                         {
-                            "type": "secretName",
-                            "format": "{0}{1}{2}dbs01-access-token"
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}dbs01"
                         },
                         {
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "property": "name"
-                            }
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "databricksName",
+                            "type": "format",
+                            "value": "{0}{1}{2}dbs01"
+                        }
+                    ]
+                },
+                {
+                    "type": "adlsv2",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "adlsv2.json",
+                    "parameterFileName": "adlsv2.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "adlsv2StorageAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        }
+                    ]
+                },
+                {
+                    "type": "functions",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "functions.json",
+                    "parameterFileName": "functions.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}fn01"
+                        },
+                        {
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "functionName",
+                            "type": "format",
+                            "value": "{0}{1}{2}fn01"
+                        }
+                    ]
+                },
+                {
+                    "type": "filesystem",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "filesystem.json",
+                    "parameterFileName": "filesystem.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}filesystem01"
+                        },
+                        {
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "hostName",
+                            "type": "format",
+                            "value": "\\\\{0}{1}{2}filesystem01-hostName\\share"
+                        },
+                        {
+                            "name": "userId",
+                            "type": "format",
+                            "value": "{0}{1}{2}filesystem01-userId"
+                        },
+                        {
+                            "name": "password",
+                            "type": "format",
+                            "value": "{0}{1}{2}filesystem01-password"
+                        },
+                        {
+                            "name": "connectVia",
+                            "type": "format",
+                            "value": "{0}{1}{2}vm02"
+                        }
+                    ]
+                },
+                {
+                    "type": "salesforce",
+                    "resourceType": "linkedservices",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "salesforce.json",
+                    "parameterFileName": "salesforce.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "linkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}slf01"
+                        },
+                        {
+                            "name": "keyvaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "securitytoken",
+                            "type": "format",
+                            "value": "salesforce-com-securitytoken"
+                        },
+                        {
+                            "name": "username",
+                            "type": "format",
+                            "value": "salesforce-com-username"
+                        },
+                        {
+                            "name": "password",
+                            "type": "format",
+                            "value": "salesforce-com-password"
                         }
                     ]
                 }

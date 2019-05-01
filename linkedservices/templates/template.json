@@ -20,7 +20,7 @@
                 "description": "Name of the linked service."
             }
         },
-        "keyVaultName": {
+        "keyvaultLinkedServiceName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the key vault linked service"
@@ -33,10 +33,7 @@
             "type": "Microsoft.DataFactory/factories/linkedservices",
             "apiVersion": "2018-06-01",
             "properties": {
-                "type": "AzureKeyVault",
-                "typeProperties": {
-                    "baseUrl": "[concat('https://',parameters('keyVaultName'),'.vault.azure.net')]"
-                }
+                
             }
         }
     ]

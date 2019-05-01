@@ -26,16 +26,28 @@
                 "description": "Name of the key vault linked service"
             }
         },
-        "cmdbName": {
+        "hostName": {
             "type": "string",
             "metadata": {
-                "description": "Name of the cosmos db"
+                "description": "Name of the on premise host."
             }
         },
-        "databaseName": {
+        "userId": {
             "type": "string",
             "metadata": {
-                "description": "Name of the database in cosmos db"
+                "description": "User id to access on premise host"
+            }
+        },
+        "password": {
+            "type": "string",
+            "metadata": {
+                "description": "password for the user id."
+            }
+        },
+        "connectVia": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the integration runtime to use"
             }
         }
     },
@@ -45,17 +57,23 @@
             "type": "Microsoft.DataFactory/factories/linkedservices",
             "apiVersion": "2018-06-01",
             "properties": {
-                "type": "CosmosDb",
+                "type": "FileServer",
                 "typeProperties": {
-                    "connectionString": {
+                    "host": "[parameters('hostName')]",
+                    "userId": "[parameters('userId')]",
+                    "password": {
                         "type": "AzureKeyVaultSecret",
                         "store": {
                             "referenceName": "[parameters('keyvaultLinkedServiceName')]",
                             "type": "LinkedServiceReference"
                         },
-                        "secretName": "[concat(parameters('cmdbName'),'-',parameters('databaseName'),'-connectionstring')]"
+                        "secretName": "[parameters('password')]"
+                    },
+                    "connectVia": {
+                        "referenceName": "[parameters('connectVia')]",
+                        "type": "IntegrationRuntimeReference"
                     }
-                }
+                }                       
             }
         }
     ]

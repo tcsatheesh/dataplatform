@@ -12,7 +12,7 @@ function Set-Resource {
         [object]$resource
     )
     $resourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef $resource.resourceGroupTypeRef
-    $deploymentName = "$($resource.name)-depl".Replace("/","-")
+    $deploymentName = "$($resource.name)-depl".Replace("/","-") + '-' + (Get-Date -Format "yyyyMMddHHmmss")
     $templateFile = Get-ProjectTemplateFilePath -resourceType $resource.ResourceType -fileName $resource.templateFileName
     $templateParameterFile = Get-ProjectTemplateFilePath -resourceType $resource.ResourceType -fileName $resource.parameterFileName
 
