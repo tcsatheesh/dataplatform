@@ -354,6 +354,33 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "databricks",
+                            "typeFilter": "databrick",
+                            "property": "name"
+                        }
+                    },
+                    "type": "databricks",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "databricks.json",
+                    "parameters": [                        
+                        {
+                            "type": "secretName",
+                            "format": "{0}{1}{2}dbs01-access-token"
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        }
+                    ]
                 }
             ]
         }

@@ -170,6 +170,21 @@ function Get-CMDBLinkedService {
     return $linkedService
 }
 
+
+function Get-DatabricksLinkedService {
+    param (
+        [object]$resource,
+        [object]$linkedService
+    )
+    $secret =  $resource.parameters | Where-Object {$_.type -eq "secretName"}
+    $secretName = Get-FormatedText -strFormat $secret.format
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    
+    $linkedService.properties.typeProperties.accessToken.store.referenceName = $keyVaultName
+    $linkedService.properties.typeProperties.accessToken.secretName = $secretName
+    return $linkedService
+}
+
 function New-Resource {
     param (
         [object]$resource
@@ -187,6 +202,7 @@ function New-Resource {
         "sqldb" { $linkedService = Get-SqlLinkedService -resource $resource -linkedService $linkedService}
         "adlsv2" { $linkedService = Get-ADLSV2LinkedService -resource $resource -linkedService $linkedService}
         "cmdb" { $linkedService = Get-CMDBLinkedService -resource $resource -linkedService $linkedService}
+        "databricks" { $linkedService = Get-DatabricksLinkedService -resource $resource -linkedService $linkedService}
         "default" { throw "hmmm... you need to add this type $type in the data factory linked services"}        
     }
 
