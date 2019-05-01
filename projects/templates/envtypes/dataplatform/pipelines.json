@@ -18,6 +18,9 @@
                 },
                 {
                     "type": "adlsv2storage"
+                },
+                {
+                    "type": "storage"
                 }
             ]
         },

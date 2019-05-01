@@ -14,14 +14,6 @@
                     "subtype": "sshuser"
                 }
             ]
-        },        
-        {
-            "resourceType": "storageaccounts",
-            "resources": [
-                {
-                    "type": "adlsv2storage"
-                }
-            ]
         },
         {
             "resourceType": "hdinsights",

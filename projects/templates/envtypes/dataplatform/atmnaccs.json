@@ -7,6 +7,9 @@
             "resources": [
                 {
                     "type": "app"
+                },
+                {
+                    "type": "deployrunbook"
                 }
             ]
         }

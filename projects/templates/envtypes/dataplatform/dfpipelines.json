@@ -1,21 +1,24 @@
 {
-    "type": "pattern1",
+    "type": "dfpipelines",
     "parent": "",
     "resources": [
-        
         {
             "resourceType": "keyvaultsecrets",
             "resources": [
+                {
+                    "type": "sqldbconnectionstring",
+                    "subtype": "admin"
+                },
                 {
                     "type": "storageconnectionstring"
                 }
             ]
         },
         {
-            "resourceType": "storageaccounts",
+            "resourceType": "linkedservices",
             "resources": [
                 {
-                    "type": "storage"
+                    "type": "sqldb"
                 }
             ]
         },
@@ -32,6 +35,15 @@
             "resources": [
                 {
                     "type": "pattern1"
+                },
+                {
+                    "type": "pattern2"
+                },
+                {
+                    "type": "pattern3"
+                },
+                {
+                    "type": "pattern4"
                 }
             ]
         }
