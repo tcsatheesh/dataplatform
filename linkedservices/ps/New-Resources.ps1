@@ -141,6 +141,35 @@ function Get-ADLALinkedService {
     return $linkedService
 }
 
+function Get-ADLSV2LinkedService {
+    param (
+        [object]$resource,
+        [object]$linkedService
+    )
+
+    $adlsv2AccountName = Get-ValueFromResourceRef -parameters $resource.parameters -type "adlsv2AccountName"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    
+    $linkedService.properties.typeProperties.url = $linkedService.properties.typeProperties.url -f $adlsv2AccountName
+    $linkedService.properties.typeProperties.accountKey.store.referenceName = $keyVaultName
+    $linkedService.properties.typeProperties.accountKey.secretName = $linkedService.properties.typeProperties.accountKey.secretName -f $adlsv2AccountName
+    return $linkedService
+}
+
+function Get-CMDBLinkedService {
+    param (
+        [object]$resource,
+        [object]$linkedService
+    )
+
+    $connectionStringSecretName = Get-ValueFromResourceRef -parameters $resource.parameters -type "connectionStringSecretName"
+    $keyVaultName = Get-ValueFromResourceRef -parameters $resource.parameters -type "keyvault"
+    
+    $linkedService.properties.typeProperties.connectionString.store.referenceName = $keyVaultName
+    $linkedService.properties.typeProperties.connectionString.secretName = $connectionStringSecretName
+    return $linkedService
+}
+
 function New-Resource {
     param (
         [object]$resource
@@ -156,6 +185,8 @@ function New-Resource {
         "adlstore" { $linkedService = Get-ADLStoreLinkedService -resource $resource -linkedService $linkedService}
         "adla" { $linkedService = Get-ADLALinkedService -resource $resource -linkedService $linkedService}
         "sqldb" { $linkedService = Get-SqlLinkedService -resource $resource -linkedService $linkedService}
+        "adlsv2" { $linkedService = Get-ADLSV2LinkedService -resource $resource -linkedService $linkedService}
+        "cmdb" { $linkedService = Get-CMDBLinkedService -resource $resource -linkedService $linkedService}
         "default" { throw "hmmm... you need to add this type $type in the data factory linked services"}        
     }
 
@@ -167,6 +198,7 @@ function New-Resource {
      
         $resource.name = $linkedServiceName
     }
+    $linkedService.name = $resource.name
     
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
     $destinationPath = "$projectFolder\linkedservices"

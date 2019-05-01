@@ -37,6 +37,25 @@ function Get-SqlConnectionString {
     return $secretValue    
 }
 
+function Get-CmdbConnectionString {
+    param(
+        [object]$resource
+    )
+    $cmdb = $resource.parameters | Where-Object {$_.name -eq "cmdbName"}
+    $cmdbName = $cmdb.value
+    $database = $resource.parameters | Where-Object {$_.name -eq "databaseName"}
+    $databaseName = $database.value    
+    $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
+    $accountKeyName = $resource.parameters | Where-Object {$_.name -eq "accountKeyName"}
+    $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $accountKeyName.value
+    $accountKey = $secret.SecretValueText
+    $connectionString = "AccountEndpoint=https://{0}.documents.azure.com:443/;Database={1};AccountKey={2};" `
+        -f $cmdbName, $databaseName, $accountKey
+    $secretValue = ConvertTo-SecureString -AsPlainText $connectionString -Force
+
+    return $secretValue    
+}
+
 function Set-Resource {
     param (
         [object]$resource
@@ -51,6 +70,9 @@ function Set-Resource {
     }
     elseif ($resource.type -eq "sqldbconnectionstring") {
         $secureSecretValue = Get-SqlConnectionString -resource $resource
+    }
+    elseif ($resource.type -eq "cmdbconnectionstring") {
+        $secureSecretValue = Get-CmdbConnectionString -resource $resource
     }
     elseif ($resource.type -eq "certificate") {
         $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType

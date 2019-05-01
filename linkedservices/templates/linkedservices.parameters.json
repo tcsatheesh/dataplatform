@@ -292,6 +292,68 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "storageaccounts",
+                            "typeFilter": "adlsv2storage",
+                            "property": "name"
+                        }
+                    },
+                    "type": "adlsv2",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "adlsv2.json",
+                    "parameters": [                        
+                        {
+                            "type": "adlsv2AccountName",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "adlsv2storage",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": {
+                        "ref": {
+                            "resourceType": "cosmosdbs",
+                            "typeFilter": "cosmosdb",
+                            "property": "name"
+                        }
+                    },
+                    "type": "cmdb",
+                    "dataFactoryResourceGroupTypeRef": "app",
+                    "dataFactoryNameRef": "adf",
+                    "templateFileName": "cmdb.json",
+                    "parameters": [                        
+                        {
+                            "type": "connectionStringSecretName",
+                            "ref": {
+                                "resourceType": "keyvaultsecrets",
+                                "typeFilter": "cmdbconnectionstring",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "property": "name"
+                            }
+                        }
+                    ]
                 }
             ]
         }

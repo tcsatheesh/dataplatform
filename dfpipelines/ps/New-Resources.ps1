@@ -38,7 +38,6 @@ function Get-WebhookUri {
     return $val
 }
 
-
 function Get-WebhookUriInternal {
     param (
         [Parameter(Mandatory = $True, HelpMessage = 'Subscription id')]
@@ -154,6 +153,9 @@ function Set-ResourceSpecificParameters {
     }
     elseif ($resourceparam.name -eq "analysisServicesResourceUrl") {
         $val = Get-AnalysisServicesResourceUrl -resourceparam $resourceparam
+    }
+    elseif ($resourceparam.name -eq "webhookName") {
+        $val = $resourceparam.value -f (Get-Date -Format yyyyMMddHHmmss)        
     }
     else {
         throw "resource param $($resourceparam.name) not supported"

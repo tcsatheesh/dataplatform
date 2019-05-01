@@ -11,6 +11,9 @@
                 },
                 {
                     "type": "storageconnectionstring"
+                },
+                {
+                    "type": "cmdbconnectionstring"
                 }
             ]
         },
@@ -18,7 +21,19 @@
             "resourceType": "linkedservices",
             "resources": [
                 {
+                    "type": "keyvault"
+                },
+                {
+                    "type": "storage"
+                },
+                {
                     "type": "sqldb"
+                },
+                {
+                    "type": "adlsv2"
+                },
+                {
+                    "type": "cmdb"
                 }
             ]
         },

@@ -33,30 +33,6 @@
             ]
         },
         {
-            "resourceType": "adlstores",
-            "resources": [
-                {
-                    "type": "adlstore"
-                }
-            ]
-        },
-        {
-            "resourceType": "adlsfolders",
-            "resources": [
-                {
-                    "type": "default"
-                }
-            ]
-        },
-        {
-            "resourceType": "adlas",
-            "resources": [
-                {
-                    "type": "adla"
-                }
-            ]
-        },
-        {
             "resourceType": "adfs",
             "resources": [
                 {
@@ -65,33 +41,10 @@
             ]
         },
         {
-            "resourceType": "linkedservices",
-            "resources": [
-                {
-                    "type": "keyvault"
-                },
-                {
-                    "type": "storage"
-                },
-                {
-                    "type": "adlstore"
-                },
-                {
-                    "type": "adla"
-                }
-            ]
-        },
-        {
             "resourceType": "diagnostics",
             "resources": [
                 {
                     "type": "appkeyvault"
-                },
-                {
-                    "type": "adlstore"
-                },
-                {
-                    "type": "adla"
                 },
                 {
                     "type": "adf"

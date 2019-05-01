@@ -30,6 +30,18 @@ function New-Resource {
         $account = $resource.parameters | Where-Object {$_.name -eq "account"}
         $val = $resource.name -f $sqlServerName, $account.value
     }
+    elseif ($resource.type -eq "cmdbconnectionstring") { 
+        $cmdb = $resource.parameters | Where-Object {$_.name -eq "cmdbName"}
+        $cmdbName = Get-FormatedText -strFormat $cmdb.value
+        $cmdb.value = $cmdbName
+        $database = $resource.parameters | Where-Object {$_.name -eq "databaseName"}
+        $databaseName = Get-FormatedText -strFormat $database.value
+        $database.value = $databaseName
+        $accountKey = $resource.parameters | Where-Object {$_.name -eq "accountKeyName"}
+        $accountKeyName = Get-FormatedText -strFormat $accountKey.value
+        $accountKey.value = $accountKeyName
+        $val = $resource.name -f $cmdbName, $databaseName
+    }
     elseif ($resource.type -eq "certificate") { 
         $val = $resource.name
     }    

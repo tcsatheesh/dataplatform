@@ -444,8 +444,8 @@
                         },
                         {
                             "name": "webhookName",
-                            "type": "value",
-                            "value": "RefreshFromAzureDataFactory"
+                            "type": "resourceSpecific",
+                            "value": "RefreshFromAzureDataFactory{0}"
                         },
                         {
                             "name": "webhookExpiryTime",
