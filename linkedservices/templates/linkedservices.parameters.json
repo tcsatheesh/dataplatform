@@ -203,7 +203,7 @@
                         {
                             "name": "linkedServiceName",
                             "type": "format",
-                            "value": "{0}{1}{2}filesystem01"
+                            "value": "{0}{1}{2}fs01"
                         },
                         {
                             "name": "keyvaultLinkedServiceName",
