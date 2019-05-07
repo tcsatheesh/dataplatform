@@ -7,7 +7,7 @@
     "spconfig" : "spconfig.json",
     "aml_config_dir" : "aml_config",
     "clusterName" : "dlvm",
-    "clusterSku" : "Standard_D2_v2",
+    "clusterSku" : "",
     "minNodes" : 0,
     "maxNodes" : 1,
     "useGPU" : true,

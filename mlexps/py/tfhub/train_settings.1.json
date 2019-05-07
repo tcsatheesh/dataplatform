@@ -7,7 +7,7 @@
     "spconfig" : "spconfig.json",
     "aml_config_dir" : "aml_config",
     "clusterName" : "gpucluster3",
-    "clusterSku" : "Standard_D2_v2",
+    "clusterSku" : "Standard_NC6",
     "minNodes" : 0,
     "maxNodes" : 1,
     "useGPU" : true,

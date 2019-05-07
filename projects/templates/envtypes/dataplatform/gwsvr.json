@@ -3,6 +3,14 @@
     "parent": "",
     "resources": [
         {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "vms"                    
+                }
+            ]
+        },
+        {
             "resourceType": "keyvaultsecrets",
             "resources": [
                 {
