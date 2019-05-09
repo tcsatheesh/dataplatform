@@ -34,37 +34,6 @@
                             "value": "ListenKey"                            
                         }
                     ]
-                },
-                {
-                    "type" : "eventhub",
-                    "resourceType": "eventhubs",
-                    "resourceGroupTypeRef": "app",
-                    "name" : "{0}{1}mehns02",
-                    "location": "North Europe",
-                    "templateFileName": "eventhub.json",
-                    "parameterFileName": "eventhub.parameters.json",
-                    "parameters" : [
-                        {
-                            "name": "eventHubName",
-                            "type": "format",
-                            "value": "{0}{1}meh01"                            
-                        },
-                        {
-                            "name": "consumerGroupName",
-                            "type": "format",
-                            "value": "{0}{1}mehcg01"                            
-                        },
-                        {
-                            "name": "sendKeyName",
-                            "type": "value",
-                            "value": "SendKey"                            
-                        },
-                        {
-                            "name": "listenKeyName",
-                            "type": "value",
-                            "value": "ListenKey"                            
-                        }
-                    ]
                 }
             ]
         }

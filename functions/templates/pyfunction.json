@@ -9,24 +9,21 @@
       "location": {
           "type": "string"
       },
-      "contentShareName": {
-          "type": "string"
-      },
       "website_node_default_version": {
           "type": "string",
           "defaultValue": "10.14.1"
       },
       "kind":{
         "type": "string",
-        "defaultValue": "functionapp"
+        "defaultValue": "functionapp,linux"
       },
       "function_runtime" : {
           "type": "string",
-          "defaultValue": "dotnet"
+          "defaultValue": "python"
       },
       "reserved" : {
           "type": "bool",
-          "defaultValue": false
+          "defaultValue": true
       }
   },
   "resources": [
@@ -49,14 +46,6 @@
                       {
                           "name": "FUNCTIONS_EXTENSION_VERSION",
                           "value": "~2"
-                      },
-                      {
-                          "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), '2015-05-01-preview').key1)]"
-                      },
-                      {
-                          "name": "WEBSITE_CONTENTSHARE",
-                          "value": "[toLower(parameters('contentShareName'))]"
                       },
                       {
                           "name": "WEBSITE_NODE_DEFAULT_VERSION",
