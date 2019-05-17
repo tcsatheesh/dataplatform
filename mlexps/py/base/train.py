@@ -74,23 +74,23 @@ def createCompute(ws, args):
         if compute_target and type(compute_target) is AmlCompute:
             print("Found compute target       : {0}".format( compute_name))
     else:
-        print ("Compute target {0} not found. Create one manually first.".format(compute_name))
-        # compute_min_nodes = args.minNodes
-        # compute_max_nodes = args.maxNodes
-        # vm_size = args.clusterSku
-        # print("Creating a new compute target {0}.".format(compute_name))
-        # provisioning_config = AmlCompute.provisioning_configuration(vm_size = vm_size,
-        #                                                             min_nodes = compute_min_nodes, 
-        #                                                             max_nodes = compute_max_nodes)
-        # # create the cluster
-        # compute_target = ComputeTarget.create(ws, compute_name, provisioning_config)        
-        # # can poll for a minimum number of nodes and for a specific timeout. 
-        # # if no min node count is provided it will use the scale settings for the cluster
-        # compute_target.wait_for_completion(show_output=True, min_node_count=None, timeout_in_minutes=20)
+        print ("Compute target {0} not found.".format(compute_name))
+        compute_min_nodes = args.minNodes
+        compute_max_nodes = args.maxNodes
+        vm_size = args.clusterSku
+        print("Creating a new compute target {0}.".format(compute_name))
+        provisioning_config = AmlCompute.provisioning_configuration(vm_size = vm_size,
+                                                                    min_nodes = compute_min_nodes, 
+                                                                    max_nodes = compute_max_nodes)
+        # create the cluster
+        compute_target = ComputeTarget.create(ws, compute_name, provisioning_config)        
+        # can poll for a minimum number of nodes and for a specific timeout. 
+        # if no min node count is provided it will use the scale settings for the cluster
+        compute_target.wait_for_completion(show_output=True, min_node_count=None, timeout_in_minutes=20)
         
-        # if (args.verbose):
-        #     # For a more detailed view of current AmlCompute status, use get_status()
-        #     print(compute_target.get_status().serialize())
+        if (args.verbose):
+            # For a more detailed view of current AmlCompute status, use get_status()
+            print(compute_target.get_status().serialize())
     return compute_target
 
 def createEstimator(ws, args, folders):    
