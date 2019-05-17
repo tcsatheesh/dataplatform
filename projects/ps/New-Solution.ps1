@@ -1,12 +1,6 @@
-param (
-    [Parameter(Mandatory = $True, HelpMessage = 'The name of the department.')]
-    [String]$department,
-    
-    [Parameter(Mandatory = $True, HelpMessage = 'The environment for this project.')]
-    [String]$environment,
-
+param (    
     [Parameter(Mandatory = $True, HelpMessage = 'The parent project name')]
-    [string]$parentProject,
+    [string]$parentProjectParameterFile,
 
     [Parameter(Mandatory = $True, HelpMessage = 'The solution file.')]
     [string]$solutionParameterFile
@@ -39,22 +33,29 @@ function New-Environment{
 }
 
 
-$parameters = Get-Content -Path (Get-Item -Path $solutionParameterFile).FullName -Raw | ConvertFrom-JSON
-
+$parameters = Get-Content -Path (Get-Item -Path $parentProjectParameterFile).FullName -Raw | ConvertFrom-JSON
 $resources = $parameters.parameters.resources.value
+$resource = $resources | Where-Object {$_.type -eq "department"}
+$department = $resource.name
+$resource = $resources | Where-Object {$_.type -eq "projectName"}
+$projectName = $resource.name
+$resource = $resources | Where-Object {$_.type -eq "environment"}
+$environment = $resource.name
 
+$parentProject = "{0}-{1}-{2}" -f $department, $projectName, $environment
+
+$parameters = Get-Content -Path (Get-Item -Path $solutionParameterFile).FullName -Raw | ConvertFrom-JSON
+$resources = $parameters.parameters.resources.value
 $resource = $resources | Where-Object {$_.type -eq "envtypeFolder"}
 $envtypeFolder = $resource.name
-
 $resource = $resources | Where-Object {$_.type -eq "envtypes"}
 $envtypes = $resource.names
 
-$parentProjectName = $parentProject
 
 foreach ($envtype in $envtypes) {    
     $projectName = $envtype
     Write-Verbose "============ Creating new environment of type $projectName ========="
-    New-Environment -department $department -projectName $projectName -environment $environment -parentProject $parentProjectName -envtypeFolder $envTypeFolder -envtype $envtype
-    $parentProjectName = "{0}-{1}-{2}" -f $department, $projectName, $environment
+    New-Environment -department $department -projectName $projectName -environment $environment -parentProject $parentProject -envtypeFolder $envTypeFolder -envtype $envtype
+    $parentProject = "{0}-{1}-{2}" -f $department, $projectName, $environment
 }
 

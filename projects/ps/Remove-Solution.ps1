@@ -1,9 +1,6 @@
-param (
-    [Parameter(Mandatory = $True, HelpMessage = 'The name of the department.')]
-    [String]$department,
-    
-    [Parameter(Mandatory = $True, HelpMessage = 'The environment for this project.')]
-    [String]$environment,
+param (    
+    [Parameter(Mandatory = $True, HelpMessage = 'The parent project name')]
+    [string]$parentProjectParameterFile,
 
     [Parameter(Mandatory = $True, HelpMessage = 'The solution file.')]
     [string]$solutionParameterFile
@@ -30,13 +27,17 @@ function Remove-Environment{
 }
 
 
-$parameters = Get-Content -Path (Get-Item -Path $solutionParameterFile).FullName -Raw | ConvertFrom-JSON
-
+$parameters = Get-Content -Path (Get-Item -Path $parentProjectParameterFile).FullName -Raw | ConvertFrom-JSON
 $resources = $parameters.parameters.resources.value
+$resource = $resources | Where-Object {$_.type -eq "department"}
+$department = $resource.name
+$resource = $resources | Where-Object {$_.type -eq "environment"}
+$environment = $resource.name
 
+$parameters = Get-Content -Path (Get-Item -Path $solutionParameterFile).FullName -Raw | ConvertFrom-JSON
+$resources = $parameters.parameters.resources.value
 $resource = $resources | Where-Object {$_.type -eq "envtypeFolder"}
 $envtypeFolder = $resource.name
-
 $resource = $resources | Where-Object {$_.type -eq "envtypes"}
 $envtypes = $resource.names
 
