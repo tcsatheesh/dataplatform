@@ -106,8 +106,7 @@ function Get-WebhookUriInternal {
 function Get-Body {
     param (
         [object]$value
-    )
-    Write-Verbose "************* $value"
+    )    
     $tenantId = (Get-ProjectParameter -type "tenant").id
     $analysisServicesName = Get-FormatedText -strFormat "{0}{1}{2}as01"
     

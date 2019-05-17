@@ -1,5 +1,5 @@
 {
-    "type": "pipelines",
+    "type": "adf",
     "parent": "",
     "resources": [
         {
@@ -15,12 +15,6 @@
             "resources": [
                 {
                     "type": "diagnostics"
-                },
-                {
-                    "type": "adlsv2storage"
-                },
-                {
-                    "type": "storage"
                 }
             ]
         },

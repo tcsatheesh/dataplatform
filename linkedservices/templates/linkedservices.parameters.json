@@ -15,7 +15,7 @@
                     "parameters": [
                         {
                             "name": "linkedServiceName",
-                            "type": "format",
+                            "type": "resourceSpecific",
                             "value": "{0}{1}{2}nekvltacc"
                         },
                         {
