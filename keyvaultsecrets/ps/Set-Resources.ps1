@@ -27,9 +27,11 @@ function Get-SqlConnectionString {
     $account = $resource.parameters | Where-Object {$_.name -eq "account"}
     $sqlLoginName = $account.value
     $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
-    $secretName = $resource.name
+    $secretName = "{0}-{1}-password" -f $sqlServerName, $sqlLoginName
     $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName
     $sqlLoginPassword = $secret.SecretValueText
+    Write-Verbose "secret name is $secretName"
+    Write-Verbose "sql Login password is $sqlLoginPassword"
     $connectionString = "Data Source=tcp:{0}.database.windows.net,1433;Initial Catalog={1};User ID={2};Password={3};Integrated Security=False;Encrypt=True;Connect Timeout=30" `
         -f $sqlServerName, $sqlDatabaseName, $sqlLoginName, $sqlLoginPassword
     $secretValue = ConvertTo-SecureString -AsPlainText $connectionString -Force

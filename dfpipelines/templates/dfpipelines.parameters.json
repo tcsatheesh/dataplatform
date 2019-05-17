@@ -463,6 +463,103 @@
                             "value": "{0}{1}{2}_pattern_4"
                         }
                     ]
+                },
+                {
+                    "type": "pattern5",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern5.json",
+                    "parameterFileName": "pattern5.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "sourceDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_src_ds"
+                        },
+                        {
+                            "name": "destinationDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_ds"
+                        },
+                        {
+                            "name": "destinationDataset2Name",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_ds_2"
+                        },
+                        {
+                            "name": "destinationDBDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_db_ds"
+                        },
+                        {
+                            "name": "destinationDBTableName",
+                            "type": "value",
+                            "value": "[dbo].[products]"
+                        },
+                        {
+                            "name": "sourceLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationDBLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
+                        },
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_5"
+                        },
+                        {
+                            "name": "copyActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_blob_to_blob"
+                        },
+                        {
+                            "name": "copyActivity2Name",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_blob_to_sql"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}trigger"
+                        },
+                        {
+                            "name": "triggerStartTime",
+                            "type": "utcdatetime",
+                            "value": "-2",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "inputFileName",
+                            "type": "value",
+                            "value": "@concat('*_',formatDateTime(dataset().windowStartTime,'yyyyMMddHH'),'*.csv')"
+                        },
+                        {
+                            "name": "inputFolderName",
+                            "type": "value",
+                            "value": "source"
+                        },
+                        {
+                            "name": "destinationFolderPath",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/')"
+                        }
+                    ]
                 }
             ]
         }
