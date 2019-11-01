@@ -5,12 +5,8 @@
         "resources": {
             "value": [
                 {
-                    "type": "envtypeFolder",
-                    "name": "dataplatform"
-                },
-                {
-                    "type": "envtypes",
-                    "names": [
+                    "envtypeFolder": "dataplatform",
+                    "envtypes": [
                         "adf",
                         "appdb",
                         "pattern5"

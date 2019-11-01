@@ -1,0 +1,28 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "envtypeFolder": "databricks",
+                    "envtypes": [
+                        "base"
+                    ]
+                },
+                {
+                    "envtypeFolder": "dataplatform",
+                    "envtypes": [
+                        "appdw"
+                    ]
+                },
+                {
+                    "envtypeFolder": "databricks",
+                    "envtypes": [
+                        "mlexps"
+                    ]
+                }
+            ]
+        }
+    }
+}

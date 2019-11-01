@@ -89,6 +89,40 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "databricks",
+                    "resourceType": "vnets",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}vnet01",
+                    "location": "North Europe",
+                    "templateFileName": "vnet.json",
+                    "parameterFileName": "vnet.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "addressPrefix",
+                            "type": "value",
+                            "value": "10.64.0.0/24"
+                        },
+                        {
+                            "name": "subnets",
+                            "type": "value",
+                            "value": [
+                                {
+                                    "name": "databricks-public",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.0/26"
+                                    }
+                                },
+                                {
+                                    "name": "databricks-private",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.64/26"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

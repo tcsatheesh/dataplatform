@@ -46,16 +46,14 @@ $parentProject = "{0}-{1}-{2}" -f $department, $projectName, $environment
 
 $parameters = Get-Content -Path (Get-Item -Path $solutionParameterFile).FullName -Raw | ConvertFrom-JSON
 $resources = $parameters.parameters.resources.value
-$resource = $resources | Where-Object {$_.type -eq "envtypeFolder"}
-$envtypeFolder = $resource.name
-$resource = $resources | Where-Object {$_.type -eq "envtypes"}
-$envtypes = $resource.names
 
-
-foreach ($envtype in $envtypes) {    
-    $projectName = $envtype
-    Write-Verbose "============ Creating new environment of type $projectName ========="
-    New-Environment -department $department -projectName $projectName -environment $environment -parentProject $parentProject -envtypeFolder $envTypeFolder -envtype $envtype
-    $parentProject = "{0}-{1}-{2}" -f $department, $projectName, $environment
+foreach ($resource in $resources) {
+    $envtypeFolder = $resource.envtypeFolder
+    foreach ($envtype in $resource.envtypes) {    
+        $projectName = $envtype
+        Write-Verbose "============ Creating new environment of type $projectName ========="
+        New-Environment -department $department -projectName $projectName -environment $environment -parentProject $parentProject -envtypeFolder $envTypeFolder -envtype $envtype
+        $parentProject = "{0}-{1}-{2}" -f $department, $projectName, $environment
+    }    
 }
 

@@ -62,7 +62,7 @@
                     "type": "adlsv2storage",
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "app",
-                    "name": "{0}{1}{2}nestgaccv2",
+                    "name": "{0}{1}{2}neadlsgen2",
                     "location": "North Europe",
                     "templateFileName": "adlsv2.json",
                     "parameterFileName": "adlsv2.parameters.json"

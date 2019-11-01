@@ -33,7 +33,7 @@ namespace itdplt.function
 
             log.LogInformation("Request Body: {requestBody}", requestBody);
 
-            string storageConnectionString = System.Environment.GetEnvironmentVariable("dia-stor-connection-string");
+            string storageConnectionString = System.Environment.GetEnvironmentVariable("stor-connection-string");
             //log.LogInformation("Con" + storageConnectionString);
             ProcessAsync(storageConnectionString, im.itemName, log).GetAwaiter().GetResult();
             ProcessAsync(storageConnectionString, im.itemName.Replace("_pmc.xml", "_mort.xml"), log).GetAwaiter().GetResult();

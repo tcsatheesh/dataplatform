@@ -1,0 +1,82 @@
+{
+    "type": "base",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "principals",
+            "resources": [
+                {
+                    "type": "applicationPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                },
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "databricks"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaults",
+            "resources": [
+                {
+                    "type": "appkeyvault"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultaccess",
+            "resources": [                
+                {
+                    "type": "applicationPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "clientsecrets",
+            "resources": [
+                {
+                    "type": "password",
+                    "subtype": "applicationPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "app-min"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "adlsv2storage"
+                }
+            ]
+        },
+        {
+            "resourceType": "databricks",
+            "resources": [
+                {
+                    "type": "databrick-custom"
+                }
+            ]
+        }
+    ]
+}

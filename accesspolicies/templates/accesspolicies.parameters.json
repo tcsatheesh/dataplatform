@@ -161,6 +161,24 @@
                     ]
                 },
                 {
+                    "type": "app-min",
+                    "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "app",
+                    "accesspolicies": [                        
+                        {
+                            "type": "Storage Blob Data Contributor",
+                            "policies": [
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "applicationPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "type": "databricks",
                     "resourceType": "resourcegroups",
                     "resourceGroupTypeRef": "databricks",
