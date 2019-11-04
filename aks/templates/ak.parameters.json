@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "resourcename": {
+        "resourceName": {
             "value": ""
         },
         "location": {
@@ -15,10 +15,10 @@
             "value": 1
         },
         "agentVMSize": {
-            "value": "Standard_DS1_v2"
+            "value": "Standard_DS2_v2"
         },
         "servicePrincipalClientId": {
-            "value": ""
+            "value": null
         },
         "servicePrincipalClientSecret": {
             "reference": {
@@ -28,42 +28,19 @@
                 "secretName": ""
             }
         },
-        "serverApplicationId": {
-            "value": ""
-        },
-        "serverApplicationSecret": {
-            "reference": {
-                "keyVault": {
-                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
-                },
-                "secretName": ""
-            }
-        },
-        "tenantId": {
-            "value": ""
-        },
-        "clientApplicationId": {
-            "value": ""
-        },
         "kubernetesVersion": {
-            "value": ""
-        },
-        "workspaceName": {
-            "value": ""
-        },
-        "omsWorkspaceId": {
-            "value": ""
-        },
-        "workspaceRegion": {
-            "value": ""
-        },
-        "enableHttpApplicationRouting": {
-            "value": true
+            "value": "1.13.12"
         },
         "networkPlugin": {
             "value": "azure"
         },
         "enableRBAC": {
+            "value": true
+        },
+        "enableHttpApplicationRouting": {
+            "value": false
+        },
+        "vmssNodePool": {
             "value": true
         },
         "vnetSubnetID": {
@@ -77,6 +54,27 @@
         },
         "dockerBridgeCidr": {
             "value": ""
+        },
+        "principalId": {
+            "value": ""
+        },
+        "workspaceName": {
+            "value": ""
+        },
+        "omsWorkspaceId": {
+            "value": ""
+        },
+        "workspaceRegion": {
+            "value": ""
+        },
+        "aciVnetSubnetName": {
+            "value": ""
+        },
+        "aciVnetSubnetId": {
+            "value": ""
+        },
+        "aciConnectorLinuxEnabled": {
+            "value": true
         }
     }
 }

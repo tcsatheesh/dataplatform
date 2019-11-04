@@ -7,9 +7,6 @@
             "resources": [
                 {
                     "type": "aksServerPrincipal"
-                },
-                {
-                    "type": "aksClientPrincipal"
                 }
             ]
         },
@@ -19,6 +16,14 @@
                 {
                     "type": "password",
                     "subtype": "aksServerPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "aks"
                 }
             ]
         },
