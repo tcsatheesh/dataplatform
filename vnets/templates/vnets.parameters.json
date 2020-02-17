@@ -125,6 +125,18 @@
                                     "properties": {
                                         "addressPrefix": "10.64.0.64/26"
                                     }
+                                },
+                                {
+                                    "name": "app-service",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.128/26"
+                                    }
+                                },
+                                {
+                                    "name": "amlcompute",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.192/26"
+                                    }
                                 }
                             ]
                         }

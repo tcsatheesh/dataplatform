@@ -28,7 +28,9 @@ function New-Resource {
             }
         }
     }
-    $subnetIdConfig.value = $subnetIds
+    if ($subnetIds.Length > 0){
+        $subnetIdConfig.value = $subnetIds
+    }
 
     $resourceTemplateFileName = $resource.templateFileName  
     Copy-TemplateFile -resourceType $resourceType -templateFileName $resourceTemplateFileName

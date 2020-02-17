@@ -85,7 +85,11 @@ function Set-Resource {
         $assignments = $resource.parameters | Where-Object {$_.type -eq "assignment"}
         Set-Assignment -name $name -assignments $assignments
     } else {
-        $templateParameterFile = Get-ProjectTemplateFilePath -resourceType $resource.ResourceType -fileName $resource.templateParameterFileName
+        if ($resource.templateParameterFileName -eq $null){
+            $templateParameterFile = $null
+        }else{
+            $templateParameterFile = Get-ProjectTemplateFilePath -resourceType $resource.ResourceType -fileName $resource.templateParameterFileName
+        }
         Write-Verbose "Template parameter file is $templateParameterFile"
         $policydefintion = $resource.parameters | Where-Object {$_.type -eq "policydefinition"}
         if ($policydefintion -eq $null) {throw "Policy definition is empty"}
@@ -94,7 +98,11 @@ function Set-Resource {
         $description = $policydefintion.description
 
         Write-Verbose "New PolicyDefinition $name"
-        $definition = New-AzureRmPolicyDefinition -Name $name -DisplayName $displayName -description $description -Policy $templateFile -Parameter $templateParameterFile -Mode All
+        if ( $templateParameterFile -eq $null){
+            $definition = New-AzureRmPolicyDefinition -Name $name -DisplayName $displayName -description $description -Policy $templateFile -Mode All
+        }else{
+            $definition = New-AzureRmPolicyDefinition -Name $name -DisplayName $displayName -description $description -Policy $templateFile -Parameter $templateParameterFile -Mode All            
+        }        
 
         $subscriptionId = Get-SubscriptionId
         $scope = "/subscriptions/$subscriptionId"
@@ -102,7 +110,15 @@ function Set-Resource {
         $assignment = $resource.parameters | Where-Object {$_.type -eq "assignment"}
         if ($assignment -eq $null) {throw "Assignment is empty"}
         $subnetIds = $assignment.parameters | Where-Object {$_.name -eq "subnetIds"}
-        $assignment = New-AzureRMPolicyAssignment -Name $assignment.name -Scope $scope -subnetIds $subnetIds.value -PolicyDefinition $definition           
+        if ($subnetIds -ne $null) {
+            $assignment = New-AzureRMPolicyAssignment -Name $assignment.name -Scope $scope -subnetIds $subnetIds.value -PolicyDefinition $definition
+        }
+        $namePattern = $assignment.parameters | Where-Object {$_.name -eq "namePattern"}
+        if ($namePattern -ne $null) {
+            $assignment = New-AzureRMPolicyAssignment -Name $assignment.name -Scope $scope `
+                -publicIPNamePattern $namePattern.value.publicIPNamePattern `
+                -PolicyDefinition $definition 
+        }
     }
 }
 

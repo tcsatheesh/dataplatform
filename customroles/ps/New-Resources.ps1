@@ -17,10 +17,11 @@ function New-Resource {
     $rdef = Get-AzureRmRoleDefinition -Name $name -ErrorAction SilentlyContinue
     if ($rdef -ne $null -and $resource.update) {
         Write-Verbose "Updating role defintion for $name"
-        $resourceParameters | Add-Member -Name 'Id' -MemberType Noteproperty -Value $rdef.Id
-        $rdef.AssignableScopes | ForEach-Object {
-            $resourceParameters.AssignableScopes += $_
-        }
+        $resourceParameters | Add-Member -Name 'Id' -MemberType Noteproperty -Value $rdef.Id        
+        $resourceParameters.Actions += $rdef.Actions
+        $resourceParameters.Actions = $resourceParameters.Actions | Select -uniq
+        $resourceParameters.AssignableScopes += $rdef.AssignableScopes
+        $resourceParameters.AssignableScopes = $resourceParameters.AssignableScopes | Select -uniq            
     }
     elseif ($rdef -eq $null) {
         Write-Verbose "Creating role definition $name"

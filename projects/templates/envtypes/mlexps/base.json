@@ -1,0 +1,92 @@
+{
+    "type": "base",
+    "resources": [
+        {
+            "resourceType": "principals",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "managers"
+                },
+                {
+                    "type": "keyvaultadmins"
+                },
+                {
+                    "type": "datacontrollers"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                },
+                {
+                    "type": "mle"
+                },
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaults",
+            "resources": [
+                {
+                    "type": "appkeyvault"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultaccess",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "clientsecrets",
+            "resources": [
+                {
+                    "type": "password",
+                    "subtype": "deploymentPrincipal"
+                },
+                {
+                    "type": "certificate",
+                    "subtype": "deploymentPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "databricks"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "app-base"
+                },
+                {
+                    "type": "mlexps"
+                },
+                {
+                    "type": "mlexps-vnet"
+                }
+            ]
+        }
+    ]
+}

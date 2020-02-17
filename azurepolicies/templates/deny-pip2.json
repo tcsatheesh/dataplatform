@@ -1,0 +1,19 @@
+{
+	"if": {
+		"allOf": [
+			{
+				"source": "action",
+				"like": "Microsoft.Network/publicIPAddresses/*"
+			},
+			{
+				"not": {
+					"field": "type",
+					"equals": "Microsoft.MachineLearningServices/workspaces/computes"
+				}
+			}
+		]
+	},
+	"then": {
+		"effect": "deny"
+	}
+}

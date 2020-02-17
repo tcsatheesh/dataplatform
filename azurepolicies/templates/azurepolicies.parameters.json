@@ -97,6 +97,36 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "deny-pip",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "deny-pip.json",
+                    "templateParameterFileName": "deny-pip.parameters.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "deny-publicipdaddress-creation",
+                            "displayName": "Deny creation of Public IP Addresses",
+                            "description": "This policy enforces Public IP Address restriction"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "deny-publicipdaddress-creation",
+                            "displayName": "Deny creation of Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [
+                                {
+                                    "name": "namePattern",
+                                    "value": {
+                                        "publicIPNamePattern": "*-azurebatch-cloudservicepublicip"
+                                    }
+                                }                            
+                            ]
+                        }
+                    ]
                 }
             ]
         }

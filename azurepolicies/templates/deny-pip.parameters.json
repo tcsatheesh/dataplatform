@@ -1,0 +1,8 @@
+{
+	"publicIPNamePattern": {
+		"type": "String",
+		"metadata": {
+			"description": "Pattern to use for public ip address names. Can include wildcard (*)."
+		}
+    }
+}

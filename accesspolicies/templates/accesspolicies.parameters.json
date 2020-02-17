@@ -375,6 +375,53 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "mlexps",
+                    "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "mle",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Reader",
+                            "policies": [
+                                {
+                                    "type": "adgroups",
+                                    "ref": [
+                                        "keyvaultadmins"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "mlexps-vnet",
+                    "resourceType": "resourcegroups",
+                    "resourceGroupTypeRef": "vnet",
+                    "accesspolicies": [
+                        {
+                            "type": "Contributor",
+                            "policies": [
+                                {
+                                    "type": "principals",
+                                    "ref": [
+                                        "deploymentPrincipal"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

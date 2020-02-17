@@ -21,6 +21,12 @@
                     "path": "dataserviceteam.json",
                     "update": true,
                     "name": "Data and AI Service Team"
+                },
+                {
+                    "type": "azureml",
+                    "path": "azureml.json",
+                    "update": true,
+                    "name": "AML Compute Instance"
                 }
             ]
         }
