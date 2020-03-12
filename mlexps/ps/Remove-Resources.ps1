@@ -7,7 +7,7 @@ param
 function Remove-NestedResources {
     Write-Verbose "Pre-removing resource $($resource.name)"
     $param = $resource.parameters | Where-Object {$_.name -eq "workspaceName" }
-    $workspaceName = "$($resource.name)/$($param.value)"
+    $workspaceName = "$($resource.name)"
     Write-Verbose "Workspace name is $workspaceName"
     $param = $resource.parameters | Where-Object {$_.name -eq "modelManagementAccountName" }
     $mmName = $param.value

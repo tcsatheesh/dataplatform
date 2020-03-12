@@ -1,0 +1,14 @@
+{
+    "type": "azurepolicies",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "azurepolicies",
+            "resources": [
+                {
+                    "type": "deny-pip2"
+                }
+            ]
+        }
+    ]
+}

@@ -109,15 +109,20 @@ function Set-Resource {
     
         $assignment = $resource.parameters | Where-Object {$_.type -eq "assignment"}
         if ($assignment -eq $null) {throw "Assignment is empty"}
+        
         $subnetIds = $assignment.parameters | Where-Object {$_.name -eq "subnetIds"}
+        $namePattern = $assignment.parameters | Where-Object {$_.name -eq "namePattern"}
+        
         if ($subnetIds -ne $null) {
             $assignment = New-AzureRMPolicyAssignment -Name $assignment.name -Scope $scope -subnetIds $subnetIds.value -PolicyDefinition $definition
         }
-        $namePattern = $assignment.parameters | Where-Object {$_.name -eq "namePattern"}
-        if ($namePattern -ne $null) {
+        elseif ($namePattern -ne $null) {
             $assignment = New-AzureRMPolicyAssignment -Name $assignment.name -Scope $scope `
                 -publicIPNamePattern $namePattern.value.publicIPNamePattern `
                 -PolicyDefinition $definition 
+        }else {
+            $assignment = New-AzureRMPolicyAssignment -Name $assignment.name -Scope $scope `
+            -PolicyDefinition $definition
         }
     }
 }

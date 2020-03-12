@@ -61,7 +61,7 @@
         }
     },
     "variables": {
-        "containerRegistryId" : "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]",
+        "containerRegistryId": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]",
         "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]",
         "appInsightsId": "[resourceId('Microsoft.Insights/components',parameters('appInsightsName'))]",
         "keyVaultId": "[resourceId('Microsoft.KeyVault/vaults',parameters('keyVaultName'))]"
@@ -72,6 +72,10 @@
             "name": "[parameters('resourcename')]",
             "location": "[parameters('location')]",
             "type": "Microsoft.MachineLearningServices/workspaces",
+            "sku": {
+                "name": "Enterprise",
+                "tier": "Enterprise"
+            },
             "properties": {
                 "containerRegistry": "[variables('containerRegistryId')]",
                 "descsription": "[parameters('description')]",
@@ -80,6 +84,7 @@
                 "storageAccount": "[variables('storageAccountId')]",
                 "applicationInsights": "[variables('appInsightsId')]"
             },
+
             "identity": {
                 "type": "systemAssigned"
             },
@@ -119,7 +124,8 @@
             "location": "[parameters('location')]",
             "type": "Microsoft.KeyVault/vaults",
             "properties": {
-                "accessPolicies": [],
+                "accessPolicies": [
+                ],
                 "enabledForDeployment": true,
                 "enabledForTemplateDeployment": true,
                 "enabledForVolumeEncryption": true,
