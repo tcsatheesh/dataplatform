@@ -9,12 +9,12 @@ function Set-Group {
         [string]$groupName,
         [bool]$createNew
     )
-    $group = Get-AzureADGroup -SearchString $groupName -ErrorAction SilentlyContinue
+    $group = Get-AzureRmADGroup -DisplayName $groupName -ErrorAction SilentlyContinue
     if ($group -eq $null) {
         if ($createNew) {
             Write-Verbose "Group $groupName does not exist. Creating..."
             $group = New-AzureADGroup -Description "Group $groupName" -DisplayName $groupName -MailEnabled $false -MailNickName $groupName -SecurityEnabled $True
-            $group = Get-AzureADGroup -SearchString $groupName -ErrorAction SilentlyContinue
+            $group = Get-AzureRmADGroup -DisplayName $groupName -ErrorAction SilentlyContinue
             Write-Verbose "Group $groupName created."
         }
         else {

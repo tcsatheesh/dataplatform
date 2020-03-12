@@ -1,0 +1,70 @@
+{
+    "type": "dfpipelines",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "sqldbconnectionstring",
+                    "subtype": "admin"
+                },
+                {
+                    "type": "storageconnectionstring"
+                },
+                {
+                    "type": "cmdbconnectionstring"
+                }
+            ]
+        },
+        {
+            "resourceType": "linkedservices",
+            "resources": [
+                {
+                    "type": "keyvault"
+                },
+                {
+                    "type": "storage"
+                },
+                {
+                    "type": "sqldb"
+                },
+                {
+                    "type": "adlsv2"
+                },
+                {
+                    "type": "functions"
+                },
+                {
+                    "type": "databricks"
+                },
+                {
+                    "type": "cmdb"
+                },
+                {
+                    "type": "filesystem"
+                },
+                {
+                    "type": "salesforce"
+                }
+            ]
+        },
+        {
+            "resourceType": "dfpipelines",
+            "resources": [
+                {
+                    "type": "pattern1"
+                },
+                {
+                    "type": "pattern2"
+                },
+                {
+                    "type": "pattern3"
+                },
+                {
+                    "type": "pattern4"
+                }
+            ]
+        }
+    ]
+}

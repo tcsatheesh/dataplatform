@@ -1,0 +1,15 @@
+venv35
+venv36
+aml_config
+data
+outputs
+*.pyc
+.vscode
+__pycache__
+assets
+.ipynb_checkpoints
+logs
+cp
+risk
+objdt
+api

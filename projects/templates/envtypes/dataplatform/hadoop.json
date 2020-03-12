@@ -1,0 +1,27 @@
+{
+    "type": "hadoop",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "clsadmin"
+                },
+                {
+                    "type": "login",
+                    "subtype": "sshuser"
+                }
+            ]
+        },
+        {
+            "resourceType": "hdinsights",
+            "resources": [
+                {
+                    "type": "hadoop"
+                }
+            ]
+        }
+    ]
+}

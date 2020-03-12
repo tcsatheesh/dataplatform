@@ -15,7 +15,7 @@
             "type": "string",
             "allowedValues": [
                 "Cassandra",
-                "DocumentDB",
+                "Core (SQL)",
                 "Graph",
                 "MongoDB",
                 "Table"
@@ -42,11 +42,6 @@
                         "id": "[concat(parameters('resourcename'), '-', parameters('location'))]",
                         "failoverPriority": 0,
                         "locationName": "[parameters('locationName')]"
-                    },
-                    {
-                        "id": "[concat(parameters('resourcename'), '-', parameters('pairedLocation'))]",
-                        "failoverPriority": 1,
-                        "locationName": "[parameters('pairedLocationName')]"
                     }
                 ]
             },

@@ -57,9 +57,9 @@
                 "description": "The database collation for governing the proper use of characters."
             }
         },
-        "requestedServiceObjectiveId": {
+        "skuName": {
             "type": "string",
-            "defaultValue": "4e63cb0e-91b9-46fd-b05c-51fdd2367618",
+            "defaultValue": "DW100c",
             "metadata": {
                 "description": "The type of database to create."
             }
@@ -112,7 +112,7 @@
         },
         "sqlDatabaseApiVersion": {
             "type": "string",
-            "defaultValue": "2014-04-01-preview",
+            "defaultValue": "2017-10-01-preview",
             "metadata": {
                 "description": "The api version to provision sql database."
             }
@@ -211,8 +211,8 @@
                     "apiVersion": "2014-04-01-preview",
                     "location": "[parameters('location')]",
                     "properties": {
-                        "administratorType": "ActiveDirectory",                        
-                        "login" : "[parameters('aadAdminGroupName')]",
+                        "administratorType": "ActiveDirectory",
+                        "login": "[parameters('aadAdminGroupName')]",
                         "sid": "[parameters('aadAdminGroupObjectId')]",
                         "tenantId": "[parameters('aadTenantId')]"
                     },
@@ -234,7 +234,11 @@
                         "State": "Enabled",
                         "storageEndpoint": "[concat('https://', parameters('auditStorageAccountName'),'.blob.core.windows.net')]",
                         "storageAccountAccessKey": "[listKeys(variables('storageAccountResourceId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]",
-                        "auditActionsAndGroups": [ "BATCH_COMPLETED_GROUP", "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP", "FAILED_DATABASE_AUTHENTICATION_GROUP" ],                                              
+                        "auditActionsAndGroups": [
+                            "BATCH_COMPLETED_GROUP",
+                            "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                            "FAILED_DATABASE_AUTHENTICATION_GROUP"
+                        ],
                         "storageAccountSubscriptionId": "[parameters('auditStorageAccountSubscriptionId')]"
                     }
                 },
@@ -247,7 +251,7 @@
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/firewallrules/',parameters('firewallRuleName'))]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/auditingSettings/Default')]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
-                   ],
+                    ],
                     "properties": {
                         "state": "Enabled",
                         "disabledAlerts": "",
@@ -269,12 +273,14 @@
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/securityAlertPolicies/Default')]",
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/administrators/activeDirectory')]"
                     ],
+                    "sku": {
+                        "name": "[parameters('skuName')]",
+                        "tier": "DataWarehouse"
+                    },
                     "properties": {
-                        "edition": "DataWarehouse",
-                        "requestedServiceObjectiveId": "[parameters('requestedServiceObjectiveId')]",
                         "collation": "[parameters('collation')]"
                     },
-                    "resources":[
+                    "resources": [
                         {
                             "name": "current",
                             "type": "transparentDataEncryption",
@@ -289,9 +295,8 @@
                             }
                         }
                     ]
-                }                
+                }
             ]
         }
     ]
 }
-

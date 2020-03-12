@@ -1,0 +1,40 @@
+{
+    "type": "allowpip-base",
+    "resources": [        
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "keyvaultadmins"
+                },
+                {
+                    "type": "datacontrollers"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "vnet"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "dplt"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,82 @@
+{
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory. Must be globally unique."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory."
+            }
+        },
+        "linkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the linked service."
+            }
+        },
+        "keyvaultLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the key vault linked service"
+            }
+        },
+        "databricksName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the databricks"
+            }
+        },
+        "newClusterVersion": {
+            "type": "string",
+            "defaultValue": "5.2.x-scala2.11",
+            "metadata": {
+                "description": "New cluster version"
+            }
+        },
+        "pysparkPython": {
+            "type": "string",
+            "defaultValue": "/databricks/python3/bin/python3"
+        },
+        "newClusterNodeType": {
+            "type": "string",
+            "defaultValue": "Standard_DS3_v2"
+        },
+        "newClusterNumOfWorker": {
+            "type": "int",
+            "defaultValue": 1
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('linkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "AzureDatabricks",
+                "typeProperties": {
+                    "domain": "https://northeurope.azuredatabricks.net",
+                    "accessToken": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[concat(parameters('databricksName'),'-access-token')]"
+                    },
+                    "newClusterNodeType": "[parameters('newClusterNodeType')]",
+                    "newClusterNumOfWorker": "[parameters('newClusterNumOfWorker')]",
+                    "newClusterSparkEnvVars": {
+                        "PYSPARK_PYTHON": "[parameters('pysparkPython')]"
+                    },
+                    "newClusterVersion": "[parameters('newClusterVersion')]"
+                }
+            }
+        }
+    ]
+}

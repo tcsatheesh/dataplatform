@@ -1,0 +1,57 @@
+{
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory. Must be globally unique."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory."
+            }
+        },
+        "linkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the linked service."
+            }
+        },
+        "keyvaultLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the key vault linked servicet"
+            }
+        },
+        "adlsv2StorageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the adls v2 storage account"
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('linkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[concat('https://', parameters ('adlsv2StorageAccountName'),'.dfs.core.windows.net')]",
+                    "accountKey": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[concat(parameters('adlsv2StorageAccountName'),'-accountKey')]"
+                    }
+                }
+            }
+        }
+    ]
+}

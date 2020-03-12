@@ -6,6 +6,7 @@
             "value": [
                 {
                     "type": "mvp",
+                    "subtype": "policyset",
                     "resourceType": "azurepolicies",
                     "update": true,
                     "templateFileName": "mvp.json",
@@ -21,6 +22,132 @@
                             "name": "minimum viable product",
                             "displayName": "Minimum Viable Product",
                             "scope": "subscription"
+                        }
+                    ]
+                },
+                {
+                    "type": "allowpip-nic",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "allowpip-nic.json",
+                    "templateParameterFileName": "allowpip.parameters.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "nic-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "description": "This policy enforces Public IP Address to use subnet"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "nic-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [
+                                {
+                                    "name": "subnetIds",
+                                    "value": [
+                                        {
+                                            "type": "value",
+                                            "resourceGroupName": "it-dplt-d-vnet-rg",
+                                            "virtualNetworkName": "itdpltdvnet01",
+                                            "subnetNames": [
+                                                "dsvm",
+                                                "appgw"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "allowpip-appgw",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "allowpip-appgw.json",
+                    "templateParameterFileName": "allowpip.parameters.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "appgw-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "description": "This policy enforces Public IP Address to use subnet"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "appgw-publicipdaddress-creation-in-approved-subnet",
+                            "displayName": "Use approved subnet for Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [
+                                {
+                                    "name": "subnetIds",
+                                    "value": [
+                                        {
+                                            "resourceType": "vnets",
+                                            "typeFilter": "dplt",
+                                            "property": "name",
+                                            "subnetName" : "appgw"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "deny-pip",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "deny-pip.json",
+                    "templateParameterFileName": "deny-pip.parameters.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "deny-publicipdaddress-creation",
+                            "displayName": "Deny creation of Public IP Addresses",
+                            "description": "This policy enforces Public IP Address restriction"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "deny-publicipdaddress-creation",
+                            "displayName": "Deny creation of Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [
+                                {
+                                    "name": "namePattern",
+                                    "value": {
+                                        "publicIPNamePattern": "*-azurebatch-cloudservicepublicip"
+                                    }
+                                }                            
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "deny-pip2",
+                    "subtype": "policy",                    
+                    "resourceType": "azurepolicies",
+                    "update": true,
+                    "templateFileName": "deny-pip2.json",
+                    "parameters": [
+                        {
+                            "type": "policydefinition",
+                            "name": "deny-publicipdaddress-creation2",
+                            "displayName": "Deny creation of Public IP Addresses",
+                            "description": "This policy enforces Public IP Address restriction"
+                        },
+                        {
+                            "type": "assignment",
+                            "name": "deny-publicipdaddress-creation2",
+                            "displayName": "Deny creation of Public IP Addresses",
+                            "scope": "subscription",
+                            "parameters" : [                                                      
+                            ]
                         }
                     ]
                 }

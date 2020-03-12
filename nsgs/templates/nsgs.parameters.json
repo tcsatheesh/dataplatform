@@ -1,0 +1,20 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resources": {
+            "value": [
+                {
+                    "type": "nsg",
+                    "resourceType": "nsgs",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}nsg01",
+                    "location": "North Europe",
+                    "templateFileName": "nsg.json",
+                    "parameterFileName": "nsg.parameters.json",
+                    "parameters": []
+                }
+            ]
+        }
+    }
+}

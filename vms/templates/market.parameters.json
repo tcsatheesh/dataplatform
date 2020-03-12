@@ -20,6 +20,9 @@
         "vmSize": {
             "value": ""
         },
+        "storageAccountType" : {
+            "value": ""
+        },
         "adminUserName": {
             "value": ""
         },

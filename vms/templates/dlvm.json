@@ -1,0 +1,129 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "osType": {
+            "type": "string",
+            "metadata": {
+                "description": "The type of OS to provision for Deep Learning"
+            },
+            "allowedValues": [
+                "WindowsServer2016",
+                "UbuntuLinux"
+            ]
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Username for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name Prefix for the Virtual Machine."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_NC6",
+            "metadata": {
+                "description": "Size for the Virtual Machine."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The region to deploy the resources into"
+            }
+        },
+        "storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of storage account"
+            }
+        },
+        "storageAccountType": {
+            "type": "string",
+            "metadata": {
+                "description": "The type of the Storage Account created"
+            },
+            "defaultValue": "Standard_LRS"
+        },
+        "dsvmAssetsUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "The base URL for dependent assets"
+            },
+            "defaultValue": "https://deeplearningvmstg.blob.core.windows.net/assets/"
+        }
+    },
+    "variables": {
+        "apiVersion": "2015-06-15"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "pid-89f0a7f0-c6e3-495b-8bee-074f364ce3f1",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        {
+            "apiVersion": "2016-02-01",
+            "name": "linkedTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('dsvmAssetsUrl'),parameters('osType'), '.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "dsvmAssetsUrl": {
+                        "value": "[parameters('dsvmAssetsUrl')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "vmName": {
+                        "value": "[parameters('resourcename')]"
+                    },
+                    "vmSize": {
+                        "value": "[parameters('vmSize')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
+                    },
+                    "storageAccountType": {
+                        "value": "[parameters('storageAccountType')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "DataScienceVmUrl": {
+            "type": "string",
+            "value": "[concat('https://ms.portal.azure.com/#resource/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Compute/virtualMachines/', parameters('resourcename'))]"
+        }
+    }
+}

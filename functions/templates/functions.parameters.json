@@ -1,0 +1,85 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resources": {
+      "value": [
+        {
+          "type": "function",
+          "resourceType": "functions",
+          "resourceGroupTypeRef": "app",
+          "name": "{0}{1}{2}fn01",
+          "location": "North Europe",
+          "templateFileName": "function.json",
+          "parameterFileName": "function.parameters.json",
+          "parameters": [
+            {
+              "name": "storageName",
+              "type": "reference",
+              "ref": {
+                "resourceType": "storageaccounts",
+                "typeFilter": "v1storage",
+                "property": "name"
+              }
+            },
+            {
+              "name": "contentShareName",
+              "type": "format",
+              "value": "{0}{1}{2}fnctntshare01"
+            },
+            {
+              "name": "kind",
+              "type": "value",
+              "value": "functionapp"
+            },
+            {
+              "name": "function_runtime",
+              "type": "value",
+              "value": "dotnet"
+            },
+            {
+              "name": "reserved",
+              "type": "value",
+              "value": false
+            }
+          ]
+        },
+        {
+          "type": "pyfunction",
+          "resourceType": "functions",
+          "resourceGroupTypeRef": "app",
+          "name": "{0}{1}{2}pyfn01",
+          "location": "West Europe",
+          "templateFileName": "pyfunction.json",
+          "parameterFileName": "pyfunction.parameters.json",
+          "parameters": [
+            {
+              "name": "storageName",
+              "type": "reference",
+              "ref": {
+                "resourceType": "storageaccounts",
+                "typeFilter": "v1storage",
+                "property": "name"
+              }
+            },
+            {
+              "name": "kind",
+              "type": "value",
+              "value": "functionapp,linux"
+            },
+            {
+              "name": "function_runtime",
+              "type": "value",
+              "value": "python"
+            },
+            {
+              "name": "reserved",
+              "type": "value",
+              "value": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

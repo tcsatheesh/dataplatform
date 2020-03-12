@@ -1,0 +1,14 @@
+{
+    "type": "dlvm",
+    "parent": "",
+    "resources": [        
+        {
+            "resourceType": "vms",
+            "resources": [
+                {
+                    "type": "ubuntudlvm"
+                }
+            ]
+        }
+    ]
+}

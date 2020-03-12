@@ -1,33 +1,78 @@
 {
-    "name": "Salesforce",
-    "properties": {
-        "type": "Salesforce",
-        "typeProperties": {
-            "environmentUrl": "https://login.salesforce.com",
-            "username": {
-                "type": "AzureKeyVaultSecret",
-                "secretName": "salesforce-com-username",
-                "store":{
-                    "referenceName": "KeyVault",
-                    "type": "LinkedServiceReference"
-                }
-            },
-            "password": {
-                "type": "AzureKeyVaultSecret",
-                "secretName": "salesforce-com-password",
-                "store":{
-                    "referenceName": "KeyVault",
-                    "type": "LinkedServiceReference"
-                }
-            },
-            "securityToken": {
-                "type": "AzureKeyVaultSecret",
-                "secretName": "salesforce-com-securitytoken",
-                "store":{
-                    "referenceName": "KeyVault",
-                    "type": "LinkedServiceReference"
-                }
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory. Must be globally unique."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory."
+            }
+        },
+        "linkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the linked service."
+            }
+        },
+        "keyvaultLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the key vault linked service"
+            }
+        },
+        "username": {
+            "type": "string",
+            "metadata": {
+                "description": "User name to access sales force"
+            }
+        },
+        "password": {
+            "type": "string",
+            "metadata": {
+                "description": "Password for the above user name"
+            }
+        },
+        "securitytoken": {
+            "type": "string",
+            "metadata": {
+                "description": "Security token to access salesforce"
             }
         }
-    }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('linkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "Salesforce",
+                "typeProperties": {
+                    "environmentUrl": "https://login.salesforce.com",
+                    "username": "[parameters('username')]",
+                    "password": {
+                        "type": "AzureKeyVaultSecret",
+                        "secretName": "[parameters('password')]",
+                        "store":{
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    "securityToken": {
+                        "type": "AzureKeyVaultSecret",
+                        "secretName": "[parameters('securitytoken')]",
+                        "store":{
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                }                       
+            }
+        }
+    ]
 }

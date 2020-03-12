@@ -10,26 +10,35 @@ function Set-Application {
         [string]$applicationName,
         [string]$applicationUri,
         [object]$replyUrls,
-        [string]$homepage
+        [string]$homepage,
+        [boolean]$isNative
     ) 
 
-    $application = Get-AzureRmADApplication -DisplayNameStartWith $applicationName -ErrorAction SilentlyContinue
+    $application = Get-AzureADApplication -SearchString $applicationName -ErrorAction SilentlyContinue
     if ($application -eq $null) {        
         if ([string]::IsNullOrEmpty($replyUrls) ) {
             Write-Verbose "Creating new Azure AD Application $applicationName"
-            $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri
+            if ($isNative) {
+                $application = New-AzureADApplication -DisplayName $applicationName -PublicClient $true
+            }else {
+                $application = New-AzureADApplication -DisplayName $applicationName -IdentifierUris $applicationUri                 
+            }
         }
         else {
-            Write-Verbose "Creating new Azure AD Application $applicationName with replyurls $replyUrls and homepage $homepage"            
-            $application = New-AzureRmADApplication -DisplayName $applicationName -IdentifierUris $applicationUri `
+            Write-Verbose "Creating new Azure AD Application $applicationName with replyurls $replyUrls"
+            if ($isNative) {
+                $application = New-AzureADApplication -DisplayName $applicationName -ReplyUrls $replyUrls -PublicClient $true
+            }else {
+                $application = New-AzureADApplication -DisplayName $applicationName -IdentifierUris $applicationUri `
                 -ReplyUrls $replyUrls -HomePage $homepage
+            }
         }
         Write-Verbose "Created new Azure AD Application"
     }
     else {
         Write-Verbose "Azure AD Application $applicationName exists"
     }
-    $applicationId = $application.ApplicationId
+    $applicationId = $application.AppId
     $servicePrincipal = Get-AzureRmADServicePrincipal -SearchString $applicationName  -ErrorAction SilentlyContinue
     if ($servicePrincipal -eq $null) {
         Write-Verbose "Creating new Azure AD Service Principal"
@@ -63,10 +72,17 @@ function Set-Resource {
         [object]$resource
     )
 
+    $isNative = $false
+    if ($null -ne $resource.isNativeType) {
+        $isNative = $resource.isNativeType
+    }
+    Write-Verbose "$($resource.application.name) is a native application: $isNative"
+
     $resourceIds = Set-Application -applicationName $resource.application.name `
         -applicationUri $resource.application.uri `
         -replyUrl $resource.application.replyUrls `
-        -homepage $resource.application.homepage
+        -homepage $resource.application.homepage `
+        -isNative $isNative
 
     $resource.application.clientId = $resourceIds.applicationId
     $resource.servicePrincipal.name = $resource.application.name

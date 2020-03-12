@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "sourceDataSetName": {
+            "value": ""
+        },
+        "destinationDatasetName": {
+            "value": ""
+        },
+        "destinationDataset2Name": {
+            "value": ""
+        },
+        "destinationDBDatasetName": {
+            "value": ""
+        },
+        "destinationDBTableName": {
+            "value": ""
+        },
+        "sourceLinkedServiceName": {
+            "value": ""
+        },
+        "destinationLinkedServiceName": {
+            "value": ""
+        },
+        "destinationDBLinkedServiceName": {
+            "value": ""
+        },
+        "pipelineName": {
+            "value": ""
+        },
+        "copyActivityName": {
+            "value": ""
+        },
+        "copyActivity2Name": {
+            "value": ""
+        },
+        "folderName": {
+            "value": ""
+        },
+        "triggerName": {
+            "value": ""
+        },
+        "triggerStartTime": {
+            "value": ""
+        },
+        "triggerIntervals": {
+            "value": 1
+        },
+        "triggerFrequency": {
+            "value": "Hour"
+        },
+        "triggerDelay": {
+            "value": "00:00:10"
+        },
+        "inputFileName": {
+            "value": ""
+        },
+        "inputFolderName": {
+            "value": ""
+        },
+        "destinationFolderPath": {
+            "value": ""
+        }
+    }
+}

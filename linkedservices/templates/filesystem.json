@@ -1,0 +1,80 @@
+{
+    "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory. Must be globally unique."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory."
+            }
+        },
+        "linkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the linked service."
+            }
+        },
+        "keyvaultLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the key vault linked service"
+            }
+        },
+        "hostName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the on premise host."
+            }
+        },
+        "userId": {
+            "type": "string",
+            "metadata": {
+                "description": "User id to access on premise host"
+            }
+        },
+        "password": {
+            "type": "string",
+            "metadata": {
+                "description": "password for the user id."
+            }
+        },
+        "connectVia": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the integration runtime to use"
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('resourcename'), '/', parameters('linkedServiceName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedservices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "FileServer",
+                "typeProperties": {
+                    "host": "[parameters('hostName')]",
+                    "userId": "[parameters('userId')]",
+                    "password": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyvaultLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[parameters('password')]"
+                    },
+                    "connectVia": {
+                        "referenceName": "[parameters('connectVia')]",
+                        "type": "IntegrationRuntimeReference"
+                    }
+                }                       
+            }
+        }
+    ]
+}

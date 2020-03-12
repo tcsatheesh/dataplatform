@@ -6,19 +6,29 @@ param
 
 function Get-Principal {
     param (
-        [string]$type
+        [string]$type,
+        [switch]$godeep
     )
     $parameterFileName = "principals.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    if ($godeep) {
+        $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
+    }else {
+        $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    }
     $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
     return $resource.servicePrincipal
 }
 function Get-ADGroup {
     param (
-        [string]$type
+        [string]$type,
+        [switch]$godeep
     )
     $parameterFileName = "adgroups.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    if ($godeep) {
+        $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
+    }else {
+        $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    }
     $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $type}
     return $resource 
 }
@@ -39,7 +49,7 @@ function New-Resource {
             $objectid = $null
             Write-Verbose "Permission in $folderName for $aadName"
             if ($aadType -eq "SPN") {
-                $principal = Get-Principal -type $aadName
+                $principal = Get-Principal -type $aadName -godeep
                 if ([string]::IsNullOrEmpty($principal)) {
                     Write-Verbose "Principal $aadName not defined"
                 }
@@ -49,7 +59,7 @@ function New-Resource {
                 }
             } 
             else {
-                $group = Get-ADGroup -type $aadName
+                $group = Get-ADGroup -type $aadName -godeep
                 if ([string]::IsNullOrEmpty($group)) {
                     Write-Verbose "Group $aadName not defined"
                 }

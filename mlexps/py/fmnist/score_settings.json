@@ -1,0 +1,15 @@
+{
+    "experimentName": "fmnist",
+    "modelName": "fmnist",
+    "modelFilePath": "outputs/fmnist.h5",
+    "modelFileName": "fmnist.h5",
+    "webserviceName" : "fmnist",
+    "config" : "config.json",
+    "spconfig" : "spconfig.json",
+    "aml_config_dir" : "aml_config",
+    "cpuCores" : 1,
+    "memoryGB" : 1,
+    "scoringScript": "score.py",
+    "environmentFileName": "score_environment.yaml",
+    "verbose": true
+}

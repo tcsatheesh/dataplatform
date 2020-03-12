@@ -1,0 +1,22 @@
+{
+    "type": "logicapps",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "logicapps",
+            "resources": [
+                {
+                    "type": "logicapp"
+                }
+            ]
+        },
+        {
+            "resourceType": "functions",
+            "resources": [
+                {
+                    "type": "function"
+                }
+            ]
+        }
+    ]
+}

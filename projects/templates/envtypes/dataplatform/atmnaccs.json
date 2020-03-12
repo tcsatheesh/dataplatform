@@ -1,0 +1,17 @@
+{
+    "type": "atmnaccs",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "atmnaccs",
+            "resources": [
+                {
+                    "type": "app"
+                },
+                {
+                    "type": "deployrunbook"
+                }
+            ]
+        }
+    ]
+}

@@ -7,48 +7,40 @@
                 {
                     "type" : "mlexp", 
                     "resourceType": "mlexps",
-                    "resourceGroupTypeRef": "app",
-                    "name" : "{0}{1}{2}mlexp01",
-                    "location": "West Europe",
+                    "resourceGroupTypeRef": "mle",
+                    "name" : "{0}{1}{2}wsml01",
+                    "location": "North Europe",
                     "templateFileName": "mlexp.json",
                     "parameterFileName": "mlexp.parameters.json",
                     "parameters" : [
                         {
                             "name": "storageAccountName",
-                            "type" :"reference",
-                            "ref": {
-                                "resourceType": "storageaccounts",
-                                "typeFilter": "mlstorage",
-                                "property" : "name"
-                            }                            
+                            "type" :"format",
+                            "value": "{0}{1}{2}nestgaccml01"                    
                         },
                         {
-                            "name": "storageAccountResourceGroupName",
+                            "name": "containerRegistryName",
+                            "type": "format",
+                            "value": "{0}{1}{2}cntregml01"
+                        },
+                        {
+                            "name": "appInsightsName",
+                            "type": "format",
+                            "value": "{0}{1}{2}apinml01"              
+                        },
+                        {
+                            "name": "keyVaultName",
+                            "type": "format",
+                            "value": "{0}{1}{2}kyvltml01"              
+                        },
+                        {
+                            "name": "keyVaultTenant",
                             "type": "reference",
                             "ref": {
-                                "resourceType": "resourcegroups",
-                                "typeFilter": "app",
-                                "property" : "name"
-                            }                            
-                        },
-                        {
-                            "name": "workspaceName",
-                            "type": "format",
-                            "value": "{0}{1}{2}mlexpws"              
-                        },
-                        {
-                            "name": "workspaceUserObjectId",
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "adgroups",
-                                "typeFilter": "analysisadmin",
-                                "property" : "id"
-                            }              
-                        },
-                        {
-                            "name": "modelManagementAccountName",
-                            "type": "format",
-                            "value": "{0}{1}{2}mlmmacc"              
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
                         }
                     ]
                 }

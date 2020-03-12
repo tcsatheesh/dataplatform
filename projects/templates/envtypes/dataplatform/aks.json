@@ -1,0 +1,39 @@
+{
+    "type": "aks",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "principals",
+            "resources": [
+                {
+                    "type": "aksServerPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "clientsecrets",
+            "resources": [
+                {
+                    "type": "password",
+                    "subtype": "aksServerPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "vnets",
+            "resources": [
+                {
+                    "type": "aks"
+                }
+            ]
+        },
+        {
+            "resourceType": "aks",
+            "resources": [
+                {
+                    "type": "aks"
+                }
+            ]
+        }
+    ]
+}

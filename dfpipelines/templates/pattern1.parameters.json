@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "sourceDataSetName": {
+            "value": ""
+        },
+        "destinationDatasetName": {
+            "value": ""
+        },
+        "destinationDBDatasetName": {
+            "value": ""
+        },
+        "sourceLinkedServiceName": {
+            "value": ""
+        },
+        "destinationLinkedServiceName": {
+            "value": ""
+        },
+        "destinationDBLinkedServiceName": {
+            "value": ""
+        },
+        "pipelineName": {
+            "value": ""
+        },
+        "copyActivityName": {
+            "value": ""
+        },
+        "ifconditionCopyActivityName": {
+            "value": ""
+        },
+        "copyCondition": {
+            "value": ""
+        },
+        "innerPipelineName1": {
+            "value": ""
+        },
+        "metaDataActivityName": {
+            "value": ""
+        },
+        "forEachActivityName": {
+            "value": ""
+        },
+        "forEachOutputIter": {
+            "value": ""
+        },
+        "metaDataActivityName2": {
+            "value": ""
+        },
+        "forEachActivityName2": {
+            "value": ""
+        },
+        "forEachOutputIter2": {
+            "value": ""
+        },
+        "innerPipelineName2": {
+            "value": ""
+        },
+        "ifconditionControlFileActivityName": {
+            "value": ""
+        },
+        "functionActivityName": {
+            "value": ""
+        },
+        "functionName": {
+            "value": ""
+        },
+        "functionLinkedServiceName": {
+            "value": ""
+        },
+        "folderName": {
+            "value": ""
+        },
+        "triggerName": {
+            "value": ""
+        },
+        "triggerStartTime": {
+            "value": ""
+        },
+        "triggerIntervals": {
+            "value": 1
+        },
+        "triggerFrequency": {
+            "value": "Hour"
+        },
+        "triggerDelay": {
+            "value": "00:00:10"
+        },
+        "inputFileName": {
+            "value": ""
+        },
+        "inputFolderName": {
+            "value": ""
+        },
+        "destinationFolderPath": {
+            "value": ""
+        },
+        "controlFileCondition": {
+            "value": ""
+        },
+        "functionAppParameter": {
+            "value": ""
+        },
+        "metadataactivity2_folderPath": {
+            "value": ""
+        },
+        "copyToDocumentDbActivityName": {
+            "value": ""
+        },
+        "destinationDBCollectionName": {
+            "value": ""
+        },
+        "tags": {
+            "value": {
+                "Project": "12345"
+            }
+        }
+    }
+}

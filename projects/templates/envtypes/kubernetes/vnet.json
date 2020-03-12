@@ -1,5 +1,6 @@
 {
     "type": "vnet",
+    "parent": "<fill in the parent project name>",
     "resources": [
         {
             "resourceType": "resourcegroups",
@@ -18,10 +19,10 @@
             ]
         },
         {
-            "resourceType": "principals",
+            "resourceType": "accesspolicies",
             "resources": [
                 {
-                    "type": "deploymentPrincipal"
+                    "type": "vnet-deploymentPrincipal"
                 }
             ]
         }

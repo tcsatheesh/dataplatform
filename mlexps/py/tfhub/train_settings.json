@@ -1,0 +1,22 @@
+{
+    "experimentName": "tfhub",
+    "modelName": "tfhub_flowers",
+    "remoteDataFolder" : "/home/vmadmin/tfhub",
+    "modelFilePath": "outputs/tfhub_flowers",
+    "config" : "config.json",
+    "spconfig" : "spconfig.json",
+    "aml_config_dir" : "aml_config",
+    "clusterName" : "dlvm",
+    "clusterSku" : "",
+    "minNodes" : 0,
+    "maxNodes" : 1,
+    "useGPU" : true,
+    "userManaged" : false,
+    "useDocker" : false,
+    "mountDataStore" : false,
+    "entryScript": "train.py",
+    "conda_dependencies_file_path": "train_environment.yaml",
+    "pip_requirements_file_path" : "train_requirements.txt",
+    "uploadDataToCloud" : false,
+    "verbose": true
+}

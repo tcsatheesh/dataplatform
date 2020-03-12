@@ -18,6 +18,9 @@
               "Standard_RAGRS"
             ]
         },
+        "tier": {
+            "type": "string"
+        },
         "kind": {
             "type": "string"
         },
@@ -35,7 +38,8 @@
             "location": "[parameters('location')]",
             "type": "Microsoft.Storage/storageAccounts",
             "sku": {
-                "name": "[parameters('accountType')]"
+                "name": "[parameters('accountType')]",
+                "tier": "[parameters('tier')]"
             },
             "kind": "[parameters('kind')]",
             "properties": {

@@ -96,6 +96,84 @@
                     ]
                 },            
                 {
+                    "type" : "gateway", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm02",
+                    "location": "North Europe",
+                    "templateFileName": "windows.json",
+                    "parameterFileName": "windows.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUserName",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}vm02-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "vmSize",
+                            "type": "value",
+                            "value": "Standard_DS2_v2"
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Premium_LRS"
+                        },
+                        {
+                            "name": "virtualNetworkResourceGroup",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property" : "name"
+                            }                            
+                        },
+                        {
+                            "name": "virtualNetworkName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "sep"                            
+                        },
+                        {
+                            "name": "osPublisher",
+                            "type": "value",
+                            "value": "MicrosoftWindowsServer"
+                        },
+                        {
+                            "name": "osOffer",
+                            "type": "value",
+                            "value": "WindowsServer"
+                        },
+                        {
+                            "name": "osSku",
+                            "type": "value",
+                            "value": "2019-Datacenter-with-Containers"
+                        },
+                        {
+                            "name": "osVersion",
+                            "type": "value",
+                            "value": "latest"
+                        }
+                    ]
+                },            
+                {
                     "type" : "ubuntudsvm", 
                     "resourceType": "vms",
                     "resourceGroupTypeRef": "vms",
@@ -121,7 +199,12 @@
                         {
                             "name": "vmSize",
                             "type": "value",
-                            "value": "Standard_DS2_v2"
+                            "value": "Standard_NC6"
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Standard_LRS"
                         },
                         {
                             "name": "virtualNetworkResourceGroup",
@@ -172,7 +255,7 @@
                     "type" : "ubuntu1804", 
                     "resourceType": "vms",
                     "resourceGroupTypeRef": "vms",
-                    "name" : "{0}{1}{2}vm03",
+                    "name" : "{0}{1}{2}vm04",
                     "location": "North Europe",
                     "templateFileName": "ubuntu1804.json",
                     "parameterFileName": "ubuntu1804.parameters.json",
@@ -228,6 +311,51 @@
                             "name": "diskSizeGB",
                             "type": "value",
                             "value": "64"
+                        }
+                    ]
+                },
+                {
+                    "type" : "ubuntudlvm", 
+                    "resourceType": "vms",
+                    "resourceGroupTypeRef": "vms",
+                    "name" : "{0}{1}{2}vm01",
+                    "location": "North Europe",
+                    "templateFileName": "dlvm.json",
+                    "parameterFileName": "dlvm.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "adminUsername",
+                            "type": "value",
+                            "value": "vmadmin"
+                        },
+                        {
+                            "name": "adminPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName" : "{0}{1}{2}vm01-vmadmin-password"
+                            }
+                        },
+                        {
+                            "name": "vmSize",
+                            "type": "value",
+                            "value": "Standard_NC6"
+                        },
+                        {
+                            "name": "StorageAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nstgaccv1"
+                        },
+                        {
+                            "name": "storageAccountType",
+                            "type": "value",
+                            "value": "Standard_LRS"
+                        },
+                        {
+                            "name": "osType",
+                            "type": "value",
+                            "value": "UbuntuLinux"
                         }
                     ]
                 }

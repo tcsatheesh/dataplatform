@@ -25,14 +25,28 @@ function Remove-Resource {
     $description = $policydefintion.description
     $subscriptionId = Get-SubscriptionId
     Write-Verbose "Policy definition is $name "
-    $rdef = Get-AzureRmPolicySetDefinition -Name $name -ErrorAction SilentlyContinue
-    if ($rdef -eq $null) {
-        Write-Verbose "Policy definition $name does not exist"
-    }
-    else {
-        Write-Verbose "Policy definition $name exists. Removing..."
-        $null = Remove-AzureRmPolicySetDefinition -Name $name -Force
-        Write-Verbose "Policy definition $name removed."
+    if ($resource.subtype -eq "policyset") {
+        $rdef = Get-AzureRmPolicySetDefinition -Name $name -ErrorAction SilentlyContinue
+        if ($rdef -eq $null) {
+            Write-Verbose "Policy set definition $name does not exist"
+        }
+        else {
+            Write-Verbose "Policy set definition $name exists. Removing..."
+            $null = Remove-AzureRmPolicySetDefinition -Name $name -Force
+            Write-Verbose "Policy set definition $name removed."
+        }
+    } else {
+        try{
+            $rdef = Get-AzureRmPolicyDefinition -Name $name -ErrorAction SilentlyContinue
+        }catch{}
+        if ($rdef -eq $null) {
+            Write-Verbose "Policy definition $name does not exist"
+        }
+        else {
+            Write-Verbose "Policy definition $name exists. Removing..."
+            $null = Remove-AzureRmPolicyDefinition -Name $name -Force
+            Write-Verbose "Policy definition $name removed."
+        }
     }
 }
 

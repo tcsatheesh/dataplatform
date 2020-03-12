@@ -18,7 +18,7 @@
                             "type": "container",
                             "ref": {
                                 "resourceType": "storageaccounts",
-                                "typeFilter": "sharedStorage",
+                                "typeFilter": "diagnostics",
                                 "property" : "name"
                             }                            
                         },

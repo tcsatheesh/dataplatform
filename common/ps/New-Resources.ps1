@@ -116,18 +116,6 @@ function Get-KeyEncryptionKeyUrl {
     return $keyEncryptionKeyUrl
 }
 
-function Get-SubnetID {
-    param (
-        [object]$subnetRef
-    )
-    $VNetName = Get-ValueFromResource -resourceType $subnetRef.resourceType `
-        -property $subnetRef.property -typeFilter $subnetRef.typeFilter
-    
-    $vnet = Get-AzureRmVirtualNetwork | Where-Object {$_.Name -eq $VnetName}
-    $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetRef.subnetName}
-    return $subnet.Id
-}
-
 function Get-ResourceId {
     param (
         [object]$ref
@@ -237,6 +225,16 @@ function Set-AdditionalParameters {
             }
             elseif ($resourceparam.type -eq "currentLogin") {
                 $val = Get-CurrentLogin
+            }
+            elseif ($resourceparam.type -eq "utcdatetime") {
+                $datetimeValue = Get-Date
+                if (-not [string]::IsNullOrEmpty($resourceparam.value)) {
+                    $datetimeValue = $datetimeValue.AddHours($resourceparam.value)
+                }
+                $val =  $datetimeValue.ToString($resourceparam.format)
+            }
+            elseif ($resourceparam.type -eq "resourceSpecific") {
+                $val = Set-ResourceSpecificParameters -resource $resource -resourceparam $resourceparam
             }
             else {
                 throw "you are missing the resource type $($resourceparam.type)"

@@ -88,7 +88,7 @@ function Set-ResourceAcls {
             if ($policy.type -eq "principals") {
                 foreach ($principalTypeRef in $policy.ref) {
                     Write-Verbose "Processing principalTypeRef $principalTypeRef"
-                    $principalObj = Get-ApplicationParameter -type $principalTypeRef
+                    $principalObj = Get-ApplicationParameter -type $principalTypeRef -godeep
                     if ($principalObj -ne $null) {
                         $objectId = $principalObj.servicePrincipal.id
                         if ([string]::IsNullOrEmpty($objectid)) {

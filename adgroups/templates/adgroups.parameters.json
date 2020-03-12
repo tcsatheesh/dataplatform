@@ -23,6 +23,12 @@
                     "email": ""
                 },
                 {
+                    "type": "analysisadmin",
+                    "name": "Analysis Services Administrators",
+                    "id": "",
+                    "email": ""
+                },
+                {
                     "type": "datacontrollers",
                     "name": "Data Controllers",
                     "id": "",

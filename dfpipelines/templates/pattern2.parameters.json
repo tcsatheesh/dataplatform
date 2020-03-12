@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "onPremiseSourceSQLLinkedServiceName": {
+            "value": ""
+        },
+        "onPremiseSourceSQLDatasetName": {
+            "value": ""
+        },
+        "sqldbDestinationLinkedServiceName": {
+            "value": ""
+        },
+        "sqldbDestinationDatasetName": {
+            "value": ""
+        },
+        "storageAccountLookupLinkedServiceName": {
+            "value": ""
+        },
+        "storageAccountLookupDataSetName": {
+            "value": ""
+        },
+        "pipelineName": {
+            "value": "Wrapper_Pipeline"
+        },
+        "innerPipelineName":{
+            "value": "Copy_Pipeline"
+        },
+        "copyActivityName": {
+            "value": "Copy_Table"
+        },
+        "storedProcedureActivityName": {
+            "value": "Call_SP"
+        },
+        "storedProcedureName": {
+            "value": "dbo.callDummySP"
+        },
+        "triggerName": {
+            "value": "Trigger_SQL_Copy"
+        },
+        "triggerStartDateTime": {
+            "value": "2018-11-14T07:00:00Z"
+        },
+        "triggerScheduledExecutionHour": {
+            "value": 7
+        },
+        "triggerScheduledExecutionMinute": {
+            "value": 0
+        },
+        "triggerFrequency": {
+            "value": "Day"
+        },
+        "triggerInterval": {
+            "value": 1
+        },
+        "triggerTimeZone": {
+            "value": "UTC"
+        },
+        "lookupConfigInputFolderPath": {
+            "value": "config"
+        },
+        "lookupConfigInputFileName": {
+            "value": "lookup.json"
+        },
+        "folderName": {
+            "value": ""
+        }
+    }
+}

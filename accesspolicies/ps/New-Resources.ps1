@@ -8,11 +8,10 @@ function New-Resource {
     param (
         [object]$resource
     )
-    $resourceparameters = Get-ResourceParameters -parameterFileName "$($resource.resourceType).parameters.json"
-    $selectedResource = $resourceparameters.parameters.resources.value | Where-Object {$_.type -eq $resource.type}
-    $selectedResourceName = $selectedResource.name
-    if ($resource.resourceType -ne "subscription") {
-        
+    if ($resource.resourceType -eq "projects") {
+        # Assignment is at the subscription level
+    }elseif ($resource.resourceType -eq "other") {
+        # Value is in the config
     }elseif ($resource.resourceType -ne "resourcegroups") {
         $selectedResourceResourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef $selectedResource.resourceGroupTypeRef
         $selectedResourceType = (Get-AzureRmResource -ResourceGroupName $selectedResourceResourceGroupName -ResourceName $selectedResourceName).ResourceType    
@@ -20,6 +19,9 @@ function New-Resource {
         $resource | Add-Member -Name 'resourceGroupName' -MemberType Noteproperty -Value $selectedResourceResourceGroupName
         $resource | Add-Member -Name 'azureResourceType' -MemberType Noteproperty -Value $selectedResourceType    
     }else {
+        $resourceparameters = Get-ResourceParameters -parameterFileName "$($resource.resourceType).parameters.json"
+        $selectedResource = $resourceparameters.parameters.resources.value | Where-Object {$_.type -eq $resource.resourceGroupTypeRef}
+        $selectedResourceName = $selectedResource.name
         $selectedResourceResourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef $selectedResource.type
         $resource | Add-Member -Name 'resourceGroupName' -MemberType Noteproperty -Value $selectedResourceResourceGroupName
     }

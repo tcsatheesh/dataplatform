@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": ""
+        },
+        "networkInterfaceName": {
+            "value": ""
+        },
+        "subnetName": {
+            "value": ""
+        },
+        "virtualNetworkId": {
+            "value": ""
+        },
+        "resourcename": {
+            "value": ""
+        },
+        "osDiskType": {
+            "value": "StandardSSD_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_NV6"
+        },
+        "adminUsername": {
+            "value": ""
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "diagnosticsStorageAccountName": {
+            "value": ""
+        },
+        "diagnosticsStorageAccountId": {
+            "value": ""
+        }
+    }
+}

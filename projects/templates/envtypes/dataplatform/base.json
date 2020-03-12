@@ -1,0 +1,98 @@
+{
+    "type": "base",
+    "resources": [
+        {
+            "resourceType": "principals",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                },
+                {
+                    "type": "applicationPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "managers"
+                },
+                {
+                    "type": "keyvaultadmins"
+                },
+                {
+                    "type": "datacontrollers"
+                }
+            ]
+        },
+        {
+            "resourceType": "resourcegroups",
+            "resources": [
+                {
+                    "type": "app"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaults",
+            "resources": [
+                {
+                    "type": "appkeyvault"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultaccess",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                },
+                {
+                    "type": "applicationPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "clientsecrets",
+            "resources": [
+                {
+                    "type": "password",
+                    "subtype": "deploymentPrincipal"
+                },
+                {
+                    "type": "certificate",
+                    "subtype": "deploymentPrincipal"
+                },
+                {
+                    "type": "password",
+                    "subtype": "applicationPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "grantpermissions",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "adroles",
+            "resources": [
+                {
+                    "type": "deploymentPrincipal"
+                }
+            ]
+        },
+        {
+            "resourceType": "accesspolicies",
+            "resources": [
+                {
+                    "type": "app-base"
+                }
+            ]
+        }
+    ]
+}

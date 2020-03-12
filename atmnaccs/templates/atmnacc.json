@@ -1,0 +1,40 @@
+{
+    "$schema": "http://schemas.microsoft.org/azure/deploymentTemplate?api-version=2015-01-01-preview#",
+    "contentVersion": "1.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Azure Automation account to deploy to."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location for the automation account."
+            }
+        },
+        "sku": {
+            "type": "string",
+            "metadata": {
+                "description": "The sku for the automation account."
+            }
+        }
+    },
+    "resources": [
+      {
+        "name": "[parameters('resourcename')]",
+        "type": "Microsoft.Automation/automationAccounts",
+        "apiVersion": "2015-10-31",
+        "location": "[parameters('location')]",
+        "dependsOn": [ ],
+        "tags": { },
+        "properties": {
+          "sku": {
+            "name": "[parameters('sku')]"
+          }
+        }
+      }
+    ],
+    "outputs": {}
+}

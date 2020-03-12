@@ -1,0 +1,4 @@
+name: fmnist
+dependencies:
+- tensorflow
+- matplotlib

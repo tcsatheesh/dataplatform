@@ -1,0 +1,39 @@
+{
+    "type": "appdb",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "dbadmins"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "diagnostics"
+                }
+            ]
+        },
+        {
+            "resourceType": "keyvaultsecrets",
+            "resources": [
+                {
+                    "type": "login",
+                    "subtype": "sqladmin"
+                }
+            ]
+        },
+        {
+            "resourceType": "sqldbs",
+            "resources": [
+                {
+                    "type": "appdb"
+                }
+            ]
+        }
+    ]
+}

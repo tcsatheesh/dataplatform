@@ -16,24 +16,15 @@
                         {
                             "name": "dnsPrefix",
                             "type": "format",
-                            "value": "{0}{1}{2}aks01"
+                            "value": "{0}{1}{2}aks01dns"
                         },
                         {
                             "name": "servicePrincipalClientId",
                             "type": "reference",
                             "ref": {
                                 "resourceType": "principals",
-                                "typeFilter": "deploymentPrincipal",
+                                "typeFilter": "aksServerPrincipal",
                                 "property": "application.clientId"
-                            }
-                        },
-                        {
-                            "name": "principalId",
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "deploymentPrincipal",
-                                "property": "servicePrincipal.id"
                             }
                         },
                         {
@@ -42,9 +33,18 @@
                             "ref": {
                                 "resourceType": "keyvaults",
                                 "typeFilter": "appkeyvault",
-                                "secretName" : "{0}-{1}-{2}-dep-prn-password"
+                                "secretName" : "{0}-{1}-{2}-aks-svr-prn-password"
                             }
                         },
+                        {
+                            "name": "principalId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "aksServerPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },                        
                         {
                             "name": "vnetSubnetID",
                             "type": "subnetid",
@@ -56,24 +56,29 @@
                             }
                         },
                         {
-                            "name": "scope",
+                            "name": "aciVnetSubnetName",
+                            "type": "value",
+                            "value" : "aksvirtual"                            
+                        },
+                        {
+                            "name": "aciVnetSubnetId",
                             "type": "subnetid",
                             "ref": {
                                 "resourceType": "vnets",
                                 "typeFilter": "aks",
                                 "property": "name",
-                                "subnetName" : "kubernetes"
+                                "subnetName" : "aksvirtual"
                             }
                         },
                         {
                             "name": "serviceCidr",
                             "type": "value",
-                            "value": "10.0.0.0/16"
+                            "value": "10.0.128.0/24"
                         },
                         {
                             "name": "dnsServiceIP",
                             "type": "value",
-                            "value": "10.0.0.10"
+                            "value": "10.0.128.10"
                         },
                         {
                             "name": "dockerBridgeCidr",
@@ -83,21 +88,36 @@
                         {
                             "name": "workspaceName",
                             "type": "value",
-                            "value": "itomsp"
+                            "value": "itpocdlawksp01"
                         },
                         {
                             "name": "omsWorkspaceId",
                             "type": "resourceid",
                             "ref": {
-                                "name" : "itomsp",
-                                "resourceGroupName": "itomsp-mgmt-rg"
+                                "name" : "itpocdlawksp01",
+                                "resourceGroupName": "it-poc-d-shdsvcs-rg"
                             }
                         },
                         {
                             "name": "workspaceRegion",
                             "type": "value",
-                            "value": "westeurope"
-                        }
+                            "value": "northeurope"
+                        },
+                        {
+                            "name": "kubernetesVersion",
+                            "type": "value",
+                            "value": "1.14.8"
+                        },
+                        {
+                            "name": "agentCount",
+                            "type": "value",
+                            "value": 3
+                        },
+                        {
+                            "name": "agentVMSize",
+                            "type": "value",
+                            "value": "Standard_D4s_v3"
+                        }                        
                     ]
                 }
             ]

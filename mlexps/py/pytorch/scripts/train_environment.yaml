@@ -1,0 +1,6 @@
+name: project_environment
+dependencies:
+  - pytorch
+  - torchvision
+  - matplotlib
+  - pillow=5.4.1  

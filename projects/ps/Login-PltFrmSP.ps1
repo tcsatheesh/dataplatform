@@ -1,7 +1,16 @@
 param(
-    [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
+    [Parameter(Mandatory = $False, HelpMessage = 'The projects.parameters.json file.')]
     [String]$projectsParameterFile
 )
+
+if ([string]::IsNullOrEmpty($projectsParameterFile)) {
+    $projectsParameterFile = "$PSScriptRoot\..\it-platform-d\projects.parameters.json"
+    Write-Warning "Using the default development platform service principal"
+}
+
+if (-not (Test-Path -Path $projectsParameterFile)) {    
+    throw "Project parameter file not found. You need to specify one."
+}
 
 $commonPSFolder = (Get-Item -Path "$PSScriptRoot\..\..\common\ps").FullName
 . "$commonPSFolder\Get-CommonFunctions.ps1"

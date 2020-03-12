@@ -1,0 +1,284 @@
+
+---
+title: "RSample"
+output:
+  html_document:
+    toc: true
+---
+
+
+```{r}
+# version of R installed in this cluster
+version
+```
+
+
+```{r}
+# initialize the sparkR context. This is required for loading and holding configuration
+library(SparkR)
+```
+
+
+```{r}
+%py
+# get the secrets from the key vault
+# see https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html
+secretScope = "data-app-secrets"
+
+# the value is "fs.azure.account.key.<adls gen 2 storage account name>.dfs.core.windows.net"
+dataLakeGen2Account = dbutils.secrets.get(scope = secretScope, key = "adls-gen2-account-fs")
+# the value is the adls gen 2 account key
+accountKey = dbutils.secrets.get(scope = secretScope, key = "adls-gen2-account-key")
+spark.conf.set(dataLakeGen2Account, accountKey)
+
+# the from email address for sending the report  
+spark.conf.set("email-from", dbutils.secrets.get(scope=secretScope, key="email-from"))
+# the to email address for sending the report
+spark.conf.set("email-to",dbutils.secrets.get(scope = secretScope, key = "email-to"))
+# the email server
+spark.conf.set("email-hostname",dbutils.secrets.get(scope = secretScope, key = "email-hostname"))
+# the email server port
+spark.conf.set("email-mailPort",587)
+# the user name to login to the email server 
+spark.conf.set("email-username",dbutils.secrets.get(scope = secretScope, key = "email-username"))
+# the password to login to the email server
+spark.conf.set("email-passwd",dbutils.secrets.get(scope = secretScope, key = "email-password"))
+
+# the Azure DevOps git repository url in the following format
+# https://<pearsonal access token>@<devops team project>.visualstudio.com/DefaultCollection/<repositoryName>/_git/<repositoryName>
+spark.conf.set("git-repo-url",dbutils.secrets.get(scope = secretScope, key = "git-repo-url"))
+# repository name
+spark.conf.set("git-repo-name",dbutils.secrets.get(scope = secretScope, key = "git-repo-name"))
+# email address for the git user account 
+spark.conf.set("git-user-email",dbutils.secrets.get(scope = secretScope, key = "git-user-email"))
+# user name for the git user 
+spark.conf.set("git-user-name",dbutils.secrets.get(scope = secretScope, key = "git-user-name"))
+# the adls gen 2 account in the following format <adls gen 2 account name>.dfs.core.windows.net
+spark.conf.set("adls-gen2-account",dbutils.secrets.get(scope = secretScope, key = "adls-gen2-account"))
+```
+
+
+```{r}
+# get the secrets into R from the spark conf
+get_spark_config <- function (x) {
+  conf_value <- toString(sparkR.conf(x))
+  return (conf_value)
+}
+email_from <- get_spark_config("email-from")
+email_to <- get_spark_config("email-to")
+email_hostname <- get_spark_config("email-hostname")
+email_mailPort <- get_spark_config("email-mailPort")
+email_username <- get_spark_config("email-username")
+email_passwd <- get_spark_config("email-passwd")
+gen2Account <- get_spark_config("adls-gen2-account")
+inputPath = paste("abfss://data@",gen2Account,"/path/to/diamonds.csv", sep="")
+outputPath <- paste("abfss://data@",gen2Account,"/path/to/diamonds_out_",format(Sys.time(), "%d%m%Y%H%M"),".csv", sep="")
+```
+
+
+```{r}
+%sh
+# create a shortcut for java 
+ls -l /usr/bin/java
+ls -l /etc/alternatives/java
+ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/lib/jvm/default-java
+R CMD javareconf
+```
+
+
+```{r}
+# install Java and load the library
+install.packages(c("rJava"))
+dyn.load('/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/libjvm.so')
+library(rJava)
+```
+
+
+```{r}
+# install other packages
+install.packages(c("mailR"))
+library(mailR)
+```
+
+
+```{r}
+LoadData <- function () {
+  # Read diamonds.csv dataset as SparkDataFrame from the data lake store gen 2
+  diamonds <- read.df(inputPath, source = "csv", header="true", inferSchema = "true")
+  diamonds <- withColumnRenamed(diamonds, "", "rowID")
+
+  # Split data into Training set and Test set
+  trainingData <- sample(diamonds, FALSE, 0.7)
+  testData <- except(diamonds, trainingData)
+
+  # Exclude rowIDs
+  trainingData <- trainingData[, -1]
+  testData <- testData[, -1]
+  data <- list("trainingData" = trainingData, "testData" = testData)
+  return (data)
+}
+```
+
+
+```{r}
+# train the model
+TrainModel <- function (trainingData, testdata, verbose = TRUE) {
+  # Family = "gaussian" to train a linear regression model
+  lrModel <- glm(price ~ ., data = trainingData, family = "gaussian")
+
+  if (verbose) {
+    # Print a summary of the trained model
+    summary(lrModel) 
+  }
+  return (lrModel)
+}
+```
+
+
+```{r}
+#save the model
+SaveModel <- function (lrModel, modelFilePath, verbose = TRUE) {
+  save(file = modelFilePath, lrModel)
+  if (verbose) {
+    cat ("Saved model file to ", modelFilePath)
+  }
+}
+```
+
+
+```{r}
+# ok this doesn't actually create a pdf file  but instead simple outputs to a txt file
+CreatePDFReport <- function (lrModel, pdfReportFilePath, verbose = TRUE) {
+  fileConn<-file(pdfReportFilePath)
+  summaryText <- toString(summary(lrModel))
+  writeLines(summaryText, fileConn)
+  close(fileConn)
+}
+```
+
+
+```{r}
+# load the data from the data lake gen 2
+data = LoadData()
+trainingData = data$trainingData
+testData = data$testData
+```
+
+
+```{r}
+# train the model
+lrModel = TrainModel (trainingData)
+```
+
+
+```{r}
+%py
+import os
+# set model folder
+model_folder = os.getcwd() + "/model"
+import os
+os.environ['model_folder'] = model_folder
+```
+
+
+```{r}
+%sh
+# clear the model folder
+rm -rf $model_folder
+mkdir $model_folder
+```
+
+
+```{r}
+%py
+# if the model folder does not exist then create it else delete the current folder and recreate it.
+import os
+import datetime
+model_file_name = "glm_trained_" + datetime.datetime.now().strftime("%d%m%Y%H%M%S") + ".rda" 
+model_path = model_folder + "/" + model_file_name
+spark.conf.set("model_file_name", model_file_name)
+spark.conf.set("model_path", model_path)
+```
+
+
+```{r}
+# save the model file to push to git repository
+modelFilePath <- get_spark_config("model_path")
+SaveModel(lrModel, modelFilePath)
+```
+
+
+```{r}
+# send email with pdf report
+SendAnEmail <- function(subject, body, attachmentFilePath, verbose = TRUE) {  
+  send.mail(from = email_from,
+        to = email_to,
+        subject = subject,
+        body = body,
+        smtp = list(host.name = email_hostname, port = email_mailPort, user.name = email_username, passwd = email_passwd, ssl = TRUE),
+        attach.files = c(attachmentFilePath),
+        authenticate = TRUE,
+          send = TRUE)
+    if (verbose) {
+      cat ("Email sent with attachment.")
+    }
+}
+```
+
+
+```{r}
+# generate the report and send an email
+pdfReportFilePath = paste("./pdfreport2_",format(Sys.time(), "%d%m%Y%H%M"),".txt", sep="")
+CreatePDFReport(lrModel,pdfReportFilePath)
+subject = "PDF Report"
+body = "The training summary report"
+attachmentFilePath = pdfReportFilePath
+SendAnEmail(subject, body, attachmentFilePath)
+```
+
+
+```{r}
+# read/write from/to data lake store gen 2
+# nothing special, simply showing an example to write to ADLS Gen 2
+diamonds <- read.df(inputPath, source = "csv", header="true", inferSchema = "true")
+write.df(diamonds,outputPath, source = "csv", header="true", inferSchema = "true")
+```
+
+
+```{r}
+%py
+# set environment variables to use in the shell script in the next cell
+import os
+os.environ['model_path'] = spark.conf.get("model_path")
+os.environ['model_file_name'] = spark.conf.get("model_file_name")
+os.environ['git_repo_url'] = spark.conf.get("git-repo-url")
+os.environ['git_repo_name'] = spark.conf.get("git-repo-name")
+os.environ['git_user_email'] = spark.conf.get("git-user-email")
+os.environ['git_user_name'] = spark.conf.get("git-user-name")
+os.environ['git_branch'] = "master"
+```
+
+
+```{r}
+%sh
+# clone the git repo and then add the new model and do a push into git
+rm -rf $git_repo_name
+git clone $git_repo_url
+git config --global push.default matching
+git config --global user.email $git_user_email
+git config --global user.name $git_user_name
+cd $git_repo_name
+cp $model_path .
+git add $model_file_name
+git commit -m "updated model"
+git push
+```
+
+
+```{r}
+%sh
+# show the current status of the repo post git push
+cd $git_repo_name
+git status
+```
+

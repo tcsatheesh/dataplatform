@@ -1,0 +1,715 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "location of the data factory"
+            }
+        },
+        "sourceDataSetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the source dataset"
+            }
+        },
+        "destinationDatasetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination dataset"
+            }
+        },
+        "destinationDBDatasetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination DB dataset"
+            }
+        },
+        "sourceLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the source Linked Service"
+            }
+        },
+        "destinationLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination Linked Service"
+            }
+        },
+        "destinationDBLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination DB Linked Service"
+            }
+        },
+        "pipelineName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the copy pipeline."
+            }
+        },
+        "copyActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the copy activity"
+            }
+        },
+        "ifconditionCopyActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the if copy succeeds condition"
+            }
+        },
+        "copyCondition": {
+            "type": "string",
+            "metadata": {
+                "description": "Condition to check if copy activities wrote any files"
+            }
+        },
+        "innerPipelineName1": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the first inner pipeline"
+            }
+        },
+        "metaDataActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the meta data activity"
+            }
+        },
+        "forEachActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the for each activity"
+            }
+        },
+        "forEachOutputIter": {
+            "type": "string",
+            "metadata": {
+                "description": "Output iterator of the for each activity"
+            }
+        },
+        "metaDataActivityName2": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the meta data activity2"
+            }
+        },
+        "forEachActivityName2": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the for each activity2"
+            }
+        },
+        "forEachOutputIter2": {
+            "type": "string",
+            "metadata": {
+                "description": "Output iterator of the for each activity2"
+            }
+        },
+        "innerPipelineName2": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the second innerpipeline"
+            }
+        },
+        "ifconditionControlFileActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "If condition activity name"
+            }
+        },
+        "functionActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the function activity"
+            }
+        },
+        "functionName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the function"
+            }
+        },
+        "functionLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the function linked service"
+            }
+        },
+        "folderName": {
+            "type": "string",
+            "metadata": {
+                "description": "Activity folder name."
+            }
+        },
+        "triggerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the trigger"
+            }
+        },
+        "triggerStartTime": {
+            "type": "string",
+            "metadata": {
+                "description": "The start time of the scheduled trigger."
+            }
+        },
+        "triggerIntervals": {
+            "type": "int",
+            "metadata": {
+                "description": "Interval for the trigger."
+            }
+        },
+        "triggerFrequency": {
+            "type": "string",
+            "defaultValue": "Hour",
+            "allowedValues": [
+                "Hour"
+            ],
+            "metadata": {
+                "description": "Frequency of trigger."
+            }
+        },
+        "triggerDelay": {
+            "type": "string",
+            "defaultValue": "00:00:10",
+            "metadata": {
+                "description": "Delay before trigger starts. Default is 10 seconds after trigger start time."
+            }
+        },
+        "inputFolderName": {
+            "type": "string",
+            "metadata": {
+                "description": "Input folder name in the input dataset."
+            }
+        },
+        "inputFileName": {
+            "type": "string",
+            "metadata": {
+                "description": "Input file name in the input dataset."
+            }
+        },
+        "destinationFolderPath": {
+            "type": "string",
+            "metadata": {
+                "description": "Destination data set path"
+            }
+        },
+        "functionAppParameter": {
+            "type": "string",
+            "metadata": {
+                "description": "function app parameter"
+            }
+        },
+        "controlFileCondition": {
+            "type": "string",
+            "metadata": {
+                "description": "Condition to run the control file only"
+            }
+        },
+        "metadataactivity2_folderPath": {
+            "type": "string",
+            "metadata": {
+                "description": "Inner metadata activity folder path"
+            }
+        },
+        "copyToDocumentDbActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "copy activity to document db"
+            }
+        },
+        "destinationDBCollectionName": {
+            "type": "string",
+            "metadata": {
+                "description": "document db collection name"
+            }
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "name": "[concat(parameters('resourcename'),'/',parameters('sourceDatasetName'))]",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sourceLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "windowStartTime": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                },
+                "type": "AzureBlob",
+                "typeProperties": {
+                    "compression": {
+                        "type": "ZipDeflate"
+                    },
+                    "fileName": "[parameters('inputFileName')]",
+                    "folderPath": "[parameters('inputFolderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "name": "[concat(parameters('resourcename'),'/',parameters('destinationDatasetName'))]",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('destinationLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "fileName": {
+                        "type": "string"
+                    },
+                    "folderPath": {
+                        "type": "string"
+                    },
+                    "windowStartTime": {
+                        "type": "Object"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                },
+                "type": "AzureBlob",
+                "typeProperties": {
+                    "fileName": "@dataset().fileName",
+                    "folderPath": {
+                        "value": "@dataset().folderPath",
+                        "type": "Expression"
+                    },
+                    "format": {
+                        "type": "JsonFormat",
+                        "filePattern": "setOfObjects"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "name": "[concat(parameters('resourcename'),'/',parameters('destinationDBDatasetName'))]",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('destinationDBLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "collectionName": {
+                        "type": "string"
+                    },
+                    "windowStartTime": {
+                        "type": "Object"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                },
+                "type": "DocumentDbCollection",
+                "typeProperties": {
+                    "collectionName": "@dataset().collectionName"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'),'/',parameters('innerpipelineName1'))]",
+            "dependsOn": [
+                "[parameters('sourceDatasetName')]",
+                "[parameters('destinationDatasetName')]",
+                "[parameters('innerPipelineName2')]"
+            ],
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "[parameters('metaDataActivityName')]",
+                        "type": "GetMetadata",
+                        "typeProperties": {
+                            "dataset": {
+                                "referenceName": "[parameters('destinationDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "fileName" : "",
+                                    "folderPath": "[parameters('destinationFolderPath')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            },
+                            "fieldList": [
+                                "childItems"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "[parameters('forEachActivityName')]",
+                        "type": "ForEach",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('metadataActivityName')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "isSequential": "false",
+                            "items": {
+                                "value": "[parameters('forEachOutputIter')]",
+                                "type": "Expression"
+                            },
+                            "activities": [
+                                {
+                                    "name": "ExecuteInnerPipeline_2",
+                                    "type": "ExecutePipeline",
+                                    "typeProperties": {
+                                        "pipeline": {
+                                            "referenceName": "[parameters('innerPipelineName2')]",
+                                            "type": "PipelineReference"
+                                        },
+                                        "parameters": {
+                                            "item": "@item()",
+                                            "windowStartTime": "@pipeline().parameters.windowStartTime",
+                                            "windowEndTime": "@pipeline().parameters.windowEndTime"
+                                        },
+                                        "waitOnCompletion": true
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "parameters": {
+                    "windowStartTime": {
+                        "type": "datetime"
+                    },
+                    "windowEndTime": {
+                        "type": "datetime"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'),'/',parameters('innerPipelineName2'))]",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[parameters('sourceDatasetName')]",
+                "[parameters('destinationDatasetName')]",
+                "[parameters('destinationDBDatasetName')]"
+            ],
+            "properties": {
+                "activities": [
+                    {
+                        "name": "[parameters('metaDataActivityName2')]",
+                        "type": "GetMetadata",
+                        "typeProperties": {
+                            "dataset": {
+                                "referenceName": "[parameters('destinationDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "fileName" : "",
+                                    "folderPath": "[parameters('metadataactivity2_folderPath')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            },
+                            "fieldList": [
+                                "childItems"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "[parameters('forEachActivityName2')]",
+                        "type": "ForEach",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('metadataActivityName2')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "typeProperties": {
+                            "items": {
+                                "value": "[parameters('forEachOutputIter2')]",
+                                "type": "Expression"
+                            },
+                            "isSequential": "false",
+                            "activities": [
+                                {
+                                    "name": "[parameters('ifconditionControlFileActivityName')]",
+                                    "type": "IfCondition",
+                                    "typeProperties": {
+                                        "expression": {
+                                            "value": "[parameters('controlFileCondition')]",
+                                            "type": "Expression"
+                                        },
+                                        "ifTrueActivities": [
+                                            {
+                                                "name": "[parameters('functionActivityName')]",
+                                                "type": "AzureFunctionActivity",
+                                                "typeProperties": {
+                                                    "functionName": "[parameters('functionName')]",
+                                                    "method": "POST",
+                                                    "headers": {},
+                                                    "body": {
+                                                        "itemName": "[parameters('functionAppParameter')]"
+                                                    }
+                                                },
+                                                "linkedServiceName": {
+                                                    "referenceName": "[parameters('functionLinkedServiceName')]",
+                                                    "type": "LinkedServiceReference"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "[parameters('copyToDocumentDbActivityName')]",
+                        "type": "Copy",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('forEachActivityName2')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BlobSource",
+                                "recursive": true
+                            },
+                            "sink": {
+                                "type": "DocumentDbCollectionSink",
+                                "nestingSeparator": ".",
+                                "writeBatchSize": 10000,
+                                "writeBehavior": "upsert"
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "[parameters('destinationDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "fileName" : "*.json",
+                                    "folderPath": "[parameters('metadataactivity2_folderPath')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "[parameters('destinationDBDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "collectionName" : "[parameters('destinationDBCollectionName')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "DeleteSourceData",
+                        "type": "Delete",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('copyToDocumentDbActivityName')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "typeProperties": {
+                            "dataset": {
+                                "referenceName": "[parameters('sourceDatasetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            },
+                            "recursive": false,
+                            "maxConcurrentConnections": 1,
+                            "enableLogging": true,
+                            "logStorageSettings": {
+                                "linkedServiceName": {
+                                    "referenceName": "[parameters('sourceLinkedServiceName')]",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "path": "adflog"
+                            }
+                        }
+                    }
+                ],
+                "parameters": {
+                    "item": {
+                        "type": "object"
+                    },
+                    "windowStartTime": {
+                        "type": "dateTime"
+                    },
+                    "windowEndTime": {
+                        "type": "dateTime"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'),'/',parameters('pipelineName'))]",
+            "dependsOn": [
+                "[parameters('sourceDatasetName')]",
+                "[parameters('destinationDatasetName')]",
+                "[parameters('innerPipelineName1')]",
+                "[parameters('innerPipelineName2')]"
+            ],
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "[parameters('copyActivityName')]",
+                        "type": "Copy",
+                        "typeProperties": {
+                            "source": {
+                                "type": "BlobSource",
+                                "recursive": true
+                            },
+                            "sink": {
+                                "type": "BlobSink"
+                            }
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "[parameters('sourceDataSetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "[parameters('destinationDataSetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "fileName" : "",
+                                    "folderPath": "[parameters('destinationFolderPath')]",
+                                    "windowStartTime": "@pipeline().parameters.windowStartTime"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "[parameters('ifconditionCopyActivityName')]",
+                        "type": "IfCondition",
+                        "dependsOn": [
+                            {
+                                "activity": "[parameters('copyActivityName')]",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "typeProperties": {
+                            "expression": {
+                                "value": "[parameters('copyCondition')]",
+                                "type": "Expression"
+                            },
+                            "ifTrueActivities": [
+                                {
+                                    "name": "ExecuteInnerPipeline_1",
+                                    "type": "ExecutePipeline",
+                                    "typeProperties": {
+                                        "pipeline": {
+                                            "referenceName": "[parameters('innerPipelineName1')]",
+                                            "type": "PipelineReference"
+                                        },
+                                        "parameters": {
+                                            "windowStartTime": "@pipeline().parameters.windowStartTime",
+                                            "windowEndTime": "@pipeline().parameters.windowEndTime"
+                                        },
+                                        "waitOnCompletion": true
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "parameters": {
+                    "windowStartTime": {
+                        "type": "datetime"
+                    },
+                    "windowEndTime": {
+                        "type": "datetime"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "name": "[concat(parameters('resourcename'),'/',parameters('triggerName'))]",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[parameters('pipelineName')]"
+            ],
+            "properties": {
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "[parameters('triggerFrequency')]",
+                    "interval": "[parameters('triggerIntervals')]",
+                    "startTime": "[parameters('triggerStartTime')]",
+                    "delay": "[parameters('triggerDelay')]",
+                    "retryPolicy": {
+                        "count": 0,
+                        "intervalInSeconds": 30
+                    },
+                    "maxConcurrency": 1
+                },
+                "pipeline": {
+                    "pipelineReference": {
+                        "type": "PipelineReference",
+                        "referenceName": "[parameters('pipelineName')]"
+                    },
+                    "parameters": {
+                        "windowStartTime": "@trigger().outputs.windowStartTime",
+                        "windowEndTime": "@trigger().outputs.windowEndTime"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -5,7 +5,7 @@
         "resources": {
             "value": [
                 {
-                    "type": "hdinsight",
+                    "type": "spark",
                     "resourceType": "hdinsights",
                     "resourceGroupTypeRef": "app",
                     "name": "{0}{1}{2}hdi01",
@@ -141,6 +141,77 @@
                             "name": "dataLakeFolderPath",
                             "type": "format",
                             "value": "/cluster/{0}{1}{2}hdi01"
+                        }
+                    ]
+                },
+                {
+                    "type": "hadoop",
+                    "resourceType": "hdinsights",
+                    "resourceGroupTypeRef": "app",
+                    "name": "{0}{1}{2}hdi03",
+                    "location": "North Europe",
+                    "templateFileName": "hadoop.json",
+                    "parameterFileName": "hadoop.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "clusterLoginUserName",
+                            "type": "value",
+                            "value": "clsadmin"
+                        },
+                        {
+                            "name": "clusterLoginPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}hdi01-clsadmin-password"
+                            }
+                        },
+                        {
+                            "name": "sshUserName",
+                            "type": "value",
+                            "value": "sshuser"
+                        },
+                        {
+                            "name": "sshPassword",
+                            "type": "keyvault",
+                            "ref": {
+                                "resourceType": "keyvaults",
+                                "typeFilter": "appkeyvault",
+                                "secretName": "{0}{1}{2}hdi01-sshuser-password"
+                            }
+                        },
+                        {
+                            "name": "vNetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "vNetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "dplt",
+                                "property": "name"
+                            }
+                        },
+                        {
+                            "name": "subnetName",
+                            "type": "value",
+                            "value": "hdinsight"
+                        },
+                        {
+                            "name": "storageAccountName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "storageaccounts",
+                                "typeFilter": "adlsv2storage",
+                                "property": "name"
+                            }
                         }
                     ]
                 }

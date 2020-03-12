@@ -12,7 +12,7 @@
                     "location": "North Europe",
                     "expiryTerm": 4,
                     "templateFileName": "keyvault.json",
-                    "parameterFileName": "keyvault.parameters.json",
+                    "parameterFileName": "keyvault-nosp.parameters.json",
                     "parameters": [
                         {
                             "name": "tenant",
@@ -27,12 +27,7 @@
                             "name": "accessPolicies",
                             "subname": "objectId",
                             "index": 0,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "adgroups",
-                                "property": "id",
-                                "typeFilter": "keyvaultadmins"
-                            }
+                            "type": "currentLogin"
                         },
                         {
                             "name": "accessPolicies",
@@ -44,24 +39,6 @@
                                 "property": "id",
                                 "typeFilter": "tenant"
                             }
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "objectId",
-                            "index": 1,
-                            "type": "currentLogin"
-                        },
-                        {
-                            "name": "accessPolicies",
-                            "subname": "tenantId",
-                            "index": 1,
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "projects",
-                                "property": "id",
-                                "typeFilter": "tenant"
-                            }
-                        
                         }
                     ]
                 },
@@ -109,9 +86,9 @@
                     ]
                 },
                 {
-                    "type": "masterkeyvault",
+                    "type": "platformKeyVault",
                     "resourceType": "keyvaults",
-                    "resourceGroupTypeRef": "app",
+                    "resourceGroupTypeRef": "platform",
                     "name": "{0}{1}{2}nekvltacc",
                     "location": "North Europe",
                     "expiryTerm": 4,

@@ -24,6 +24,60 @@
                             "value": "premium"
                         }
                     ]
+                },
+                {
+                    "type" : "databrick-custom", 
+                    "resourceType": "databricks",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}dbs01",
+                    "location": "northeurope",
+                    "templateFileName": "databricks-custom.json",
+                    "parameterFileName": "databricks-custom.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "vnetName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "vnets",
+                                "typeFilter": "databricks",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "vnetRG",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property" : "name"
+                            }
+                        },
+                        {
+                            "name": "tier",
+                            "type": "value",
+                            "value": "premium"
+                        },
+                        {
+                            "name": "publicSubnetName",
+                            "type": "value",
+                            "value": "databricks-public"
+                        },
+                        {
+                            "name": "publicSubnetCIDR",
+                            "type": "value",
+                            "value": "10.64.0.0/26"
+                        },
+                        {
+                            "name": "privateSubnetName",
+                            "type": "value",
+                            "value": "databricks-private"
+                        },
+                        {
+                            "name": "privateSubnetCIDR",
+                            "type": "value",
+                            "value": "10.64.0.64/26"
+                        }
+                    ]
                 }
             ]
         }

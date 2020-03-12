@@ -1,0 +1,14 @@
+{
+    "type": "azureml",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "customroles",
+            "resources": [
+                {
+                    "type": "azureml"
+                }
+            ]
+        }
+    ]
+}

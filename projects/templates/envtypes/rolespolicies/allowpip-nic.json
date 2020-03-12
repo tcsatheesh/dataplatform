@@ -1,0 +1,14 @@
+{
+    "type": "allowpip-nic",
+    "parent": "",
+    "resources": [        
+        {
+            "resourceType": "azurepolicies",
+            "resources": [
+                {
+                    "type": "allowpip-nic"
+                }
+            ]
+        }
+    ]
+}

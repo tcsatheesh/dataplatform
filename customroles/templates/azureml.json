@@ -1,0 +1,25 @@
+{
+	"Name": "Azure Machine Learning",
+	"IsCustom": true,
+	"Description": "Allows the user to create a machine learning compute instance",
+	"Actions": [
+		"*/read",
+		"Microsoft.Network/loadBalancers/write",
+		"Microsoft.Network/networkSecurityGroups/write",
+		"Microsoft.Network/virtualNetworks/subnets/join/action",
+		"Microsoft.Network/networkSecurityGroups/join/action",
+		"Microsoft.Network/loadBalancers/inboundNatRules/join/action",
+		"Microsoft.Network/loadBalancers/backendAddressPools/join/action",
+        "Microsoft.MachineLearningServices/workspaces/computes/write"
+	],
+	"NotActions": [
+	],
+	"DataActions": [
+	],
+	"NotDataActions": [],
+	"AssignableScopes": [
+		"/subscriptions/ad31fdc0-e357-4925-b068-a20e5a634fb5/resourceGroups/it-dplt-d-vnet-rg",
+		"/subscriptions/ad31fdc0-e357-4925-b068-a20e5a634fb5/resourceGroups/it-dplt-d-vnet-rg/providers/Microsoft.Network/virtualNetworks/itdpltdvnet01/subnets/amlcompute",
+        "/subscriptions/ad31fdc0-e357-4925-b068-a20e5a634fb5/resourcegroups/it-dplt-d-mle-rg/providers/Microsoft.MachineLearningServices/workspaces/itdpltdwsml01"
+    ]
+}

@@ -4,7 +4,7 @@ param
     [String]$projectsParameterFile
 )
 
-function Set-Application {
+function Set-ApplicationSecret {
     param
     (
         [string]$applicationName,
@@ -143,7 +143,7 @@ function Set-Principal {
             $secretValue = $secret.SecretValue
         }
          
-        $principalIds = Set-Application -applicationName $principal.application.name `
+        $principalIds = Set-ApplicationSecret -applicationName $principal.application.name `
             -clientSecret $secretValue `
             -secretduration $resource.duration
         Set-SecretValueInKeyVault `

@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceName": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "pipelineName": {
+            "value": ""
+        },
+        "folderName": {
+            "value": ""
+        },
+        "inputLinkedServiceName": {
+            "value": ""
+        },
+        "inputDataSetName": {
+            "value": ""
+        },
+        "lookupDataSetLinkedServiceName": {
+            "value": ""
+        },
+        "lookupDataSetName": {
+            "value": ""
+        },
+        "keyVaultLinkedServiceName": {
+            "value": ""
+        },
+        "userNameSecretName": {
+            "value": ""
+        },
+        "passwordSecretName": {
+            "value": ""
+        },
+        "securityTokenSecretName": {
+            "value": ""
+        },
+        "outputDataSetName": {
+            "value": ""
+        },
+        "outputLinkedServiceName": {
+            "value": ""
+        },
+        "outputLinkedServiceUrl": {
+            "value": ""
+        },
+        "outputLinkedServiceSecretName": {
+            "value": ""
+        },
+        "pipelineName2": {
+            "value": ""
+        },
+        "triggerName": {
+            "value": ""
+        },
+        "triggerIntervals": {
+            "value": ""
+        },
+        "triggerStartTime": {
+            "value": ""
+        },
+        "outputFolderPath": {
+            "value": ""
+        },
+        "inputFolderPath": {
+            "value": ""
+        },
+        "inputFileName": {
+            "value": ""
+        }
+    }
+}

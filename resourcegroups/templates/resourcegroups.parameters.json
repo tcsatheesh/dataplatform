@@ -43,6 +43,16 @@
                     "type": "web",
                     "name": "{0}-{1}-{2}-web-rg",
                     "location": "North Europe"
+                },
+                {
+                    "type": "platform",
+                    "name": "{0}-{1}-{2}-base-rg",
+                    "location": "North Europe"
+                },
+                {
+                    "type": "mle",
+                    "name": "{0}-{1}-{2}-mle-rg",
+                    "location": "North Europe"
                 }
             ],
             "metadata": {

@@ -1,0 +1,2 @@
+Logout-AzureRmAccount
+Disconnect-AzureAD

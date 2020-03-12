@@ -1,0 +1,14 @@
+{
+    "type": "eventhub",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "eventhubs",
+            "resources": [
+                {
+                    "type": "eventhub"
+                }
+            ]
+        }
+    ]
+}

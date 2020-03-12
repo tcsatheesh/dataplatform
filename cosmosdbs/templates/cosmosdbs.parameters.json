@@ -7,9 +7,9 @@
                 {
                     "type" : "cosmosdb", 
                     "resourceType": "cosmosdbs",
-                    "resourceGroupTypeRef": "data",
+                    "resourceGroupTypeRef": "app",
                     "name" : "{0}{1}{2}cmdb01",
-                    "location": "North Europe",
+                    "location": "northeurope",
                     "templateFileName": "cosmosdb.json",
                     "parameterFileName": "cosmosdb.parameters.json",
                     "parameters" : [
@@ -21,7 +21,7 @@
                         {
                             "name": "pairedLocation",
                             "type": "value",
-                            "value": "West Europe"             
+                            "value": "westeurope"             
                         },
                         {
                             "name": "pairedLocationName",
@@ -31,7 +31,7 @@
                         {
                             "name": "defaultExperience",
                             "type": "value",
-                            "value": "DocumentDB"
+                            "value": "Core (SQL)"
                         }
                     ]
                 }

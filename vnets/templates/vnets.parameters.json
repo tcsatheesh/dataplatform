@@ -16,40 +16,46 @@
                         {
                             "name": "addressPrefix",
                             "type": "value",
-                            "value": "10.0.0.0/21"
+                            "value": "10.32.0.0/16"
                         },
                         {
                             "name": "subnets",
                             "type": "value",
                             "value": [
                                 {
+                                    "name": "GatewaySubnet",
+                                    "properties": {
+                                        "addressPrefix": "10.32.0.0/24"
+                                    }
+                                },
+                                {
                                     "name": "hdinsight",
                                     "properties": {
-                                        "addressPrefix": "10.0.1.0/24"
+                                        "addressPrefix": "10.32.1.0/24"
                                     }
                                 },
                                 {
                                     "name": "dsvm",
                                     "properties": {
-                                        "addressPrefix": "10.0.2.0/24"
+                                        "addressPrefix": "10.32.2.0/24"
                                     }
                                 },
                                 {
                                     "name": "appgw",
                                     "properties": {
-                                        "addressPrefix": "10.0.3.0/24"
+                                        "addressPrefix": "10.32.3.0/24"
                                     }
                                 },
                                 {
                                     "name": "kubernetes",
                                     "properties": {
-                                        "addressPrefix": "10.0.4.0/24"
+                                        "addressPrefix": "10.32.4.0/24"
                                     }
                                 },
                                 {
-                                    "name": "GatewaySubnet",
+                                    "name": "sep",
                                     "properties": {
-                                        "addressPrefix": "10.0.0.0/24"
+                                        "addressPrefix": "10.32.5.0/24"
                                     }
                                 }
                             ]
@@ -60,7 +66,7 @@
                     "type": "aks",
                     "resourceType": "vnets",
                     "resourceGroupTypeRef": "vnet",
-                    "name": "{0}{1}{2}vnet01",
+                    "name": "{0}{1}{2}vnet02",
                     "location": "North Europe",
                     "templateFileName": "vnet.json",
                     "parameterFileName": "vnet.parameters.json",
@@ -78,6 +84,58 @@
                                     "name": "kubernetes",
                                     "properties": {
                                         "addressPrefix": "10.55.1.0/24"
+                                    }
+                                },
+                                {
+                                    "name": "aksvirtual",
+                                    "properties": {
+                                        "addressPrefix": "10.55.2.0/24"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "databricks",
+                    "resourceType": "vnets",
+                    "resourceGroupTypeRef": "vnet",
+                    "name": "{0}{1}{2}vnet01",
+                    "location": "North Europe",
+                    "templateFileName": "vnet.json",
+                    "parameterFileName": "vnet.parameters.json",
+                    "parameters": [
+                        {
+                            "name": "addressPrefix",
+                            "type": "value",
+                            "value": "10.64.0.0/24"
+                        },
+                        {
+                            "name": "subnets",
+                            "type": "value",
+                            "value": [
+                                {
+                                    "name": "databricks-public",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.0/26"
+                                    }
+                                },
+                                {
+                                    "name": "databricks-private",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.64/26"
+                                    }
+                                },
+                                {
+                                    "name": "app-service",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.128/26"
+                                    }
+                                },
+                                {
+                                    "name": "amlcompute",
+                                    "properties": {
+                                        "addressPrefix": "10.64.0.192/26"
                                     }
                                 }
                             ]

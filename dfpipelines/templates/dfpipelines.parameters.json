@@ -3,185 +3,563 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resources": {
-            "value": [
+            "value": [                
                 {
-                    "type": "salesforce",
-                    "datafactoryResourceGroup": {
-                        "name": "",
-                        "ref": {
-                            "resourceType": "resourcegroups",
-                            "type": "app",
-                            "property": "name"
+                    "type": "pattern1",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern1.json",
+                    "parameterFileName": "pattern1.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "sourceDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_src_ds"
+                        },
+                        {
+                            "name": "destinationDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_ds"
+                        },
+                        {
+                            "name": "destinationDBDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_db_ds"
+                        },
+                        {
+                            "name": "sourceLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationDBLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}cmdb01"
+                        },
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_outer"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_1"
+                        },
+                        {
+                            "name": "copyActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_activity"
+                        },
+                        {
+                            "name": "ifconditionCopyActivityName",
+                            "type": "format",
+                            "value": "IfCopyHasWrittenFiles"
+                        },
+                        {
+                            "name": "copyCondition",
+                            "type": "format",
+                            "value": "@greater(activity('{0}{1}{2}_copy_activity').output.filesWritten,0)"
+                        },
+                        {
+                            "name": "innerPipelineName1",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_inner_1"
+                        },
+                        {
+                            "name": "metaDataActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_metadata_activity_1"
+                        },
+                        {
+                            "name": "forEachActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_foreach_activity_1"
+                        },
+                        {
+                            "name": "forEachOutputIter",
+                            "type": "format",
+                            "value": "@activity('{0}{1}{2}_metadata_activity_1').output.childItems"
+                        },
+                        {
+                            "name": "metaDataActivityName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_metadata_activity_2"
+                        },
+                        {
+                            "name": "forEachActivityName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_foreach_activity_2"
+                        },
+                        {
+                            "name": "forEachOutputIter2",
+                            "type": "format",
+                            "value": "@activity('{0}{1}{2}_metadata_activity_2').output.childItems"
+                        },
+                        {
+                            "name": "innerPipelineName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_inner_2"
+                        },
+                        {
+                            "name": "functionActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_function_activity"
+                        },
+                        {
+                            "name" : "ifconditionControlFileActivityName",
+                            "type": "value",
+                            "value": "IfControlFile"
+                        },
+                        {
+                            "name": "functionName",
+                            "type": "value",
+                            "value": "TransformXMLToJSON"
+                        },
+                        {
+                            "name": "functionLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}fn01"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}trigger"
+                        },
+                        {
+                            "name": "triggerStartTime",
+                            "type": "utcdatetime",
+                            "value": "-2",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "inputFileName",
+                            "type": "value",
+                            "value": "@concat('*_',formatDateTime(dataset().windowStartTime,'yyyyMMddHH'),'*.zip')"
+                        },
+                        {
+                            "name": "inputFolderName",
+                            "type": "value",
+                            "value": "source"
+                        },
+                        {
+                            "name": "destinationFolderPath",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/')"
+                        },
+                        {
+                            "name": "controlFileCondition",
+                            "type": "value",
+                            "value": "@endswith(item().name,'pmc.xml')"
+                        },
+                        {
+                            "name": "metadataactivity2_folderPath",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/',pipeline().parameters.item.name)"
+                        },
+                        {
+                            "name": "functionAppParameter",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/',pipeline().parameters.item.name,'/',item().name)"
+                        },
+                        {
+                            "name": "copyToDocumentDbActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_to_documentdb_activity"
+                        },
+                        {
+                            "name": "destinationDBCollectionName",
+                            "type": "value",
+                            "value": "policy"
                         }
-                    },
-                    "dataFactory": {
-                        "name": "",
-                        "ref": {
-                            "resourceType": "adfs",
-                            "type": "adf",
-                            "property": "name"
+                    ]
+                },
+                {
+                    "type": "pattern2",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern2.json",
+                    "parameterFileName": "pattern2.parameters.json",
+                    "parameters" : [
+                        
+                        {
+                            "name": "onPremiseSourceSQLLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
+                        },
+                        {
+                            "name": "onPremiseSourceSQLDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_sql_src_ds"
+                        },
+                        {
+                            "name": "sqldbDestinationLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
+                        },
+                        {
+                            "name": "storageAccountLookupLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "storageAccountLookupDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_lkup_ds"
+                        },
+                        {
+                            "name": "sqldbDestinationDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_sql_dest_ds"
+                        },
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_sql_outer"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_2"
+                        },
+                        {
+                            "name": "copyActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_sql_activity"
+                        },
+                        {
+                            "name": "storedProcedureActivityName",
+                            "type": "value",
+                            "value": "Call_SP"
+                        },
+                        {
+                            "name": "storedProcedureName",
+                            "type": "value",
+                            "value": "dbo.callDummySP"
+                        },
+                        {
+                            "name": "innerPipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_sql_inner"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}triggersql"
+                        },
+                        {
+                            "name": "triggerStartDateTime",
+                            "type": "utcdatetime",
+                            "value": "-1",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "lookupConfigInputFolderPath",
+                            "type": "value",
+                            "value": "config"
+                        },
+                        {
+                            "name": "lookupConfigInputFolderPath",
+                            "type": "value",
+                            "value": "config"
                         }
-                    },
-                    "resources": {
-                        "linkedservices": [
-                            {
-                                "name": "Salesforce",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\linkedservice.json",
-                                "parameters": [
-                                    {
-                                        "type": "usernameSecretName",
-                                        "ref": {
-                                            "resourceType": "keyvaultsecrets",
-                                            "typeFilter": "value",
-                                            "subtypeFilter": "salesforce.com.username",
-                                            "property": "name"
-                                        }
-                                    },
-                                    {
-                                        "type": "passwordSecretName",
-                                        "ref": {
-                                            "resourceType": "keyvaultsecrets",
-                                            "typeFilter": "value",
-                                            "subtypeFilter": "salesforce.com.password",
-                                            "property": "name"
-                                        }
-                                    },
-                                    {
-                                        "type": "securityTokenSecretName",
-                                        "ref": {
-                                            "resourceType": "keyvaultsecrets",
-                                            "typeFilter": "value",
-                                            "subtypeFilter": "salesforce.com.securitytoken",
-                                            "property": "name"
-                                        }
-                                    },
-                                    {
-                                        "type": "keyvault",
-                                        "ref": {
-                                            "resourceType": "keyvaults",
-                                            "typeFilter": "appkeyvault",
-                                            "property": "name"
-                                        }
-                                    }
-                                ]
+                    ]
+                },
+                {
+                    "type": "pattern3",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern3.json",
+                    "parameterFileName": "pattern3.parameters.json",
+                    "parameters" : [                        
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_outer"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_3"
+                        },
+                        {
+                            "name": "inputLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}slf01"
+                        },
+                        {
+                            "name": "inputDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern3_in_ds"
+                        },
+                        {
+                            "name": "lookupDataSetLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "lookupDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern3_lk_ds"
+                        },
+                        {
+                            "name": "keyVaultLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nekvltacc"
+                        },
+                        {
+                            "name": "userNameSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}-sf-username"
+                        },
+                        {
+                            "name": "passwordSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}-sf-password"
+                        },
+                        {
+                            "name": "securityTokenSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}-sf-security-token"
+                        },
+                        {
+                            "name": "outputDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern3_out_ds"
+                        },
+                        {
+                            "name": "outputLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2"
+                        },
+                        {
+                            "name": "outputLinkedServiceUrl",
+                            "type": "format",
+                            "value": "https://{0}{1}{2}nestgaccv2.dfs.core.windows.net"
+                        },
+                        {
+                            "name": "outputLinkedServiceSecretName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgaccv2-accountKey"
+                        },
+                        {
+                            "name": "pipelineName2",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_inner"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_trigger"
+                        },
+                        {
+                            "name": "triggerIntervals",
+                            "type": "value",
+                            "value": 1
+                        },
+                        {
+                            "name": "triggerStartTime",
+                            "type": "utcdatetime",
+                            "value": "-2",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "outputFolderPath",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_out_folder"
+                        },
+                        {
+                            "name": "inputFolderPath",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_3_in_folder"
+                        },
+                        {
+                            "name": "inputFileName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_in_filename"
+                        }
+                    ]
+                },
+                {
+                    "type": "pattern4",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern4.json",
+                    "parameterFileName": "pattern4.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline_4"
+                        },
+                        {
+                            "name": "activityName",
+                            "type": "format",
+                            "value": "Call-AzureAutomationWebhook"
+                        },
+                        {
+                            "name": "url",
+                            "type": "resourceSpecific",
+                            "value": "{0}{1}{2}atmnacc01"
+                        },
+                        {
+                            "name": "messageHeader",
+                            "type": "format",
+                            "value": "StartedbyDataFactory"
+                        },
+                        {
+                            "name": "body",
+                            "type": "resourceSpecific",
+                            "value": {
+                                "CredentialName": "ServicePrincipal",
+                                "TenantId": "{0}",
+                                "AnalysisServicesServer": "asazure://northeurope.asazure.windows.net/{0}",
+                                "AnalysisServicesRolloutEnvironment": "northeurope.asazure.windows.net",
+                                "AnalysisServicesDatabaseName": "Adventure Works Internet Sales",
+                                "DatabaseRefreshType": "Full"
                             }
-                        ],
-                        "inputdatasets": [
-                            {
-                                "name": "SalesforceDataset",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\input1.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "value": "Salesforce"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "ADLSLookupDataset",
-                                "type": "foreach",
-                                "templateFile": "salesforce\\input2.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "ref": {
-                                            "resourceType": "adlstores",
-                                            "typeFilter": "adlstore",
-                                            "property": "name"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "outputdatasets": [
-                            {
-                                "name": "ADLSDataSetSF",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\output.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "ref": {
-                                            "resourceType": "adlstores",
-                                            "typeFilter": "adlstore",
-                                            "property": "name"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "pipelines": [
-                            {
-                                "name": "SalesforcePipeline",
-                                "type": "salesforce",
-                                "templateFile": "salesforce\\pipeline1.json",
-                                "parameters": [
-                                    {
-                                        "type": "inputdataset",
-                                        "value": "SalesforceDataset"
-                                    },
-                                    {
-                                        "type": "outputdataset",
-                                        "value": "ADLSDataSetSF"
-                                    },
-                                    {
-                                        "type": "dffolderName",
-                                        "value": "Salesforce"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "SalesforcePipeline-ForEach",
-                                "type": "foreach",
-                                "templateFile": "salesforce\\pipeline2.json",
-                                "parameters": [
-                                    {
-                                        "type": "referenceName",
-                                        "value": "ADLSLookupDataset"
-                                    },
-                                    {
-                                        "type": "dffolderName",
-                                        "value": "Salesforce"
-                                    }
-                                ]
-                            }                            
-                        ],
-                        "triggers": [
-                            {
-                                "name": "SalesForceTrigger-ForEach",
-                                "type": "foreach",
-                                "templateFile": "salesforce\\trigger.json",
-                                "parameters": [
-                                    {
-                                        "type": "startTime",
-                                        "value": "2018-07-02T16:00:00Z"
-                                    },
-                                    {
-                                        "type": "interval",
-                                        "value": "1"
-                                    },
-                                    {
-                                        "type": "outputFolderPath",
-                                        "value": "@concat('raw/', formatDateTime(trigger().outputs.windowStartTime,'yyyy'), '/', formatDateTime(trigger().outputs.windowStartTime,'MM'), '/', formatDateTime(trigger().outputs.windowStartTime,'dd'), '/', formatDateTime(trigger().outputs.windowStartTime,'HH'), '/', formatDateTime(trigger().outputs.windowStartTime,'mm'), '/')"
-                                    },
-                                    {
-                                        "type": "pipelineName",
-                                        "value": "SalesforcePipeline-ForEach"
-                                    },
-                                    {
-                                        "type": "inputFolderPath",
-                                        "value": "/stage/lookup/"
-                                    },
-                                    {
-                                        "type": "inputFileName",
-                                        "value": "dimtables.json"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
+                        },
+                        {
+                            "name": "automationAccountName",
+                            "type": "format",
+                            "value": "{0}{1}{2}atmnacc01"
+                        },
+                        {
+                            "name": "runbookName",
+                            "type": "value",
+                            "value": "Refresh-AnalysisServicesDatabase"
+                        },
+                        {
+                            "name": "webhookName",
+                            "type": "resourceSpecific",
+                            "value": "RefreshFromAzureDataFactory{0}"
+                        },
+                        {
+                            "name": "webhookExpiryTime",
+                            "type": "value",
+                            "value": "2021-10-02T17:31:10+00:00"
+                        },
+                        {
+                            "name": "runOn",
+                            "type": "format",
+                            "value": "{0}{1}{2}vm02"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_4"
+                        }
+                    ]
+                },
+                {
+                    "type": "pattern5",
+                    "resourceType": "dfpipelines",
+                    "resourceGroupTypeRef": "app",
+                    "name" : "{0}{1}{2}adfv201",
+                    "location": "northeurope",
+                    "templateFileName": "pattern5.json",
+                    "parameterFileName": "pattern5.parameters.json",
+                    "parameters" : [
+                        {
+                            "name": "sourceDataSetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_src_ds"
+                        },
+                        {
+                            "name": "destinationDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_ds"
+                        },
+                        {
+                            "name": "destinationDataset2Name",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_ds_2"
+                        },
+                        {
+                            "name": "destinationDBDatasetName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_dest_db_ds"
+                        },
+                        {
+                            "name": "destinationDBTableName",
+                            "type": "value",
+                            "value": "[dbo].[products]"
+                        },
+                        {
+                            "name": "sourceLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}nestgacc"
+                        },
+                        {
+                            "name": "destinationDBLinkedServiceName",
+                            "type": "format",
+                            "value": "{0}{1}{2}sqldb01"
+                        },
+                        {
+                            "name": "pipelineName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pipeline"
+                        },
+                        {
+                            "name": "folderName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_pattern_5"
+                        },
+                        {
+                            "name": "copyActivityName",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_blob_to_blob"
+                        },
+                        {
+                            "name": "copyActivity2Name",
+                            "type": "format",
+                            "value": "{0}{1}{2}_copy_blob_to_sql"
+                        },
+                        {
+                            "name": "triggerName",
+                            "type": "format",
+                            "value": "{0}{1}{2}trigger"
+                        },
+                        {
+                            "name": "triggerStartTime",
+                            "type": "utcdatetime",
+                            "value": "-2",
+                            "format": "yyyy-MM-ddTHH:00:00Z"
+                        },
+                        {
+                            "name": "inputFileName",
+                            "type": "value",
+                            "value": "@concat('*_',formatDateTime(dataset().windowStartTime,'yyyyMMddHH'),'*.csv')"
+                        },
+                        {
+                            "name": "inputFolderName",
+                            "type": "value",
+                            "value": "source"
+                        },
+                        {
+                            "name": "destinationFolderPath",
+                            "type": "value",
+                            "value": "@concat('destination/',formatDateTime(pipeline().parameters.windowStartTime,'yyyyMMddHH'),'/')"
+                        }
+                    ]
                 }
             ]
         }

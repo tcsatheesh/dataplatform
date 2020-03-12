@@ -9,10 +9,10 @@ function New-Resource {
         [object]$resource
     )
     $resource.name = Get-FormatedText -strFormat $resource.name
-    $group = Get-AzureADGroup -SearchString $resource.name -ErrorAction SilentlyContinue
+    $group = Get-AzureRmADGroup -DisplayName $resource.name -ErrorAction SilentlyContinue
     if ($group -ne $null) {
-        $resource.id = $group.ObjectId
-        $resource.email = $group.mail    
+        $resource.id = $group.Id.Guid
+        $resource.email = $group.MailNickname    
     }
 }
 

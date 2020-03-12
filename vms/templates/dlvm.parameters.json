@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": ""
+        },
+        "osType": {
+            "value": ""
+        },
+        "adminUsername": {
+            "value": ""
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
+                },
+                "secretName": ""
+              }
+        },
+        "vmSize": {
+            "value": ""
+        },
+        "resourcename": {
+            "value": ""
+        },
+        "StorageAccountName": {
+            "value": ""
+        },
+        "storageAccountType": {
+            "value": ""
+        }
+    }
+}

@@ -1,0 +1,14 @@
+<policy>
+    <id>22e59042-d54a-44f4-8f45-412fb90332bd</id>
+    <renewalDate>2019-01-10</renewalDate>
+    <type>mort</type>
+    <customer>
+        <id>00002</id>
+    </customer>
+    <cars>
+        <car>
+            <model>Zafira</model>
+            <brand>Vauxhall</brand>
+        </car>
+    </cars>
+</policy>

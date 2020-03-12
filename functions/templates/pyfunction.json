@@ -1,0 +1,65 @@
+{
+  "parameters": {
+      "resourcename": {
+          "type": "string"
+      },
+      "storageName": {
+          "type": "string"
+      },
+      "location": {
+          "type": "string"
+      },
+      "website_node_default_version": {
+          "type": "string",
+          "defaultValue": "10.14.1"
+      },
+      "kind":{
+        "type": "string",
+        "defaultValue": "functionapp,linux"
+      },
+      "function_runtime" : {
+          "type": "string",
+          "defaultValue": "python"
+      },
+      "reserved" : {
+          "type": "bool",
+          "defaultValue": true
+      }
+  },
+  "resources": [
+      {
+          "apiVersion": "2016-03-01",
+          "name": "[parameters('resourcename')]",
+          "type": "Microsoft.Web/sites",
+          "properties": {
+              "name": "[parameters('resourcename')]",
+              "siteConfig": {
+                  "appSettings": [
+                      {
+                          "name": "FUNCTIONS_WORKER_RUNTIME",
+                          "value": "[parameters('function_runtime')]"
+                      },
+                      {
+                          "name": "AzureWebJobsStorage",
+                          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), '2015-05-01-preview').key1)]"
+                      },
+                      {
+                          "name": "FUNCTIONS_EXTENSION_VERSION",
+                          "value": "~2"
+                      },
+                      {
+                          "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                          "value": "[parameters('website_node_default_version')]"
+                      }
+                  ]
+              },
+              "clientAffinityEnabled": false,
+              "reserved": "[parameters('reserved')]"
+          },
+          "location": "[parameters('location')]",
+          "kind": "[parameters('kind')]"
+      }
+  ],
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0"
+}

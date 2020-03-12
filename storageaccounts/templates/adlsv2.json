@@ -11,6 +11,9 @@
         "accountType": {
             "type": "string"
         },
+        "tier": {
+            "type": "string"
+        },
         "kind": {
             "type": "string"
         },
@@ -26,28 +29,17 @@
     },
     "resources": [
         {
-            "apiVersion": "2018-02-01",
-            "name": "[parameters('resourcename')]",
-            "location": "[parameters('location')]",
             "type": "Microsoft.Storage/storageAccounts",
+            "name": "[parameters('resourcename')]",
+            "apiVersion": "2018-02-01",
+            "location": "[parameters('location')]",
             "sku": {
-                "name": "[parameters('accountType')]"
+                "name": "[parameters('accountType')]",
+                "tier": "[parameters('tier')]"
             },
             "kind": "[parameters('kind')]",
             "properties": {
-                "supportsHttpsTrafficOnly": "[parameters('httpsTrafficOnlyEnabled')]",
                 "accessTier": "[parameters('accessTier')]",
-                "encryption": {
-                    "services": {
-                        "blob": {
-                            "enabled": true
-                        },
-                        "file": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
                 "isHnsEnabled": "[parameters('hierarchicalNameSpaceEnabled')]"
             },
             "dependsOn": []

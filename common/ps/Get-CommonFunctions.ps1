@@ -6,7 +6,7 @@ function Get-ValueFromResource {
         [string]$subtypeFilter
     )
     
-    $parameters = Get-ResourceParameters -parameterFileName "$resourceType.parameters.json"
+    $parameters = Get-ResourceParameters -parameterFileName "$resourceType.parameters.json" -godeep
     
     if ([String]::IsNullOrEmpty($subtypeFilter)) {
         $item = $parameters.parameters.resources.value | Where-Object {$_.type -eq $typeFilter}
@@ -17,7 +17,21 @@ function Get-ValueFromResource {
     }
     
     if ($item -eq $null ) {
-        throw "1. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
+        $parameters = Get-ResourceParametersDeep -parameterFileName "$resourceType.parameters.json"
+    
+        if ([String]::IsNullOrEmpty($subtypeFilter)) {
+            $item = $parameters.parameters.resources.value | Where-Object {$_.type -eq $typeFilter}
+        }
+        else {
+            $item = $parameters.parameters.resources.value | `
+                Where-Object {$_.type -eq $typeFilter -and $_.subtype -eq $subtypeFilter}
+        }
+    
+        if ($item -eq $null ) {        
+            $cs = Get-PSCallStack
+            Write-Verbose "Call stack is $cs"    
+            throw "1. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
+        }
     }
     $props = $property.Split(".")
     foreach ($prop in $props) {
@@ -25,6 +39,8 @@ function Get-ValueFromResource {
     }
     $val = $item
     if ($item -eq $null ) {
+        $cs = Get-PSCallStack
+        Write-Verbose "Call stack is $cs"    
         throw "2. item cannot be null here for resourceType $resourceType with typeFilter as $typeFilter and subtypeFilter as $subtypeFilter and property as $property"
     }
     return $val 
@@ -73,66 +89,98 @@ function Get-CurrentIPAddress {
     return $response.ip
 }
 
-function Get-ParentProjectParameterFilePath {
-    param
-    (
-        [Parameter(Mandatory = $True, HelpMessage = 'The projects.parameters.json file.')]
-        [String]$projectsParameterFullFilePath,
-        [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
-        [String]$parameterFileName
+function Get-SubnetID {
+    param (
+        [object]$subnetRef
     )
-    $projectParameters = Get-Content -Path $projectsParameterFullFilePath -Raw | ConvertFrom-JSON
-    $envType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq "envType"}
-    Write-Verbose "Env type is $envType"
-    $currentType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $envType.value}
-    Write-Verbose "Current type is $currentType"
-    if ($currentType.parent -ne $null) {
-        Write-Verbose "This is a child project. Parent is $($currentType.parent)"
-        $projectFolder = (Get-Item -Path $projectsParameterFile).FullName
-        Write-Verbose "1. Project Folder is $projectFolder"
-        $projectFolder = (Get-Item -Path $projectFolder).DirectoryName
-        Write-Verbose "2. Project Folder is $projectFolder"                
-        $parentProjectFolder = "$projectFolder\..\$($currentType.parent)"
-        Write-Verbose "1. Project Parent Folder is $parentProjectFolder"
-        $parentProjectFolder = (Get-Item -Path $parentProjectFolder).FullName
-        Write-Verbose "2. Project Parent Folder is $parentProjectFolder"
-        $parameterFullPath = "$parentProjectFolder\$parameterFileName"
-        Write-Verbose "3. Project Parent filepath is $parameterFullPath"
-        if (-not (Test-Path -Path $parameterFullPath)) {
-            Write-Verbose "Parameter file $parameterFileName not found. Check if this is a child project"
-            $lclProjectsParameterFullFilePath = "$parentProjectFolder\projects.parameters.json"
-            $parameterFullPath = Get-ParentProjectParameterFilePath -projectsParameterFullFilePath $lclProjectsParameterFullFilePath -parameterFileName $parameterFileName
-            if ($parameterFullPath -eq $null) {
-                throw "Project parameter file not found in $parameterFullPath"
-            }
-        }    
-        return $parameterFullPath
-    }
-    else {
-        return $null
-    }
+    $VNetName = Get-ValueFromResource -resourceType $subnetRef.resourceType `
+        -property $subnetRef.property -typeFilter $subnetRef.typeFilter
+    Write-Verbose "Vnet name is $VNetName"
+    $vnet = Get-AzureRmVirtualNetwork | Where-Object {$_.Name -eq $VnetName}
+    $subnet = $vnet.Subnets | Where-Object {$_.Name -eq $subnetRef.subnetName}
+    return $subnet.Id
 }
 
 function Get-ResourceParameters {
     param
     (
         [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
-        [String]$parameterFileName
+        [String]$parameterFileName,
+        [Parameter(Mandatory = $False, HelpMessage = 'Should I go deep')]
+        [Switch]$godeep
     )
-
+    Write-Verbose "Get-ResourceParameters for $parameterFileName with godeep value as $godeep"
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
-    $projectsParameterFullFilePath = "$projectFolder\projects.parameters.json"
     $parameterFullPath = "$projectFolder\$parameterFileName"
-    if (-not (Test-Path -Path $parameterFullPath)) {
-        Write-Verbose "Parameter file $parameterFileName not found. Check if this is a child project"
-        $parameterFullPath = Get-ParentProjectParameterFilePath -projectsParameterFullFilePath $projectsParameterFullFilePath -parameterFileName $parameterFileName
-        if ($parameterFullPath -eq $null) {
-            throw "Project parameter file not found in $parameterFullPath"
+    if (Test-Path -Path $parameterFullPath) { 
+        $parameters = Get-Content -Path $parameterFullPath -Raw | ConvertFrom-JSON
+    }else {
+        if ($godeep) {
+            $parameters = Get-ResourceParametersDeep -parameterFileName $parameterFileName
+        }else {
+            $cs = Get-PSCallStack
+            Write-Verbose "Call stack is $cs"
+            throw "Parameter file not found in $parameterFullPath"
         }
     }
-    $parameterFullPath = (Get-Item -Path $parameterFullPath).FullName    
-    $parameters = Get-Content -Path $parameterFullPath -Raw | ConvertFrom-JSON
-    return $parameters 
+    return $parameters
+}
+
+function Get-ResourceParametersDeep {
+    param
+    (
+        [Parameter(Mandatory = $True, HelpMessage = 'The .parameters.json file.')]
+        [String]$parameterFileName
+    )
+    Write-Verbose "Get-ResourceParametersDeep for $parameterFileName"
+    $listOfFiles = @()    
+    $parent = $null
+    $currentProjectsParameterFile = $projectsParameterFile
+    do {
+        $projectFolder = (Get-Item -Path $currentProjectsParameterFile).DirectoryName
+        $projectParameters = Get-Content -Path $currentProjectsParameterFile -Raw | ConvertFrom-JSON
+        $envType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq "envType"}
+        # Write-Verbose "Env type is $($envType.value)"
+        $currentType = $projectParameters.parameters.resources.value | Where-Object {$_.type -eq $envType.value}
+        # Write-Verbose "Parent is $($currentType.parent)"
+        $parameterFullPath = "$projectFolder\$parameterFileName"
+        if (Test-Path -Path $parameterFullPath) { 
+            Write-Verbose "Added parameter file $parameterFullPath"
+            $listOfFiles += $parameterFullPath
+        }
+        $parent = $currentType.parent
+        $parentProjectFolder = (Get-Item -Path "$projectFolder\..\$($currentType.parent)").FullName
+        #Write-Verbose "Project Parent Folder is $parentProjectFolder"
+        $parameterFullPath = "$parentProjectFolder\$parameterFileName"
+        $currentProjectsParameterFile = "$parentProjectFolder\projects.parameters.json"
+    }while (-not [string]::IsNullOrEmpty($parent))
+
+    if ($listOfFiles.Length -eq 0 ) {
+        throw "Parameter File $parameterFileName not found here on in the parents"
+    }else {
+        #Write-Verbose "Number of files is $($listOfFiles.Length)"
+    }
+    $index = 0
+    $newparameters = @()
+    foreach ($parameterFile in $listOfFiles) {
+        #Write-Verbose "Index is $index and parameter file is $parameterFile"
+        $parameters = Get-Content -Path $parameterFile -Raw | ConvertFrom-JSON
+        if ($index -eq 0) {            
+            $newparameters = Get-Content -Path $parameterFile -Raw | ConvertFrom-JSON
+            $newparameters.parameters.resources.value = @()
+        }
+        foreach ($parms in $parameters.parameters.resources.value) {
+            $typeExists = $newparameters.parameters.resources.value | Where-Object {$_.type -eq $parms.type}
+            if ($typeExists -eq $null) {
+                #Write-Verbose "$($parms.type) does not exist. Adding... $parms"
+                $newparameters.parameters.resources.value += $parms
+            }else {
+                #Write-Verbose "$($parms.type) exists"
+            }
+        }        
+        $index++
+    }
+    return $newparameters 
 }
 
 function Get-TemplateParameters {
@@ -151,10 +199,16 @@ function Get-TemplateParameters {
 }
 function Get-ApplicationParameter {
     param (
-        [string]$type
+        [string]$type,
+        [switch]$godeep
     )
     $applicationsParameterFileName = "principals.parameters.json"
-    $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue
+    if ($godeep) {
+        $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue -godeep
+    }
+    else {
+        $applicationsParameters = Get-ResourceParameters -parameterFileName $applicationsParameterFileName -ErrorAction SilentlyContinue
+    }
     if ($applicationsParameters -ne $null) {
         $principal = $applicationsParameters.parameters.resources.value | Where-Object {$_.type -eq $type}
         return $principal
@@ -249,7 +303,7 @@ function Get-KeyVaultName {
         [string]$keyVaultType
     )
     $parameterFileName = "keyvaults.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
     $resource = $parameters.parameters.resources.value | Where-Object {$_.type -eq $keyVaultType}
     $keyVaultName = $resource.name
     return $keyVaultName
@@ -261,7 +315,7 @@ function Get-ResourceGroupName {
     )
     
     $parameterFileName = "resourcegroups.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
     $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
     Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
     return $resourceGroup.name

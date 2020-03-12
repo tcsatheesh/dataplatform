@@ -1,0 +1,15 @@
+{
+    "experimentName": "mnist002",
+    "modelName": "mnist2",
+    "modelFilePath": "outputs/sklearn_mnist_model.pkl",
+    "modelFileName": "sklearn_mnist_model.pkl",
+    "webserviceName" : "mnist2",
+    "config" : "config.json",
+    "spconfig" : "spconfig.json",
+    "aml_config_dir" : "aml_config",
+    "cpuCores" : 1,
+    "memoryGB" : 1,
+    "scoringScript": "score.py",
+    "environmentFileName": "score_environment.yaml",
+    "verbose": true
+}

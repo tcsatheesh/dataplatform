@@ -1,0 +1,19 @@
+{
+	"if": {
+		"allOf": [
+			{
+				"field": "type",
+				"equals": "Microsoft.Network/publicIPAddresses"
+			},
+			{
+				"not": {
+					"field": "name",
+					"like": "[parameters('publicIPNamePattern')]"
+				}
+			}
+		]
+	},
+	"then": {
+		"effect": "deny"
+	}
+}

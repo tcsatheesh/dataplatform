@@ -1,0 +1,471 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcename": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the data factory"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the data factory"
+            }
+        },
+        "onPremiseSourceSQLLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the source on-premise sql linked service"
+            }
+        },
+        "onPremiseSourceSQLDatasetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the source on-premise sql dataset"
+            }
+        },
+        "sqldbDestinationLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination sql database linked service"
+            }
+        },
+        "sqldbDestinationDatasetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the destination sql database dataset"
+            }
+        },
+        "storageAccountLookupLinkedServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the lookup storage account linked service"
+            }
+        },
+        "storageAccountLookupDataSetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the lookup storage account dataset"
+            }
+        },
+        "pipelineName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the copy pipeline."
+            }
+        },
+        "innerPipelineName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the copy pipeline."
+            }
+        },
+        "copyActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the copy activity"
+            }
+        },
+        "storedProcedureActivityName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the stored procedure activity"
+            }
+        },
+        "storedProcedureName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the stored procedure in the stored procedure activity"
+            }
+        },
+        "triggerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the trigger"
+            }
+        },
+        "triggerStartDateTime": {
+            "type": "string",
+            "metadata": {
+                "description": "The start time of the scheduled trigger."
+            }
+        },
+        "triggerScheduledExecutionHour": {
+            "type": "int",
+            "metadata": {
+                "description": "Schedule hour for the trigger."
+            }
+        },
+        "triggerScheduledExecutionMinute": {
+            "type": "int",
+            "metadata": {
+                "description": "Schedule minute for the trigger."
+            }
+        },
+        "triggerFrequency": {
+            "type": "string",
+            "metadata": {
+                "description": "Frequency for the trigger."
+            }
+        },
+        "triggerInterval": {
+            "type": "int",
+            "metadata": {
+                "description": "Interval for the trigger."
+            }
+        },
+        "triggerTimeZone": {
+            "type": "string",
+            "metadata": {
+                "description": "Timezone for the trigger."
+            }
+        },
+        "lookupConfigInputFolderPath": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the config fiolder."
+            }
+        },
+        "lookupConfigInputFileName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the config file."
+            }
+        },
+        "folderName": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "name": "[concat(parameters('resourcename'),'/',parameters('onPremiseSourceSQLDatasetName'))]",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "SqlServerTable",
+                "linkedServiceName": {
+                    "referenceName": "[parameters('onPremiseSourceSQLLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "cw_tableName": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "name": "[concat(parameters('resourcename'),'/',parameters('sqldbDestinationDatasetName'))]",
+            "properties": {
+                "type": "AzureSqlTable",
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqldbDestinationLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "cw_tableName": {
+                        "type": "String"
+                    }
+                },
+                "typeProperties": {
+                    "tableName": {
+                        "value": "@dataset().cw_tableName",
+                        "type": "Expression"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'),'/',parameters('innerPipelineName'))]",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[parameters('onPremiseSourceSQLDatasetName')]",
+                "[parameters('sqldbDestinationDatasetName')]",
+                "[parameters('storageAccountLookupDataSetName')]"
+            ],
+            "properties": {
+                "activities": [
+                    {
+                        "name": "RunIfEnabled",
+                        "type": "IfCondition",
+                        "typeProperties": {
+                            "expression": {
+                                "value": "@bool(pipeline().parameters.configItem.enabled)",
+                                "type": "Expression"
+                            },
+                            "ifTrueActivities": [
+                                {
+                                    "name": "[parameters('copyActivityName')]",
+                                    "type": "Copy",
+                                    "dependsOn": [],
+                                    "policy": {
+                                        "timeout": "7.00:00:00",
+                                        "retry": 0,
+                                        "retryIntervalInSeconds": 30,
+                                        "secureOutput": false,
+                                        "secureInput": false
+                                    },
+                                    "userProperties": [
+                                        {
+                                            "name": "Destination",
+                                            "value": "@{pipeline().parameters.configItem.destination.tableName}"
+                                        }
+                                    ],
+                                    "typeProperties": {
+                                        "source": {
+                                            "type": "SqlSource",
+                                            "sqlReaderQuery": "@pipeline().parameters.configItem.source.sqlReaderQuery"
+                                        },
+                                        "sink": {
+                                            "type": "SqlSink",
+                                            "writeBatchSize": 10000,
+                                            "sqlWriterStoredProcedureName": {
+                                                "value": "@pipeline().parameters.configItem.copySink.sqlWriterStoredProcedureName",
+                                                "type": "Expression"
+                                            },
+                                            "sqlWriterTableType": {
+                                                "value": "@pipeline().parameters.configItem.copySink.sqlWriterTableType",
+                                                "type": "Expression"
+                                            }
+                                        },
+                                        "enableStaging": false,
+                                        "dataIntegrationUnits": 0
+                                    },
+                                    "inputs": [
+                                        {
+                                            "referenceName": "[parameters('onPremiseSourceSQLDatasetName')]",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "cw_tableName": "@pipeline().parameters.configItem.source.tableName"
+                                            }
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "referenceName": "[parameters('sqldbDestinationDatasetName')]",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "cw_tableName": "@pipeline().parameters.configItem.destination.tableName"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "parameters": {
+                    "configItem": {
+                        "type": "object"
+                    },
+                    "windowStart": {
+                        "type": "dateTime"
+                    },
+                    "windowEnd": {
+                        "type": "dateTime"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "name": "[concat(parameters('resourcename'),'/',parameters('storageAccountLookupDataSetName'))]",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "AzureBlob",
+                "typeProperties": {
+                    "folderPath": {
+                        "value": "@dataset().inputFolderPath",
+                        "type": "Expression"
+                    },
+                    "fileName": {
+                        "value": "@dataset().inputFileName",
+                        "type": "Expression"
+                    },
+                    "format": {
+                        "type": "JsonFormat",
+                        "filePattern": "arrayOfObjects"
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "[parameters('storageAccountLookupLinkedServiceName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "inputFolderPath": {
+                        "type": "string"
+                    },
+                    "inputFileName": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('resourcename'),'/',parameters('pipelineName'))]",
+            "dependsOn": [
+                "[parameters('onPremiseSourceSQLDatasetName')]",
+                "[parameters('sqldbDestinationDatasetName')]",
+                "[parameters('storageAccountLookupDataSetName')]",
+                "[parameters('innerPipelineName')]"
+            ],
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "LookupActivity",
+                        "type": "Lookup",
+                        "typeProperties": {
+                            "source": {
+                                "type": "BlobSource"
+                            },
+                            "dataset": {
+                                "referenceName": "[parameters('storageAccountLookupDataSetName')]",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "inputFolderPath": "@pipeline().parameters.inputFolderPath",
+                                    "inputFileName": "@pipeline().parameters.inputFileName"
+                                }
+                            },
+                            "firstRowOnly": false
+                        }
+                    },
+                    {
+                        "name": "ForEach_Table",
+                        "type": "ForEach",
+                        "dependsOn": [
+                            {
+                                "activity": "LookupActivity",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "isSequential": "true",
+                            "items": {
+                                "value": "@activity('LookupActivity').output.value",
+                                "type": "Expression"
+                            },
+                            "activities": [
+                                {
+                                    "name": "ExecuteInnerPipeline",
+                                    "type": "ExecutePipeline",
+                                    "typeProperties": {
+                                        "pipeline": {
+                                            "referenceName": "[parameters('innerPipelineName')]",
+                                            "type": "PipelineReference"
+                                        },
+                                        "parameters": {
+                                            "configItem": "@item()",
+                                            "windowStart": "@pipeline().parameters.windowStart",
+                                            "windowEnd": "@pipeline().parameters.windowEnd"
+                                        },
+                                        "waitOnCompletion": true
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "[parameters('storedProcedureActivityName')]",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "ForEach_Table",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "linkedServiceName": {
+                            "referenceName": "[parameters('sqldbDestinationLinkedServiceName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "typeProperties": {
+                            "storedProcedureName": "[parameters('storedProcedureName')]"
+                        }
+                    }
+                ],
+                "parameters": {
+                    "inputFolderPath": {
+                        "type": "string"
+                    },
+                    "inputFileName": {
+                        "type": "string"
+                    },
+                    "windowStart": {
+                        "type": "datetime"
+                    },
+                    "windowEnd": {
+                        "type": "datetime"
+                    }
+                },
+                "folder": {
+                    "name": "[parameters('folderName')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "name": "[concat(parameters('resourcename'),'/',parameters('triggerName'))]",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[parameters('onPremiseSourceSQLDatasetName')]",
+                "[parameters('sqldbDestinationDatasetName')]",
+                "[parameters('pipelineName')]"
+            ],
+            "properties": {
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "[parameters('triggerFrequency')]",
+                        "interval": "[parameters('triggerInterval')]",
+                        "startTime": "[parameters('triggerStartDateTime')]",
+                        "timeZone": "[parameters('triggerTimeZone')]",
+                        "schedule": {
+                            "minutes": [
+                                "[parameters('triggerScheduledExecutionMinute')]"
+                            ],
+                            "hours": [
+                                "[parameters('triggerScheduledExecutionHour')]"
+                            ]
+                        }
+                    }
+                },
+                "pipeline": {
+                    "pipelineReference": {
+                        "type": "PipelineReference",
+                        "referenceName": "[parameters('pipelineName')]"
+                    },
+                    "parameters": {
+                        "inputFolderPath": "[parameters('lookupConfigInputFolderPath')]",
+                        "inputFileName": "[parameters('lookupConfigInputFileName')]",
+                        "windowStart": "@{adddays(trigger().scheduledTime, -1)}",
+                        "windowEnd": "@trigger().scheduledTime"
+                    }
+                }
+            }
+        }
+    ]
+}

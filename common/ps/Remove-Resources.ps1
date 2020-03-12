@@ -11,7 +11,7 @@ function Get-ResourceGroup {
         [string]$resourceGroupTypeRef
     )
     $parameterFileName = "resourcegroups.parameters.json"
-    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName
+    $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
     $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
     Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
     return $resourceGroup

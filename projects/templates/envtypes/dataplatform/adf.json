@@ -1,0 +1,41 @@
+{
+    "type": "adf",
+    "parent": "",
+    "resources": [
+        {
+            "resourceType": "adgroups",
+            "resources": [
+                {
+                    "type": "developers"
+                }
+            ]
+        },
+        {
+            "resourceType": "storageaccounts",
+            "resources": [
+                {
+                    "type": "diagnostics"
+                }
+            ]
+        },
+        {
+            "resourceType": "adfs",
+            "resources": [
+                {
+                    "type": "adf"
+                }
+            ]
+        },
+        {
+            "resourceType": "diagnostics",
+            "resources": [
+                {
+                    "type": "appkeyvault"
+                },
+                {
+                    "type": "adf"
+                }
+            ]
+        }
+    ]
+}

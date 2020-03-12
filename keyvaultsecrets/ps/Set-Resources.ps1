@@ -27,11 +27,31 @@ function Get-SqlConnectionString {
     $account = $resource.parameters | Where-Object {$_.name -eq "account"}
     $sqlLoginName = $account.value
     $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
-    $secretName = $resource.name
+    $secretName = "{0}-{1}-password" -f $sqlServerName, $sqlLoginName
     $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $secretName
     $sqlLoginPassword = $secret.SecretValueText
+    Write-Verbose "secret name is $secretName"
     $connectionString = "Data Source=tcp:{0}.database.windows.net,1433;Initial Catalog={1};User ID={2};Password={3};Integrated Security=False;Encrypt=True;Connect Timeout=30" `
         -f $sqlServerName, $sqlDatabaseName, $sqlLoginName, $sqlLoginPassword
+    $secretValue = ConvertTo-SecureString -AsPlainText $connectionString -Force
+
+    return $secretValue    
+}
+
+function Get-CmdbConnectionString {
+    param(
+        [object]$resource
+    )
+    $cmdb = $resource.parameters | Where-Object {$_.name -eq "cmdbName"}
+    $cmdbName = $cmdb.value
+    $database = $resource.parameters | Where-Object {$_.name -eq "databaseName"}
+    $databaseName = $database.value    
+    $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType
+    $accountKeyName = $resource.parameters | Where-Object {$_.name -eq "accountKeyName"}
+    $secret = Get-AzureKeyVaultSecret -VaultName $keyVaultName -Name $accountKeyName.value
+    $accountKey = $secret.SecretValueText
+    $connectionString = "AccountEndpoint=https://{0}.documents.azure.com:443/;Database={1};AccountKey={2};" `
+        -f $cmdbName, $databaseName, $accountKey
     $secretValue = ConvertTo-SecureString -AsPlainText $connectionString -Force
 
     return $secretValue    
@@ -51,6 +71,9 @@ function Set-Resource {
     }
     elseif ($resource.type -eq "sqldbconnectionstring") {
         $secureSecretValue = Get-SqlConnectionString -resource $resource
+    }
+    elseif ($resource.type -eq "cmdbconnectionstring") {
+        $secureSecretValue = Get-CmdbConnectionString -resource $resource
     }
     elseif ($resource.type -eq "certificate") {
         $keyVaultName = Get-KeyVaultName -keyVaultType $resource.keyVaultType

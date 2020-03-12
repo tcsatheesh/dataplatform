@@ -40,7 +40,7 @@
                         },
                         {
                             "name": "masterClientIdPassword",
-                            "keyVaultName": "itpltfrmdnekvltacc",
+                            "keyVaultName": "itplatformdnekvltacc",
                             "secretName": "it-pltfrm-d-dep-prn-password"
                         }
                     ]
@@ -66,6 +66,109 @@
                             "value": [
                                 "Directory.ReadWrite.All",
                                 "Application.ReadWrite.OwnedBy"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "deploymentPrincipal",
+                    "resourceType": "grantpermissions",
+                    "name": "application deployment service principal",
+                    "location": "North Europe",
+                    "parameters": [
+                        {
+                            "name": "objectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "deploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "name": "Windows Azure Active Directory",
+                            "type": "appRole",
+                            "value": [
+                                "Directory.Read.All"                                
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "aksServerPrincipal",
+                    "resourceType": "grantpermissions",
+                    "name": "Azure AKS server principal",
+                    "location": "North Europe",
+                    "parameters": [
+                        {
+                            "name": "objectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "aksServerPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "name": "tenantId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "projects",
+                                "typeFilter": "tenant",
+                                "property": "id"
+                            }
+                        },
+                        {
+                            "name": "Windows Azure Active Directory",
+                            "type": "appRole",
+                            "value": [
+                                "Directory.Read.All"                                
+                            ]
+                        },
+                        {
+                            "name": "GroupMembershipClaims",
+                            "type": "groupMembershipClaims",
+                            "value": [
+                                "All"                                
+                            ]
+                        },
+                        {
+                            "name": "Microsoft Graph",
+                            "type": "OAuth2Permissions",
+                            "value": "User.Read"
+                        },
+                        {
+                            "name": "masterClientId",
+                            "type": "value",
+                            "value": "it-pltfrm-d-dep-prn"
+                        },
+                        {
+                            "name": "masterClientIdPassword",
+                            "keyVaultName": "itplatformdnekvltacc",
+                            "secretName": "it-pltfrm-d-dep-prn-password"
+                        }
+                    ]
+                },
+                {
+                    "type": "aksClientPrincipal",
+                    "resourceType": "grantpermissions",
+                    "name": "Azure AKS native client principal",
+                    "location": "North Europe",
+                    "parameters": [
+                        {
+                            "name": "objectId",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "aksClientPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        },
+                        {
+                            "principalref": "aksServerPrincipal",
+                            "type": "customAppRole",
+                            "value": [
+                                "user_impersonation"
                             ]
                         }
                     ]

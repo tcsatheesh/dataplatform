@@ -306,6 +306,109 @@
                             }
                         }
                     ]
+                },
+                {
+                    "type": "hdinsight",
+                    "adlStoreName": "{0}{1}{2}neadlsstore",
+                    "help": "Allowed values for AceType: User, Group, Mask, Other; Allowed values for Permission: None, Execute, Write, WriteExecute, Read, ReadExecute, ReadWrite, All; Allowed values for AADType: Group, SPN, User",
+                    "folders": [
+                        {
+                            "folderName": "/",
+                            "permissions": [
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "datacontrollers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "Group",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "datacontrollers",
+                                    "Id": "",
+                                    "AADType": "Group"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "The ADLS root folder. Don't want anyone to be able to create anything here just browse and drill down"
+                            }
+                        },
+                        {
+                            "folderName": "/cluster",
+                            "permissions": [
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "applicationPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "true",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                },
+                                {
+                                    "AceType": "User",
+                                    "Permission": "All",
+                                    "Default": "false",
+                                    "AADName": "deploymentPrincipal",
+                                    "Id": "",
+                                    "AADType": "SPN"
+                                }
+                            ],
+                            "metadata": {
+                                "description": "The HDInsight cluster folder."
+                            }
+                        }
+                    ]
                 }
             ]
         }

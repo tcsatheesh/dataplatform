@@ -44,8 +44,8 @@
                     "type": "mlstorage",
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "app",
-                    "name": "{0}{1}{2}westgaccmlexp",
-                    "location": "West Europe",
+                    "name": "{0}{1}{2}nestgaccmlexp",
+                    "location": "North Europe",
                     "templateFileName": "v2genstorage.json",
                     "parameterFileName": "v2genstorage.parameters.json"
                 },
@@ -62,8 +62,8 @@
                     "type": "adlsv2storage",
                     "resourceType": "storageaccounts",
                     "resourceGroupTypeRef": "app",
-                    "name": "{0}{1}{2}weus2stgacc",
-                    "location": "West US 2",
+                    "name": "{0}{1}{2}neadlsgen2",
+                    "location": "North Europe",
                     "templateFileName": "adlsv2.json",
                     "parameterFileName": "adlsv2.parameters.json"
                 }

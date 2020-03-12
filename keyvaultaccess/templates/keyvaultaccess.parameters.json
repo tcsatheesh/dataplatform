@@ -7,8 +7,8 @@
                 {
                     "name": "{0}-{1}-{2}-accesspolicy",
                     "type": "platformDeploymentPrincipal",
-                    "keyVaultType": "masterkeyvault",
-                    "resourceGroupTypeRef": "app",
+                    "keyVaultType": "platformKeyVault",
+                    "resourceGroupTypeRef": "platform",
                     "parameters": [
                         {
                             "secrets": [
@@ -19,6 +19,49 @@
                             "ref": {
                                 "resourceType": "principals",
                                 "typeFilter": "platformDeploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "{0}-{1}-{2}-accesspolicy",
+                    "type": "deploymentPrincipal",
+                    "keyVaultType": "appkeyvault",
+                    "resourceGroupTypeRef": "app",
+                    "parameters": [
+                        {
+                            "secrets": [
+                                "set",
+                                "get",
+                                "list",
+                                "delete"
+                            ],
+                            "type": "objectId",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "deploymentPrincipal",
+                                "property": "servicePrincipal.id"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "{0}-{1}-{2}-accesspolicy",
+                    "type": "applicationPrincipal",
+                    "keyVaultType": "appkeyvault",
+                    "resourceGroupTypeRef": "app",
+                    "parameters": [
+                        {
+                            "secrets": [
+                                "set",
+                                "get",
+                                "list"
+                            ],
+                            "type": "objectId",
+                            "ref": {
+                                "resourceType": "principals",
+                                "typeFilter": "applicationPrincipal",
                                 "property": "servicePrincipal.id"
                             }
                         }

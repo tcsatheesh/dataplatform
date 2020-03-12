@@ -13,7 +13,10 @@ param
     [Switch]$stop,
 
     [Parameter(Mandatory = $False, HelpMessage = "Set to get the trigger status")]
-    [Switch]$get
+    [Switch]$get,
+
+    [Parameter(Mandatory = $False, HelpMessage = "Delete the trigger")]
+    [Switch]$delete
 )
 
 function Get-TriggerState {
@@ -48,26 +51,44 @@ function Stop-Trigger {
     return Get-TriggerState -triggerName $triggerName
 }
 
+
+function Delete-Trigger {
+    param(
+        [string]$triggerName
+    )
+    $tstate = Get-TriggerState -triggerName $triggerName
+    if (-not [string]::IsNullOrEmpty($tstate)) {
+        $null = Remove-AzureRmDataFactoryV2Trigger -ResourceGroupName $dataFactoryResourceGroupName `
+            -DataFactoryName $dataFactoryName -Name $triggerName -Force
+    }
+}
+
 function Set-Resource {
     param (
         [object]$resource
     )
-    $dataFactoryResourceGroupName = $resource.datafactoryResourceGroup.name
-    $dataFactoryName = $resource.datafactory.name
-    $triggerName = $resource.resources.triggers[0].name
-    if ([string]::IsNullOrEmpty($nameofTrigger) -or ($triggerName -eq $nameofTrigger)) {
-        Write-Verbose "Processing trigger $triggerName in datafactory $dataFactoryName in resource group $dataFactoryResourceGroupName"
+    $dataFactoryResourceGroupName = Get-ResourceGroupName -resourceGroupTypeRef $resource.resourceGroupTypeRef
+    $dataFactoryName = $resource.name
+    Write-Verbose "Processing datafactory $dataFactoryName in resource group $dataFactoryResourceGroupName"
+    $trigger = Get-AzureRmDataFactoryV2Trigger -ResourceGroupName $dataFactoryResourceGroupName -DataFactoryName $dataFactoryName -Name $nameofTrigger -ErrorAction SilentlyContinue
+    if ($null -ne $trigger) {
+        Write-Verbose "Processing trigger $nameofTrigger in datafactory $dataFactoryName in resource group $dataFactoryResourceGroupName"
         if ($stop) {
-            Stop-Trigger -triggerName $triggerName
+            Stop-Trigger -triggerName $nameofTrigger
         }
         elseif ($start) {
-            Start-Trigger -triggerName $triggerName
+            Start-Trigger -triggerName $nameofTrigger
+        }
+        elseif ($delete) {
+            Stop-Trigger -triggerName $nameofTrigger
+            Delete-Trigger -triggerName $nameofTrigger
         }
         else {
-            Get-TriggerState -triggerName $triggerName
+            Get-TriggerState -triggerName $nameofTrigger
         }
-    }else {
-        Write-Verbose "Skipping trigger execution for $triggerName"
+    }
+    else {
+        Write-Verbose "Trigger $triggerName not found."
     }
 }
 
