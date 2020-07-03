@@ -16,58 +16,39 @@
                         {
                             "name": "dnsPrefix",
                             "type": "format",
-                            "value": "{0}{1}{2}aks01dns"
+                            "value": "{0}{1}{2}aks01"
                         },
                         {
-                            "name": "servicePrincipalClientId",
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "aksServerPrincipal",
-                                "property": "application.clientId"
-                            }
-                        },
-                        {
-                            "name": "servicePrincipalClientSecret",
-                            "type": "keyvault",
-                            "ref": {
-                                "resourceType": "keyvaults",
-                                "typeFilter": "appkeyvault",
-                                "secretName" : "{0}-{1}-{2}-aks-svr-prn-password"
-                            }
-                        },
-                        {
-                            "name": "principalId",
-                            "type": "reference",
-                            "ref": {
-                                "resourceType": "principals",
-                                "typeFilter": "aksServerPrincipal",
-                                "property": "servicePrincipal.id"
-                            }
-                        },                        
+                            "name": "acrName",
+                            "type": "format",
+                            "value": "{0}{1}{2}acr01"
+                        },                       
                         {
                             "name": "vnetSubnetID",
                             "type": "subnetid",
                             "ref": {
                                 "resourceType": "vnets",
-                                "typeFilter": "aks",
+                                "typeFilter": "dplt",
                                 "property": "name",
                                 "subnetName" : "kubernetes"
                             }
                         },
                         {
-                            "name": "aciVnetSubnetName",
-                            "type": "value",
-                            "value" : "aksvirtual"                            
+                            "name": "vnetResourceGroupName",
+                            "type": "reference",
+                            "ref": {
+                                "resourceType": "resourcegroups",
+                                "typeFilter": "vnet",
+                                "property": "name"
+                            }
                         },
                         {
-                            "name": "aciVnetSubnetId",
-                            "type": "subnetid",
+                            "name": "vnetName",
+                            "type": "reference",
                             "ref": {
                                 "resourceType": "vnets",
-                                "typeFilter": "aks",
-                                "property": "name",
-                                "subnetName" : "aksvirtual"
+                                "typeFilter": "dplt",
+                                "property": "name"
                             }
                         },
                         {
@@ -94,8 +75,8 @@
                             "name": "omsWorkspaceId",
                             "type": "resourceid",
                             "ref": {
-                                "name" : "itpocdlawksp01",
-                                "resourceGroupName": "it-poc-d-shdsvcs-rg"
+                                "name" : "itdpltdnela01",
+                                "resourceGroupName": "itomsp-mgmt-rg"
                             }
                         },
                         {
@@ -106,17 +87,17 @@
                         {
                             "name": "kubernetesVersion",
                             "type": "value",
-                            "value": "1.14.8"
+                            "value": "1.16.9"
                         },
                         {
                             "name": "agentCount",
                             "type": "value",
-                            "value": 3
+                            "value": 1
                         },
                         {
                             "name": "agentVMSize",
                             "type": "value",
-                            "value": "Standard_D4s_v3"
+                            "value": "Standard_D8as_v4"
                         }                        
                     ]
                 }

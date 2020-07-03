@@ -112,6 +112,7 @@ function Get-ResourceParameters {
     Write-Verbose "Get-ResourceParameters for $parameterFileName with godeep value as $godeep"
     $projectFolder = (Get-Item -Path $projectsParameterFile).DirectoryName
     $parameterFullPath = "$projectFolder\$parameterFileName"
+    Write-Verbose "Get-ResourceParameters for $parameterFullPath with godeep value as $godeep"
     if (Test-Path -Path $parameterFullPath) { 
         $parameters = Get-Content -Path $parameterFullPath -Raw | ConvertFrom-JSON
     }else {
@@ -120,7 +121,8 @@ function Get-ResourceParameters {
         }else {
             $cs = Get-PSCallStack
             Write-Verbose "Call stack is $cs"
-            throw "Parameter file not found in $parameterFullPath"
+            Write-Verbose "Parameter file not found in $parameterFullPath"
+            throw
         }
     }
     return $parameters
@@ -316,7 +318,12 @@ function Get-ResourceGroupName {
     
     $parameterFileName = "resourcegroups.parameters.json"
     $parameters = Get-ResourceParameters -parameterFileName $parameterFileName -godeep
+    Write-Verbose "Searching for $resourceGroupTypeRef in the resourcegroups file"
     $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
+    if ($null -eq $resourceGroup) {
+        $parameters = Get-ResourceParametersDeep -parameterFileName $parameterFileName
+        $resourceGroup = $parameters.parameters.resources.value | Where-Object {$_.type -eq $resourceGroupTypeRef}
+    }
     Write-Verbose "Returning $($resourceGroup.name) for resourceGroupTypeRef $resourceGroupTypeRef"
     return $resourceGroup.name
 }

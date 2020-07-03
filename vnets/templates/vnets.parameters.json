@@ -57,6 +57,12 @@
                                     "properties": {
                                         "addressPrefix": "10.32.5.0/24"
                                     }
+                                },
+                                {
+                                    "name": "amlcompute",
+                                    "properties": {
+                                        "addressPrefix": "10.32.6.0/24"
+                                    }
                                 }
                             ]
                         }

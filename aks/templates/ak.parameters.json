@@ -11,31 +11,17 @@
         "dnsPrefix": {
             "value": ""
         },
-        "agentCount": {
-            "value": 1
-        },
-        "agentVMSize": {
-            "value": "Standard_DS2_v2"
-        },
-        "servicePrincipalClientId": {
-            "value": null
-        },
-        "servicePrincipalClientSecret": {
-            "reference": {
-                "keyVault": {
-                  "id": "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.KeyVault/vaults/{2}"
-                },
-                "secretName": ""
-            }
-        },
         "kubernetesVersion": {
-            "value": "1.13.12"
+            "value": ""
         },
         "networkPlugin": {
             "value": "azure"
         },
         "enableRBAC": {
             "value": true
+        },
+        "enablePrivateCluster": {
+            "value": false
         },
         "enableHttpApplicationRouting": {
             "value": false
@@ -55,9 +41,6 @@
         "dockerBridgeCidr": {
             "value": ""
         },
-        "principalId": {
-            "value": ""
-        },
         "workspaceName": {
             "value": ""
         },
@@ -67,14 +50,23 @@
         "workspaceRegion": {
             "value": ""
         },
-        "aciVnetSubnetName": {
+        "networkPolicy": {
+            "value": "azure"
+        },
+        "acrName": {
             "value": ""
         },
-        "aciVnetSubnetId": {
+        "agentCount": {
+            "value": 1
+        },
+        "agentVMSize": {
             "value": ""
         },
-        "aciConnectorLinuxEnabled": {
-            "value": true
+        "vnetResourceGroupName": {
+            "value": ""
+        },
+        "vnetName": {
+            "value": ""
         }
     }
 }

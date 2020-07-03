@@ -3,19 +3,10 @@
     "parent": "",
     "resources": [
         {
-            "resourceType": "principals",
+            "resourceType": "resourcegroups",
             "resources": [
                 {
-                    "type": "aksServerPrincipal"
-                }
-            ]
-        },
-        {
-            "resourceType": "clientsecrets",
-            "resources": [
-                {
-                    "type": "password",
-                    "subtype": "aksServerPrincipal"
+                    "type": "vnet"
                 }
             ]
         },
@@ -23,7 +14,7 @@
             "resourceType": "vnets",
             "resources": [
                 {
-                    "type": "aks"
+                    "type": "dplt"
                 }
             ]
         },
